@@ -9,8 +9,8 @@
 ##################################################
 
 # Ce Makefile vous permet de compiler des projets
-# pour les microcontroleurs Atmel AVR sur 
-# Linux ou Unix, en utilisant l'outil AVR-GCC. 
+# pour les microcontroleurs Atmel AVR sur
+# Linux ou Unix, en utilisant l'outil AVR-GCC.
 # Ce Makefile supporte C & C++
 
 
@@ -23,13 +23,13 @@ MCU=atmega324pa
 
 # Nom de votre projet
 # (utilisez un seul mot, exemple: 'monprojet')
-PROJECTNAME=test
+PROJECTNAME=test32bits
 
 # Fichiers sources
 # Utilisez le suffixe .cpp pour les fichiers C++
 # Listez tous les fichiers a compiler, separes par
 # un espace. exemple: 'tp1.c tp2.cpp':
-PRJSRC= tp1.cpp
+PRJSRC=compteur32bits.cpp
 
 # Inclusions additionnels (ex: -I/path/to/mydir)
 INC=
@@ -41,7 +41,7 @@ LIBS=
 # Utilisez s (size opt), 1, 2, 3 ou 0 (off)
 OPTLEVEL=s
 
-# Programmer ID - Ne pas changer 
+# Programmer ID - Ne pas changer
 # Liste complete des IDs disponible avec avrdude
 AVRDUDE_PROGRAMMERID=usbasp
 
@@ -52,7 +52,7 @@ AVRDUDE_PROGRAMMERID=usbasp
 #####                                          #####
 #####  Le reste de cette section contient les  #####
 ##### details d'implementation vous permettant #####
-##### de mieux comprendre le fonctionnement de ##### 
+##### de mieux comprendre le fonctionnement de #####
 #####   ce Makefile en vue de sa modification  #####
 ####################################################
 
@@ -79,10 +79,10 @@ HEXFORMAT=ihex
 CFLAGS=-I. -I/usr/include/simavr  -MMD $(INC) -g -mmcu=$(MCU) -O$(OPTLEVEL) \
 	-std=c++14 -fpack-struct -fshort-enums             \
 	-funsigned-bitfields -funsigned-char    \
-	-Wall                                        
+	-Wall
 
 # Flags pour le compilateur en C++
-CXXFLAGS=-fno-exceptions     
+CXXFLAGS=-fno-exceptions
 
 # Linker pour lier les librairies utilisees
 LDFLAGS=-Wl,-Map,$(TRG).map -mmcu=$(MCU)
@@ -110,21 +110,21 @@ CPPFILES=$(filter %.cpp, $(PRJSRC))
 # Liste de tout les fichiers objet que nous devons creer
 OBJDEPS=$(CFILES:.c=.o) \
 	$(CPPFILES:.cpp=.o)
-	
+
 # Pour plus d'information sur cette section, consulter :
-# http://bit.ly/257R53E	
+# http://bit.ly/257R53E
 # Les fonctions $(filter pattern…,text) &
 # $(patsubst pattern,replacement,text) sont pertinentes
-	
 
 
-####### Creation des commandes du Makefile ####### 
+
+####### Creation des commandes du Makefile #######
 
 # Creation des cibles Phony (Phony Target)
 # En plus de la commande make qui permet de compiler
 # votre projet, vous pouvez utilisez les commandes
 # make all, make install et make clean
-.PHONY: all install clean 
+.PHONY: all install clean
 
 # Make all permet simplement de compiler le projet
 #
@@ -157,7 +157,7 @@ $(TRG): $(OBJDEPS)
 # Make install permet de compiler le projet puis
 # d'ecrire le programme en memoire flash dans votre
 # microcontroleur. Celui-ci doit etre branche par cable USB
-install: $(HEXROMTRG)				
+install: $(HEXROMTRG)
 	$(AVRDUDE) -c $(AVRDUDE_PROGRAMMERID)   \
 	-p $(MCU) -P -e -U flash:w:$(HEXROMTRG)
 
@@ -169,11 +169,11 @@ clean:
 # Pour plus d'information sur les phony target, consulter:
 # http://bit.ly/1WBQe61
 
-# De plus, pour mieux comprendre les makefiles et 
+# De plus, pour mieux comprendre les makefiles et
 # leur fonctionnement, consulter la documentation de GNU Make:
 # http://bit.ly/23Vpk8s
 
-# Finalement, ce tutoriel en ligne constitut une bonne 
+# Finalement, ce tutoriel en ligne constitut une bonne
 # introduction au Makefile:
 # http://bit.ly/1XvxsN3
 
