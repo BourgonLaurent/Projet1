@@ -30,3 +30,8 @@
 *.exe
 *.out
 *.app
+
+# AVR
+*.elf
+*.elf.map
+*.hex
