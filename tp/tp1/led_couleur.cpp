@@ -1,47 +1,69 @@
 /*
- * Nom: compteur 32 bits
- * Copyright (C) 2005 Matthew Khouzam
- * License http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * Description: Ceci est un exemple simple de programme
- * Version: 1.1
+ * Nom: led couleur
+ * Description: Affichage séquentiel de la diode
  */
-
-#include <avr/io.h>
-#include <util/delay_basic.h>
-#include <util/delay.h>
 
 #define F_CPU 8000000
 
+#include <avr/io.h>
+#include <util/delay.h>
+
+// couleurs possibles de la diode bicolore
+enum Couleur : uint8_t
+{
+  Vert = 0x01,
+  Rouge = 0x02
+};
+
+constexpr uint16_t DELAI_COULEUR_MS = 5000;
+
+void afficherCouleur(Couleur couleur)
+{
+  PORTA = couleur;
+}
+
+void afficherRouge()
+{
+  afficherCouleur(Couleur::Rouge);
+}
+
+void afficherVert()
+{
+  afficherCouleur(Couleur::Vert);
+}
+
+void afficherAmbre()
+{
+  for (uint16_t i = 0; i < DELAI_COULEUR_MS; i++)
+  {
+    afficherVert();
+    _delay_ms(0.5);
+    afficherRouge();
+    _delay_ms(0.5);
+  }
+}
+
 int main()
 {
-  DDRA = 0xff; // PORT A est en mode sortie
-  DDRB = 0xff; // PORT B est en mode sortie
-  DDRC = 0xff; // PORT C est en mode sortie
-  DDRD = 0xff; // PORT D est en mode sortie
+  // ne met en sortie que les broches A1 et A2
+  DDRA = 0b00000011;
 
-  unsigned long compteur = 0;
-
-  uint8_t ETEINT = 0x00;
-  uint8_t VERT = 0x01;
-  uint8_t ROUGE = 0x02;
-
-  for (;;) // boucle sans fin
+  // séquence de la diode:
+  //  - rouge
+  //  - vert
+  //  - ambré (rouge + vert varie rapidement)
+  while (true)
   {
-    PORTA = ROUGE;
+    afficherRouge();
 
-    _delay_ms(5000);
+    _delay_ms(DELAI_COULEUR_MS);
 
-    PORTA = VERT;
+    afficherVert();
 
-    _delay_ms(5000);
+    _delay_ms(DELAI_COULEUR_MS);
 
-    for (int i = 0; i < 2500; i++)
-    {
-      PORTA = VERT;
-      _delay_ms(1);
-      PORTA = ROUGE;
-      _delay_ms(1);
-    }
+    afficherAmbre();
   }
+
   return 0;
 }
