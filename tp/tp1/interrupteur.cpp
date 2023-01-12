@@ -33,7 +33,18 @@ void showRed()
 
 bool isButtonPressed()
 {
-    return PIND & 0b0000'0010;
+    return PIND & 0b0000'0100;
+}
+
+bool isPressingButton()
+{
+    if (isButtonPressed())
+    {
+        _delay_ms(10);
+        return isButtonPressed();
+    }
+
+    return false;
 }
 
 int main()
@@ -47,16 +58,15 @@ int main()
     //  - ambré (rouge + vert varie rapidement)
     while (true)
     {
-        if (isButtonPressed())
+        if (isPressingButton())
         {
-            _delay_ms(10);
-            if (isButtonPressed())
-            {
-                showRed();
-                continue;
-            }
+            showRed();
         }
-        showOff();
+        else
+        {
+
+            showOff();
+        }
     }
 
     return 0;
