@@ -46,12 +46,12 @@ void afficherAmbre()
 int main()
 {
   // ne met en sortie que les broches A1 et A2
-  DDRA = 0b00000011;
+  DDRA = (1 << DDA0) | (1 << DDA2);
 
   // séquence de la diode:
   //  - rouge
   //  - vert
-  //  - ambré (rouge + vert varie rapidement)
+  //  - ambré
   while (true)
   {
     afficherRouge();
