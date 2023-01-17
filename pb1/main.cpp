@@ -54,6 +54,11 @@ bool isUserPressingButton()
     return false;
 }
 
+bool didUserPressAndRelease()
+{
+    return false;
+}
+
 int main()
 {
     // Output
@@ -67,7 +72,7 @@ int main()
 
     while (true)
     {
-        if (isUserPressingButton())
+        while (isUserPressingButton())
         {
             switch (currentState)
             {
@@ -83,25 +88,21 @@ int main()
                 nextState = MachineState::S3;
                 break;
 
-            case MachineState::S3:
-                nextState = MachineState::INIT;
-                break;
-
             default:
                 break;
             }
         }
-        else
+
+        currentState = nextState;
+
+        if (currentState == MachineState::S3)
         {
-            if (nextState == MachineState::S3)
-            {
-                PORTA = (uint8_t)Color::GREEN;
-                _delay_ms(2000);
-                nextState = MachineState::INIT;
-            }
-            currentState = nextState;
-            PORTA = (uint8_t)Color::OFF;
+            PORTA = (uint8_t)Color::GREEN;
+            _delay_ms(2000);
+            currentState = MachineState::INIT;
         }
+
+        PORTA = (uint8_t)Color::OFF;
     }
 
     return 0;
