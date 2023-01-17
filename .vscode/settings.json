@@ -1,0 +1,10 @@
+{
+    "cmake.debugConfig": {
+        "args": []
+    },
+    "files.associations": {
+        "iostream": "cpp",
+        "iomanip": "cpp"
+    },
+    // "C_Cpp.loggingLevel": "Debug"
+}
