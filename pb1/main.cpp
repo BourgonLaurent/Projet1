@@ -44,7 +44,7 @@ bool getButtonStatus()
     return PIND & _BV(DDD2);
 }
 
-bool isPressingButton()
+bool isButtonPressed()
 {
     if (getButtonStatus())
     {
@@ -69,21 +69,21 @@ int main()
         switch (currentState)
         {
         case MachineState::INIT:
-            while (isPressingButton())
+            while (isButtonPressed())
             {
                 currentState = MachineState::S1;
             }
             break;
 
         case MachineState::S1:
-            while (isPressingButton())
+            while (isButtonPressed())
             {
                 currentState = MachineState::S2;
             }
             break;
 
         case MachineState::S2:
-            while (isPressingButton())
+            while (isButtonPressed())
             {
                 currentState = MachineState::S3;
             }
