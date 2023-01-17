@@ -31,7 +31,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-enum MachineState
+enum class MachineState
 {
     INIT,
     S1,
@@ -39,23 +39,18 @@ enum MachineState
     S3
 };
 
-bool getButtonState()
+bool getButtonStatus()
 {
     return PIND & _BV(DDD2);
 }
 
 bool isPressingButton()
 {
-    if (getButtonState())
+    if (getButtonStatus())
     {
         _delay_ms(10);
-        return getButtonState();
+        return getButtonStatus();
     }
-    return false;
-}
-
-bool didUserPressAndRelease()
-{
     return false;
 }
 
@@ -72,6 +67,15 @@ int main()
 
     while (true)
     {
+        if (currentState == MachineState::S3)
+        {
+            PORTA = (uint8_t)Color::GREEN;
+            _delay_ms(2000);
+            nextState = MachineState::INIT;
+        }
+
+        PORTA = (uint8_t)Color::OFF;
+
         while (isPressingButton())
         {
             switch (currentState)
@@ -94,15 +98,6 @@ int main()
         }
 
         currentState = nextState;
-
-        if (currentState == MachineState::S3)
-        {
-            PORTA = (uint8_t)Color::GREEN;
-            _delay_ms(2000);
-            currentState = MachineState::INIT;
-        }
-
-        PORTA = (uint8_t)Color::OFF;
     }
 
     return 0;
