@@ -63,41 +63,40 @@ int main()
     DDRD &= ~_BV(DDD2);
 
     MachineState currentState = MachineState::INIT;
-    MachineState nextState = MachineState::INIT;
 
     while (true)
     {
-        if (currentState == MachineState::S3)
+        switch (currentState)
         {
+        case MachineState::INIT:
+            while (isPressingButton())
+            {
+                currentState = MachineState::S1;
+            }
+            break;
+
+        case MachineState::S1:
+            while (isPressingButton())
+            {
+                currentState = MachineState::S2;
+            }
+            break;
+
+        case MachineState::S2:
+            while (isPressingButton())
+            {
+                currentState = MachineState::S3;
+            }
+            break;
+
+        case MachineState::S3:
             PORTA = (uint8_t)Color::GREEN;
             _delay_ms(2000);
-            nextState = MachineState::INIT;
+            currentState = MachineState::INIT;
+            break;
         }
 
         PORTA = (uint8_t)Color::OFF;
-
-        while (isPressingButton())
-        {
-            switch (currentState)
-            {
-            case MachineState::INIT:
-                nextState = MachineState::S1;
-                break;
-
-            case MachineState::S1:
-                nextState = MachineState::S2;
-                break;
-
-            case MachineState::S2:
-                nextState = MachineState::S3;
-                break;
-
-            default:
-                break;
-            }
-        }
-
-        currentState = nextState;
     }
 
     return 0;
