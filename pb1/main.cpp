@@ -44,7 +44,7 @@ bool getButtonState()
     return PIND & _BV(DDD2);
 }
 
-bool isUserPressingButton()
+bool isPressingButton()
 {
     if (getButtonState())
     {
@@ -72,7 +72,7 @@ int main()
 
     while (true)
     {
-        while (isUserPressingButton())
+        while (isPressingButton())
         {
             switch (currentState)
             {
