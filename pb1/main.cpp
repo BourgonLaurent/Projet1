@@ -24,18 +24,85 @@
  * +--------------+----+--------------+-------+
  */
 
+#define F_CPU 8000000
+
+#include "../color.cpp"
+
 #include <avr/io.h>
 #include <util/delay.h>
 
-enum class Color : uint8_t
+enum MachineState
 {
-    OFF,
-    RED,
-    GREEN
+    INIT,
+    S1,
+    S2,
+    S3
 };
+
+bool getButtonState()
+{
+    return PIND & _BV(DDD2);
+}
+
+bool isUserPressingButton()
+{
+    if (getButtonState())
+    {
+        _delay_ms(10);
+        return getButtonState();
+    }
+    return false;
+}
 
 int main()
 {
+    // Output
+    DDRA = _BV(DDA0) | _BV(DDA1);
+
+    // Input
+    DDRD &= ~_BV(DDD2);
+
+    MachineState currentState = MachineState::INIT;
+    MachineState nextState = MachineState::INIT;
+
+    while (true)
+    {
+        if (isUserPressingButton())
+        {
+            switch (currentState)
+            {
+            case MachineState::INIT:
+                nextState = MachineState::S1;
+                break;
+
+            case MachineState::S1:
+                nextState = MachineState::S2;
+                break;
+
+            case MachineState::S2:
+                nextState = MachineState::S3;
+                break;
+
+            case MachineState::S3:
+                nextState = MachineState::INIT;
+                break;
+
+            default:
+                break;
+            }
+        }
+        else
+        {
+            if (nextState == MachineState::S3)
+            {
+                PORTA = (uint8_t)Color::GREEN;
+                _delay_ms(2000);
+                nextState = MachineState::INIT;
+            }
+            currentState = nextState;
+            PORTA = (uint8_t)Color::OFF;
+        }
+    }
 
     return 0;
 }
