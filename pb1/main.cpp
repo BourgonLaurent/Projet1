@@ -25,11 +25,11 @@
  * +---------------+----+------------+-------+
  */
 
-#define F_CPU 8000000
-
 #include "../color.cpp"
 
 #include <avr/io.h>
+
+#define F_CPU 8000000
 #include <util/delay.h>
 
 enum class MachineState
@@ -63,6 +63,8 @@ int main()
     // Input
     DDRD &= ~_BV(DDD2);
 
+    constexpr int COLOR_DELAY_MS = 2000;
+
     MachineState currentState = MachineState::INIT;
 
     while (true)
@@ -92,7 +94,7 @@ int main()
 
         case MachineState::S3:
             PORTA = (uint8_t)Color::GREEN;
-            _delay_ms(2000);
+            _delay_ms(COLOR_DELAY_MS);
             currentState = MachineState::INIT;
             break;
         }
