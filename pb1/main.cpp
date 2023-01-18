@@ -26,6 +26,7 @@
  */
 
 #include "../color.cpp"
+#include "button.cpp"
 
 #include <avr/io.h>
 
@@ -39,21 +40,6 @@ enum class MachineState
     S2,
     S3
 };
-
-bool getButtonStatus()
-{
-    return PIND & _BV(DDD2);
-}
-
-bool isButtonPressed()
-{
-    if (getButtonStatus())
-    {
-        _delay_ms(10);
-        return getButtonStatus();
-    }
-    return false;
-}
 
 int main()
 {
@@ -72,21 +58,21 @@ int main()
         switch (currentState)
         {
         case MachineState::INIT:
-            while (isButtonPressed())
+            while (Button::isPressed())
             {
                 currentState = MachineState::S1;
             }
             break;
 
         case MachineState::S1:
-            while (isButtonPressed())
+            while (Button::isPressed())
             {
                 currentState = MachineState::S2;
             }
             break;
 
         case MachineState::S2:
-            while (isButtonPressed())
+            while (Button::isPressed())
             {
                 currentState = MachineState::S3;
             }
