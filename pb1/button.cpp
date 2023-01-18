@@ -1,31 +1,21 @@
-/**
- * Process user inputs with the push button.
- * \file button.cpp
- * \author Mehdi Benouhoud & Laurent Bourgon
- * \date January 18, 2023
- */
+#define F_CPU 8000000
 
 #include <avr/io.h>
-
-#define F_CPU 8000000
 #include <util/delay.h>
 
-namespace Button
+#include "button.hpp"
+
+bool Button::getState()
 {
-    constexpr int DEBOUNCE_DELAY_MS = 10;
+    return PIND & _BV(DDD2);
+}
 
-    bool getState()
+bool Button::isPressed()
+{
+    if (getState())
     {
-        return PIND & _BV(DDD2);
+        _delay_ms(DEBOUNCE_DELAY_MS);
+        return getState();
     }
-
-    bool isPressed()
-    {
-        if (getState())
-        {
-            _delay_ms(DEBOUNCE_DELAY_MS);
-            return getState();
-        }
-        return false;
-    }
+    return false;
 }
