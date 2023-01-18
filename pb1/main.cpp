@@ -40,6 +40,8 @@ enum class MachineState
     S3
 };
 
+constexpr int COLOR_DELAY_MS = 2000;
+
 int main()
 {
     // Output
@@ -47,8 +49,6 @@ int main()
 
     // Input
     DDRD &= ~_BV(DDD2);
-
-    constexpr int COLOR_DELAY_MS = 2000;
 
     MachineState currentState = MachineState::INIT;
 
