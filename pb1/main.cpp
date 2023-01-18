@@ -6,23 +6,23 @@
  *
  * Implements the following state table:
  *
- * +---------------+----+------------+-------+
- * | Current state | D2 | Next state |   A   |
- * +---------------+----+------------+-------+
- * |               |  0 |    INIT    |  OFF  |
- * |     INIT      +----+------------+-------+
- * |               |  1 |     S1     |  OFF  |
- * +---------------+----+------------+-------+
- * |               |  0 |     S1     |  OFF  |
- * |      S1       +----+------------+-------+
- * |               |  1 |     S2     |  OFF  |
- * +---------------+----+------------+-------+
- * |               |  0 |     S2     |  OFF  |
- * |      S2       +----+------------+-------+
- * |               |  1 |     S3     |  OFF  |
- * +---------------+----+------------+-------+
- * |      S3       |  X |    INIT    | GREEN |
- * +---------------+----+------------+-------+
+ * +---------------+----+--------------+-------+
+ * | Current State | D2 |  Next State  |   A   |
+ * +===============+====+==============+=======+
+ * |               |  0 |     INIT     |  OFF  |
+ * |      INIT     +----+--------------+-------+
+ * |               |  1 |  FIRST_PRESS |  OFF  |
+ * +---------------+----+--------------+-------+
+ * |               |  0 |  FIRST_PRESS |  OFF  |
+ * |  FIRST_PRESS  +----+--------------+-------+
+ * |               |  1 | SECOND_PRESS |  OFF  |
+ * +---------------+----+--------------+-------+
+ * |               |  0 | SECOND_PRESS |  OFF  |
+ * |  SECOND_PRESS +----+--------------+-------+
+ * |               |  1 |  THIRD_PRESS |  OFF  |
+ * +---------------+----+--------------+-------+
+ * |  THIRD_PRESS  |  x |     INIT     | GREEN |
+ * +---------------+----+--------------+-------+
  */
 
 #define F_CPU 8000000
@@ -35,9 +35,9 @@
 enum class MachineState
 {
     INIT,
-    S1,
-    S2,
-    S3
+    FIRST_PRESS,
+    SECOND_PRESS,
+    THIRD_PRESS
 };
 
 constexpr int COLOR_DELAY_MS = 2000;
@@ -59,25 +59,25 @@ int main()
         case MachineState::INIT:
             while (Button::isPressed())
             {
-                currentState = MachineState::S1;
+                currentState = MachineState::FIRST_PRESS;
             }
             break;
 
-        case MachineState::S1:
+        case MachineState::FIRST_PRESS:
             while (Button::isPressed())
             {
-                currentState = MachineState::S2;
+                currentState = MachineState::SECOND_PRESS;
             }
             break;
 
-        case MachineState::S2:
+        case MachineState::SECOND_PRESS:
             while (Button::isPressed())
             {
-                currentState = MachineState::S3;
+                currentState = MachineState::THIRD_PRESS;
             }
             break;
 
-        case MachineState::S3:
+        case MachineState::THIRD_PRESS:
             PORTA = (uint8_t)Color::GREEN;
             _delay_ms(COLOR_DELAY_MS);
             currentState = MachineState::INIT;
