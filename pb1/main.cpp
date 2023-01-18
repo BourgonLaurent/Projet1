@@ -25,7 +25,7 @@
  * +---------------+----+--------------+-------+
  */
 
-#define F_CPU 8000000
+#define F_CPU 8000000 // CPU clock frequency, used by <util/delay.h>
 #include <avr/io.h>
 #include <util/delay.h>
 
