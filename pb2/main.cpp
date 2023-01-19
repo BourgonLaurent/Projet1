@@ -15,29 +15,29 @@
  * +-----------------+----+----------------+-------+
  * |  Current State  | D2 |Next State      |   A   |
  * +=================+====+================+=======+
- * |                 |  0 |INIT            |       |
+ * |                 |  0 |      INIT      |       |
  * |       INIT      +----+----------------+  RED  +
- * |                 |  1 |FIRST_PRESS     |       |
+ * |                 |  1 |   FIRST_PRESS  |       |
  * +-----------------+----+----------------+-------+
- * |                 |  0 |FIRST_RELEASE   |       |
+ * |                 |  0 |  FIRST_RELEASE |       |
  * |   FIRST_PRESS   +----+----------------+ AMBER +
- * |                 |  1 |FIRST_PRESS     |       |
+ * |                 |  1 |   FIRST_PRESS  |       |
  * +-----------------+----+----------------+-------+
- * |                 |  0 |FIRST_RELEASE   |       |
+ * |                 |  0 |  FIRST_RELEASE |       |
  * |  FIRST_RELEASE  +----+----------------+ GREEN +
- * |                 |  1 |SECOND_PRESS    |       |
+ * |                 |  1 |  SECOND_PRESS  |       |
  * +-----------------+----+----------------+-------+
- * |                 |  0 |SECOND_RELEASE  |       |
+ * |                 |  0 | SECOND_RELEASE |       |
  * |   SECOND_PRESS  +----+----------------+  RED  +
- * |                 |  1 |SECOND_PRESS    |       |
+ * |                 |  1 |  SECOND_PRESS  |       |
  * +-----------------+----+----------------+-------+
- * |                 |  0 |SECOND_RELEASE  |       |
+ * |                 |  0 | SECOND_RELEASE |       |
  * |  SECOND_RELEASE +----+----------------+  OFF  +
- * |                 |  1 |THIRD_PRESS     |       |
+ * |                 |  1 |   THIRD_PRESS  |       |
  * +-----------------+----+----------------+-------+
- * |                 |  0 |INIT            |       |
+ * |                 |  0 |      INIT      |       |
  * |   THIRD_PRESS   +----+----------------+ GREEN +
- * |                 |  1 |SECOND_PRESS    |       |
+ * |                 |  1 |  SECOND_PRESS  |       |
  * +-----------------+----+----------------+-------+
  */
 
