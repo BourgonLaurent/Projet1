@@ -1,3 +1,11 @@
+/**
+ * Implementation of the retrieval of information from the switch button.
+ *
+ * \author Mehdi Benouhoud
+ * \author Laurent Bourgon
+ * \date January 17, 2023
+ */
+
 #define F_CPU 8000000
 
 #include <avr/io.h>

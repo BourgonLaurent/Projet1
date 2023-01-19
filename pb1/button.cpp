@@ -1,3 +1,11 @@
+/**
+ * Implementation of the retrieval of information from the switch button.
+ *
+ * \author Mehdi Benouhoud
+ * \author Laurent Bourgon
+ * \date January 17, 2023
+ */
+
 #define F_CPU 8000000
 
 #include <avr/io.h>
@@ -7,7 +15,7 @@
 
 bool Button::getState()
 {
-    return PIND & _BV(DDD2);
+    return PIND & _BV(PD2);
 }
 
 bool Button::isPressed()

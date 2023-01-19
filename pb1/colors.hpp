@@ -1,7 +1,8 @@
 /**
  * Colors of the LED.
- * \file colors.hpp
- * \author Mehdi Benouhoud & Laurent Bourgon
+ *
+ * \author Mehdi Benouhoud
+ * \author Laurent Bourgon
  * \date January 17, 2023
  */
 

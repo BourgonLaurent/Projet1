@@ -1,3 +1,11 @@
+/**
+ * Retrieve information from the switch button.
+ *
+ * \author Mehdi Benouhoud
+ * \author Laurent Bourgon
+ * \date January 17, 2023
+ */
+
 #ifndef BUTTON_H
 #define BUTTON_H
 
