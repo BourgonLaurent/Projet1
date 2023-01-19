@@ -48,7 +48,7 @@
 #include "colors.hpp"
 #include "button.hpp"
 
-constexpr int COLOR_DELAY_MS = 2000;
+constexpr int AMBER_DELAY_MS = 10;
 
 enum class MachineState
 {
@@ -82,7 +82,7 @@ int main()
 
         case MachineState::FIRST_PRESS:
             PORTA = (uint8_t)Color::RED;
-            _delay_ms(10);
+            _delay_ms(AMBER_DELAY_MS);
             PORTA = (uint8_t)Color::GREEN;
 
             if (!Button::isPressed())
