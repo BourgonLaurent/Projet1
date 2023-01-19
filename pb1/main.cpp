@@ -45,7 +45,7 @@ constexpr int COLOR_DELAY_MS = 2000;
 int main()
 {
     // Output
-    DDRA = _BV(DDA0) | _BV(DDA1);
+    DDRA |= _BV(DDA0) | _BV(DDA1);
 
     // Input
     DDRD &= ~_BV(DDD2);
