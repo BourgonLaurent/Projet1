@@ -32,6 +32,8 @@
 #include "../color.hpp"
 #include "button.hpp"
 
+constexpr int COLOR_DELAY_MS = 2000;
+
 enum class MachineState
 {
     INIT,
@@ -39,8 +41,6 @@ enum class MachineState
     SECOND_PRESS,
     THIRD_PRESS
 };
-
-constexpr int COLOR_DELAY_MS = 2000;
 
 int main()
 {
