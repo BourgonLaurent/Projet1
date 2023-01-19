@@ -48,7 +48,7 @@
 #include "colors.hpp"
 #include "button.hpp"
 
-constexpr int AMBER_DELAY_MS = 10;
+constexpr uint8_t AMBER_DELAY_MS = 10;
 
 enum class MachineState
 {

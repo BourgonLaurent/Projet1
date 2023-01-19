@@ -38,7 +38,7 @@
 #include "colors.hpp"
 #include "button.hpp"
 
-constexpr int COLOR_DELAY_MS = 2000;
+constexpr uint16_t COLOR_DELAY_MS = 2000;
 
 enum class MachineState
 {

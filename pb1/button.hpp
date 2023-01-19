@@ -16,7 +16,7 @@ public:
 
 private:
     static bool getState();
-    static constexpr int DEBOUNCE_DELAY_MS = 10;
+    static constexpr uint8_t DEBOUNCE_DELAY_MS = 10;
 };
 
 #endif
