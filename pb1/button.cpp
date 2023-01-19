@@ -15,7 +15,7 @@
 
 bool Button::getState()
 {
-    return PIND & _BV(PD2);
+    return PIND & _BV(PIND2);
 }
 
 bool Button::isPressed()
