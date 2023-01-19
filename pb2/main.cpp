@@ -123,8 +123,6 @@ int main()
             }
             break;
         }
-
-        // PORTA = (uint8_t)Color::OFF;
     }
 
     return 0;

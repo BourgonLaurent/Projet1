@@ -50,10 +50,7 @@ enum class MachineState
 
 int main()
 {
-    // Output
     DDRA |= _BV(DDA0) | _BV(DDA1);
-
-    // Input
     DDRD &= ~_BV(DDD2);
 
     MachineState currentState = MachineState::INIT;
