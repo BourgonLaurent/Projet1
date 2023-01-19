@@ -29,7 +29,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-#include "../color.hpp"
+#include "colors.hpp"
 #include "button.hpp"
 
 constexpr int COLOR_DELAY_MS = 2000;
