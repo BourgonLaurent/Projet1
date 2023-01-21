@@ -7,7 +7,7 @@
  * \date January 19, 2023
  *
  * Hardware Identification
- * INPUT: Switch button connected to D2 with a jumper.
+ * INPUT: Push button connected to D2 with a jumper.
  * OUTPUT: Bicolor LED to A0 + A1.
  *
  * Implements the following state table:

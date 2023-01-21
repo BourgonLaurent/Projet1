@@ -1,5 +1,5 @@
 /**
- * Retrieve information from the switch button.
+ * Retrieve information from the push button.
  *
  * \author Mehdi Benouhoud
  * \author Laurent Bourgon

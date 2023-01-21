@@ -1,13 +1,13 @@
 /**
  * Problem 1:
- *  Press three times the switch button to turn the LED green.
+ *  Press three times the push button to turn the LED green.
  *
  * \author Mehdi Benouhoud
  * \author Laurent Bourgon
  * \date January 17, 2023
  *
  * Hardware Identification
- * INPUT: Switch button connected to D2 with a jumper.
+ * INPUT: Push button connected to D2 with a jumper.
  * OUTPUT: Bicolor LED to A0 + A1.
  *
  * Implements the following state table:

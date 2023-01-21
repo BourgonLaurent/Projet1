@@ -1,9 +1,9 @@
 /**
- * Implementation of the retrieval of information from the switch button.
+ * Implementation of the retrieval of information from the push button.
  *
  * Hardware Identification
  * /!\ The Data Direction Register (DDR) needs to be set
- * INPUT: Switch button connected to D2 with a jumper.
+ * INPUT: Push button connected to D2 with a jumper.
  *
  * \author Mehdi Benouhoud
  * \author Laurent Bourgon
