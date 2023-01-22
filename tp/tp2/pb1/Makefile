@@ -29,7 +29,7 @@ PROJECTNAME=TP2_pb1
 # Utilisez le suffixe .cpp pour les fichiers C++
 # Listez tous les fichiers a compiler, separes par
 # un espace. exemple: 'tp1.c tp2.cpp':
-PRJSRC=main.cpp button.cpp
+PRJSRC=main.cpp ../helpers/button.cpp
 
 # Inclusions additionnels (ex: -I/path/to/mydir)
 INC=
@@ -164,7 +164,7 @@ install: $(HEXROMTRG)
 # Make clean permet d'effacer tout les fichiers generes
 # lors de la compilation
 clean:
-	$(REMOVE) $(TRG) $(TRG).map $(OBJDEPS) $(HEXTRG) *.d
+	$(REMOVE) $(TRG) $(TRG).map $(OBJDEPS) $(HEXTRG) $(OBJDEPS:.o=.d)
 
 # Pour plus d'information sur les phony target, consulter:
 # http://bit.ly/1WBQe61

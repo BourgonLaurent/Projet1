@@ -45,8 +45,8 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-#include "colors.hpp"
-#include "button.hpp"
+#include "../helpers/colors.hpp"
+#include "../helpers/button.hpp"
 
 constexpr uint8_t AMBER_DELAY_MS = 10;
 

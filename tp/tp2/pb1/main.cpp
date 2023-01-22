@@ -35,8 +35,8 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-#include "colors.hpp"
-#include "button.hpp"
+#include "../helpers/colors.hpp"
+#include "../helpers/button.hpp"
 
 constexpr uint16_t COLOR_DELAY_MS = 2000;
 

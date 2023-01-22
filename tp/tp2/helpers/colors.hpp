@@ -6,6 +6,9 @@
  * \date January 17, 2023
  */
 
+#ifndef COLORS_H
+#define COLORS_H
+
 #include <avr/io.h>
 
 enum class Color : uint8_t
@@ -14,3 +17,5 @@ enum class Color : uint8_t
     GREEN = 0x01,
     RED = 0x02
 };
+
+#endif
