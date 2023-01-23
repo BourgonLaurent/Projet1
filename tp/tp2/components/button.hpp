@@ -9,14 +9,24 @@
 #ifndef BUTTON_H
 #define BUTTON_H
 
+#include <avr/io.h>
+
 class Button
 {
 public:
-    static bool isPressed();
+    Button(
+        volatile uint8_t &dataDirectionRegister,
+        volatile uint8_t &pin,
+        const uint8_t bit);
+    bool isPressed() const;
 
 private:
-    static bool getState();
     static constexpr uint8_t DEBOUNCE_DELAY_MS = 10;
+
+    volatile uint8_t &pin;
+    const uint8_t bit;
+
+    bool getState() const;
 };
 
 #endif

@@ -11,11 +11,11 @@
 
 #include <avr/io.h>
 
-enum class Color : uint8_t
+enum class Color
 {
-    OFF = 0x00,
-    GREEN = 0x01,
-    RED = 0x02
+    OFF,
+    GREEN,
+    RED
 };
 
 #endif
