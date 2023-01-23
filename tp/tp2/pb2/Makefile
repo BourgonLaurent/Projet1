@@ -29,10 +29,10 @@ PROJECTNAME=TP2_pb2
 # Utilisez le suffixe .cpp pour les fichiers C++
 # Listez tous les fichiers a compiler, separes par
 # un espace. exemple: 'tp1.c tp2.cpp':
-PRJSRC=main.cpp ../helpers/button.cpp
+PRJSRC=main.cpp ../components/button.cpp ../components/led.cpp
 
 # Inclusions additionnels (ex: -I/path/to/mydir)
-INC=
+INC=-I../../
 
 # Libraires a lier (ex: -lmylib)
 LIBS=

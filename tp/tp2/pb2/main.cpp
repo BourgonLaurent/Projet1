@@ -8,12 +8,11 @@
  *
  * Hardware Identification
  * INPUT: Push button connected to D2 with a jumper.
- * OUTPUT: Bicolor LED to A0 + A1.
+ * OUTPUT: Bicolor LED connected plus to A0 and minus to A1.
  *
  * Implements the following state table:
- *
  * +-----------------+----+----------------+-------+
- * |  Current State  | D2 |Next State      |   A   |
+ * |  Current State  | D2 |   Next State   |   A   |
  * +=================+====+================+=======+
  * |                 |  0 |      INIT      |       |
  * |       INIT      +----+----------------+  RED  +
@@ -41,12 +40,13 @@
  * +-----------------+----+----------------+-------+
  */
 
-#define F_CPU 8000000 // CPU clock frequency, used by <util/delay.h>
+#define F_CPU 8000000UL
 #include <avr/io.h>
 #include <util/delay.h>
 
-#include "../helpers/colors.hpp"
-#include "../helpers/button.hpp"
+#include <tp2/components/button.hpp>
+#include <tp2/components/led.hpp>
+#include <tp2/components/colors.hpp>
 
 constexpr uint8_t AMBER_DELAY_MS = 10;
 
@@ -62,8 +62,8 @@ enum class MachineState
 
 int main()
 {
-    DDRA |= _BV(DDA0) | _BV(DDA1);
-    DDRD &= ~_BV(DDD2);
+    Button button = Button(DDRD, PIND, PIND2);
+    LED led = LED(DDRA, PORTA, PORTA0, PORTA1);
 
     MachineState currentState = MachineState::INIT;
 
@@ -72,52 +72,56 @@ int main()
         switch (currentState)
         {
         case MachineState::INIT:
-            PORTA = (uint8_t)Color::RED;
+            led.setColor(Color::RED);
 
-            if (Button::isPressed())
+            if (button.isPressed())
             {
                 currentState = MachineState::FIRST_PRESS;
             }
             break;
 
         case MachineState::FIRST_PRESS:
-            PORTA = (uint8_t)Color::RED;
+            led.setColor(Color::RED);
             _delay_ms(AMBER_DELAY_MS);
-            PORTA = (uint8_t)Color::GREEN;
+            led.setColor(Color::GREEN);
 
-            if (!Button::isPressed())
+            if (!button.isPressed())
             {
                 currentState = MachineState::FIRST_RELEASE;
             }
             break;
 
         case MachineState::FIRST_RELEASE:
-            PORTA = (uint8_t)Color::GREEN;
-            if (Button::isPressed())
+            led.setColor(Color::GREEN);
+
+            if (button.isPressed())
             {
                 currentState = MachineState::SECOND_PRESS;
             }
             break;
 
         case MachineState::SECOND_PRESS:
-            PORTA = (uint8_t)Color::RED;
-            if (!Button::isPressed())
+            led.setColor(Color::RED);
+
+            if (!button.isPressed())
             {
                 currentState = MachineState::SECOND_RELEASE;
             }
             break;
 
         case MachineState::SECOND_RELEASE:
-            PORTA = (uint8_t)Color::OFF;
-            if (Button::isPressed())
+            led.setColor(Color::OFF);
+
+            if (button.isPressed())
             {
                 currentState = MachineState::THIRD_PRESS;
             }
             break;
 
         case MachineState::THIRD_PRESS:
-            PORTA = (uint8_t)Color::GREEN;
-            if (!Button::isPressed())
+            led.setColor(Color::GREEN);
+
+            if (!button.isPressed())
             {
                 currentState = MachineState::INIT;
             }
