@@ -14,12 +14,12 @@
 #include "led.hpp"
 
 LED::LED(
-    volatile uint8_t &dataDirectionRegister,
-    volatile uint8_t &port,
+    volatile uint8_t *dataDirectionRegister,
+    volatile uint8_t *port,
     const uint8_t plusBit,
-    const uint8_t minusBit) : port(port),
-                              plusBit(plusBit),
-                              minusBit(minusBit)
+    const uint8_t minusBit) : port_(port),
+                              plusBit_(plusBit),
+                              minusBit_(minusBit)
 {
     Bit::activate(dataDirectionRegister, plusBit);
     Bit::activate(dataDirectionRegister, minusBit);
@@ -30,18 +30,18 @@ void LED::setColor(const Color &color)
     switch (color)
     {
     case Color::OFF:
-        Bit::clear(port, minusBit);
-        Bit::clear(port, plusBit);
+        Bit::clear(port_, minusBit_);
+        Bit::clear(port_, plusBit_);
         break;
 
     case Color::GREEN:
-        Bit::activate(port, minusBit);
-        Bit::clear(port, plusBit);
+        Bit::activate(port_, minusBit_);
+        Bit::clear(port_, plusBit_);
         break;
 
     case Color::RED:
-        Bit::activate(port, plusBit);
-        Bit::clear(port, minusBit);
+        Bit::activate(port_, plusBit_);
+        Bit::clear(port_, minusBit_);
         break;
     }
 }

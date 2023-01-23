@@ -62,8 +62,8 @@ enum class MachineState
 
 int main()
 {
-    Button button = Button(DDRD, PIND, PIND2);
-    LED led = LED(DDRA, PORTA, PORTA0, PORTA1);
+    Button button = Button(&DDRD, &PIND, PIND2);
+    LED led = LED(&DDRA, &PORTA, PORTA0, PORTA1);
 
     MachineState currentState = MachineState::INIT;
 

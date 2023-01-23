@@ -20,16 +20,17 @@
 #include "button.hpp"
 
 Button::Button(
-    volatile uint8_t &dataDirectionRegister,
-    volatile uint8_t &pin,
-    const uint8_t bit) : pin(pin), bit(bit)
+    volatile uint8_t *dataDirectionRegister,
+    volatile uint8_t *pin,
+    const uint8_t bit) : pin_(pin),
+                         bit_(bit)
 {
     Bit::clear(dataDirectionRegister, bit);
 };
 
 bool Button::getState() const
 {
-    return pin & _BV(bit);
+    return *pin_ & _BV(bit_);
 }
 
 bool Button::isPressed() const

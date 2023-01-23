@@ -15,16 +15,16 @@ class Button
 {
 public:
     Button(
-        volatile uint8_t &dataDirectionRegister,
-        volatile uint8_t &pin,
+        volatile uint8_t *dataDirectionRegister,
+        volatile uint8_t *pin,
         const uint8_t bit);
     bool isPressed() const;
 
 private:
     static constexpr uint8_t DEBOUNCE_DELAY_MS = 10;
 
-    volatile uint8_t &pin;
-    const uint8_t bit;
+    volatile uint8_t *pin_;
+    const uint8_t bit_;
 
     bool getState() const;
 };

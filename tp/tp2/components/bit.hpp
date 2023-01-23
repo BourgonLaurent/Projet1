@@ -13,14 +13,14 @@
 
 namespace Bit
 {
-    static inline void activate(volatile uint8_t &port, const uint8_t bit)
+    static inline void activate(volatile uint8_t *port, const uint8_t bit)
     {
-        port |= _BV(bit);
+        *port |= _BV(bit);
     }
 
-    static inline void clear(volatile uint8_t &port, const uint8_t bit)
+    static inline void clear(volatile uint8_t *port, const uint8_t bit)
     {
-        port &= ~_BV(bit);
+        *port &= ~_BV(bit);
     }
 }
 
