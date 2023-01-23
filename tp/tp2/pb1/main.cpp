@@ -8,10 +8,9 @@
  *
  * Hardware Identification
  * INPUT: Push button connected to D2 with a jumper.
- * OUTPUT: Bicolor LED to A0 + A1.
+ * OUTPUT: Bicolor LED connected plus to A0 and minus to A1.
  *
  * Implements the following state table:
- *
  * +---------------+----+--------------+-------+
  * | Current State | D2 |  Next State  |   A   |
  * +===============+====+==============+=======+
@@ -31,12 +30,14 @@
  * +---------------+----+--------------+-------+
  */
 
-#define F_CPU 8000000 // CPU clock frequency, used by <util/delay.h>
+#define F_CPU 8000000UL
+
 #include <avr/io.h>
 #include <util/delay.h>
 
-#include "../helpers/colors.hpp"
-#include "../helpers/button.hpp"
+#include <tp2/components/led.hpp>
+#include <tp2/components/button.hpp>
+#include <tp2/components/colors.hpp>
 
 constexpr uint16_t COLOR_DELAY_MS = 2000;
 
@@ -50,44 +51,48 @@ enum class MachineState
 
 int main()
 {
-    DDRA |= _BV(DDA0) | _BV(DDA1);
-    DDRD &= ~_BV(DDD2);
+    LED led = LED(DDRA, PORTA, PORTA0, PORTA1);
+    Button button = Button(DDRD, PIND, PIND2);
 
     MachineState currentState = MachineState::INIT;
-
     while (true)
     {
         switch (currentState)
         {
         case MachineState::INIT:
-            while (Button::isPressed())
+            led.setColor(Color::OFF);
+
+            while (button.isPressed())
             {
                 currentState = MachineState::FIRST_PRESS;
             }
             break;
 
         case MachineState::FIRST_PRESS:
-            while (Button::isPressed())
+            led.setColor(Color::OFF);
+
+            while (button.isPressed())
             {
                 currentState = MachineState::SECOND_PRESS;
             }
             break;
 
         case MachineState::SECOND_PRESS:
-            while (Button::isPressed())
+            led.setColor(Color::OFF);
+
+            while (button.isPressed())
             {
                 currentState = MachineState::THIRD_PRESS;
             }
             break;
 
         case MachineState::THIRD_PRESS:
-            PORTA = (uint8_t)Color::GREEN;
+            led.setColor(Color::GREEN);
             _delay_ms(COLOR_DELAY_MS);
+
             currentState = MachineState::INIT;
             break;
         }
-
-        PORTA = (uint8_t)Color::OFF;
     }
 
     return 0;
