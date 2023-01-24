@@ -41,7 +41,7 @@ const uint8_t LED_GREEN = 1 << PA0;
 const uint8_t LED_OFF = 0;
 const uint8_t MASK_D2 = 1 << PD2;
 const uint8_t DELAY_DEBOUNCE = 10;
-const int TIME_LED_ON = 2000;
+const uint16_t TIME_LED_ON = 2000;
 enum class States
 {
     INIT,
