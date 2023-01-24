@@ -76,10 +76,10 @@ bool isPressed()
 }
 bool verifyButton()
 {
-    if (firstPress())
+    if (isPressed())
     {
         _delay_ms(DELAY_DEBOUNCE);
-        return (firstPress());
+        return (isPressed());
     }
 
     return false;
