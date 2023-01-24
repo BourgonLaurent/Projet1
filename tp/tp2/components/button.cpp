@@ -30,7 +30,7 @@ Button::Button(
 
 bool Button::getState() const
 {
-    return *pin_ & _BV(bit_);
+    return Bit::get(pin_, bit_);
 }
 
 bool Button::isPressed() const

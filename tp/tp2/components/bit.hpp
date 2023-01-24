@@ -22,6 +22,11 @@ namespace Bit
     {
         *port &= ~_BV(bit);
     }
+
+    static inline uint8_t get(volatile uint8_t *pin, const uint8_t bit)
+    {
+        return *pin & _BV(bit);
+    }
 }
 
 #endif
