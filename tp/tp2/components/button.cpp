@@ -15,7 +15,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-#include <tp2/components/bit.hpp>
+#include <tp2/components/io.hpp>
 
 #include "button.hpp"
 
@@ -25,12 +25,12 @@ Button::Button(
     const uint8_t bit) : pin_(pin),
                          bit_(bit)
 {
-    Bit::setClear(dataDirectionRegister, bit);
+    IO::setClear(dataDirectionRegister, bit);
 };
 
 bool Button::getState() const
 {
-    return Bit::get(pin_, bit_);
+    return IO::get(pin_, bit_);
 }
 
 bool Button::isPressed() const

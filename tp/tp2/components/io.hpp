@@ -6,12 +6,12 @@
  * \date January 19, 2023
  */
 
-#ifndef BIT_H
-#define BIT_H
+#ifndef IO_H
+#define IO_H
 
 #include <avr/io.h>
 
-namespace Bit
+namespace IO
 {
     static inline void setActive(volatile uint8_t *port, const uint8_t bit)
     {
