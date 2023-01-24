@@ -48,7 +48,7 @@
 #include <tp2/components/led.hpp>
 #include <tp2/components/colors.hpp>
 
-constexpr uint8_t AMBER_DELAY_MS = 10;
+constexpr uint8_t AMBER_DELAY_MS = 5;
 
 enum class MachineState
 {
