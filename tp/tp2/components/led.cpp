@@ -21,8 +21,8 @@ LED::LED(
                               plusBit_(plusBit),
                               minusBit_(minusBit)
 {
-    IO::setActive(dataDirectionRegister, plusBit);
-    IO::setActive(dataDirectionRegister, minusBit);
+    IO::setOutput(dataDirectionRegister, plusBit);
+    IO::setOutput(dataDirectionRegister, minusBit);
 };
 
 void LED::setColor(const Color &color)
@@ -30,18 +30,18 @@ void LED::setColor(const Color &color)
     switch (color)
     {
     case Color::OFF:
-        IO::setClear(port_, minusBit_);
-        IO::setClear(port_, plusBit_);
+        IO::clear(port_, minusBit_);
+        IO::clear(port_, plusBit_);
         break;
 
     case Color::GREEN:
         IO::setActive(port_, minusBit_);
-        IO::setClear(port_, plusBit_);
+        IO::clear(port_, plusBit_);
         break;
 
     case Color::RED:
         IO::setActive(port_, plusBit_);
-        IO::setClear(port_, minusBit_);
+        IO::clear(port_, minusBit_);
         break;
     }
 }

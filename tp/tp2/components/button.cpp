@@ -25,7 +25,7 @@ Button::Button(
     const uint8_t bit) : pin_(pin),
                          bit_(bit)
 {
-    IO::setClear(dataDirectionRegister, bit);
+    IO::setInput(dataDirectionRegister, bit);
 };
 
 bool Button::getState() const
