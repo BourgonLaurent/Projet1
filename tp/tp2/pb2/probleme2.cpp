@@ -6,20 +6,20 @@
     INPUT: button connected to D2
     OUTPUT: LED connected to A0 and A1
  *
- * Description: This program turn a LED green, red or ambre depending on the state of the machine.
+ * Description: This program turn a LED green, red or AMBRER depending on the state of the machine.
  *
  *
- *State Table:
- * +---------------+----+------------+-------+
+State Table:
++---------------+----+------------+-------+
 | Current state | D2 | Next state | DEL   |
 +---------------+----+------------+-------+
 | RED1          | 0  | RED1       | Red   |
 +---------------+----+------------+-------+
-| RED1          | 1  | AMBRE      | Red   |
+| RED1          | 1  | AMBRER     | Red   |
 +---------------+----+------------+-------+
-| AMBRE         | 0  | GREEN1     | Ambre |
+| AMBRER        | 0  | GREEN1     | AMBRER|
 +---------------+----+------------+-------+
-| AMBRE         | 1  | AMBRE      | Ambre |
+| AMBRER        | 1  | AMBRER     | AMBRER|
 +---------------+----+------------+-------+
 | GREEN1        | 0  | GREEN1     | Green |
 +---------------+----+------------+-------+
@@ -48,12 +48,12 @@ const uint8_t LED_RED = 1 << PA1;
 const uint8_t LED_OFF = 0;
 const uint8_t MASK_D2 = 1 << PD2;
 const uint8_t DELAY_DEBOUNCE = 10;
-const uint8_t DELAY_COLOR_AMBRE = 5;
+const uint8_t DELAY_COLOR_AMBRER = 5;
 
 enum class States
 {
     RED1,
-    AMBRE,
+    AMBRER,
     GREEN1,
     RED2,
     OFF,
@@ -61,12 +61,12 @@ enum class States
 };
 States state = States::RED1;
 
-void ledAmbreColor()
+void ledAMBRERColor()
 {
     PORTA = LED_GREEN;
-    _delay_ms(DELAY_COLOR_AMBRE);
+    _delay_ms(DELAY_COLOR_AMBRER);
     PORTA = LED_RED;
-    _delay_ms(DELAY_COLOR_AMBRE);
+    _delay_ms(DELAY_COLOR_AMBRER);
     return;
 }
 
@@ -74,7 +74,7 @@ bool isPressed()
 {
     return (PIND & MASK_D2);
 }
-bool verifyButton()
+bool debounceButton()
 {
     if (isPressed())
     {
@@ -92,10 +92,10 @@ void setNextState()
     {
     case States::RED1:
         if (isPressed())
-            state = States::AMBRE;
+            state = States::AMBRER;
         break;
 
-    case States::AMBRE:
+    case States::AMBRER:
 
         if (!isPressed())
             state = States::GREEN1;
@@ -133,8 +133,8 @@ void setColorLed()
         PORTA = LED_RED;
         break;
 
-    case States::AMBRE:
-        ledAmbreColor();
+    case States::AMBRER:
+        ledAMBRERColor();
         break;
 
     case States::GREEN1:

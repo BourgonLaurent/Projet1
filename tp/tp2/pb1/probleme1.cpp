@@ -42,6 +42,7 @@ const uint8_t LED_OFF = 0;
 const uint8_t MASK_D2 = 1 << PD2;
 const uint8_t DELAY_DEBOUNCE = 10;
 const uint16_t TIME_LED_ON = 2000;
+bool buttonIsPressed = false;
 enum class States
 {
     INIT,
@@ -51,12 +52,31 @@ enum class States
 };
 States state = States::INIT;
 
-bool verifyButtonPressed()
+bool isPressed()
 {
-    if (PIND & MASK_D2)
+    return (PIND & MASK_D2);
+}
+bool debounceButton()
+{
+    if (isPressed())
     {
         _delay_ms(DELAY_DEBOUNCE);
-        return !(PIND & MASK_D2);
+        if (isPressed())
+        {
+            buttonIsPressed = true;
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool isButtonPressedAndReleased()
+{
+    if (!debounceButton() && buttonIsPressed)
+    {
+        buttonIsPressed = false;
+        return true;
     }
 
     return false;
@@ -67,13 +87,16 @@ void setNextState()
     switch (state)
     {
     case States::INIT:
-        if (verifyButtonPressed()) state = States::CLIC_1;
+        if (isButtonPressedAndReleased())
+            state = States::CLIC_1;
         break;
     case States::CLIC_1:
-        if (verifyButtonPressed()) state = States::CLIC_2;
+        if (isButtonPressedAndReleased())
+            state = States::CLIC_2;
         break;
     case States::CLIC_2:
-        if (verifyButtonPressed()) state = States::CLIC_3;
+        if (isButtonPressedAndReleased())
+            state = States::CLIC_3;
         break;
     case States::CLIC_3:
         state = States::INIT;
@@ -109,4 +132,3 @@ int main()
     }
     return 0;
 }
-
