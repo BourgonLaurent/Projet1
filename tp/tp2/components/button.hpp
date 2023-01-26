@@ -1,6 +1,11 @@
 /**
  * Retrieve information from the push button.
  *
+ * Hardware Identification:
+ * /!\ The Data Direction Register (`dataDirectionRegister`)
+ *     will be set automatically.
+ * INPUT: Push button connected to `pin` on `bit`.
+ *
  * \author Mehdi Benouhoud
  * \author Laurent Bourgon
  * \date January 17, 2023

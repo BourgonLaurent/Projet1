@@ -1,6 +1,12 @@
 /**
  * Implementation of the control of an LED.
  *
+ * Hardware Identification:
+ * /!\ The Data Direction Register (`dataDirectionRegister`)
+ *     will be set automatically.
+ * OUTPUT: Bicolor LED connected plus to `plusBit` and minus to `minusBit`.
+ *
+ *
  * \author Mehdi Benouhoud
  * \author Laurent Bourgon
  * \date January 19, 2023
