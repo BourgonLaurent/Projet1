@@ -30,26 +30,26 @@ void wait(double delay)
     }
 }
 
-constexpr uint32_t TOTAL_SHUTDOWN_US = 3000000;
+constexpr uint32_t DURATION = 3000000;
 constexpr uint16_t PERIOD_US = 1000;
-constexpr uint16_t NUMBER_OF_CYCLES = TOTAL_SHUTDOWN_US / PERIOD_US;
+constexpr uint16_t NUMBER_OF_CYCLES = DURATION / PERIOD_US;
 constexpr double INCREMENT_RATIO = 1.0 / NUMBER_OF_CYCLES;
 
 int main()
 {
-    LED led = LED(&DDRA, &PORTA, PORTA1, PORTA0);
+    LED led = LED(&DDRA, &PORTA, PORTA0, PORTA1);
 
-    double a = 1;
-    double c = 0;
+    double onRatio = 1;
+    double offRatio = 0;
     for (uint16_t i = 0; i < NUMBER_OF_CYCLES; i++)
     {
         led.setColor(Color::GREEN);
-        wait(PERIOD_US * a);
+        wait(PERIOD_US * onRatio);
         led.setColor(Color::OFF);
-        wait(PERIOD_US * c);
+        wait(PERIOD_US * offRatio);
 
-        a -= INCREMENT_RATIO;
-        c += INCREMENT_RATIO;
+        onRatio -= INCREMENT_RATIO;
+        offRatio += INCREMENT_RATIO;
     }
 
     return 0;

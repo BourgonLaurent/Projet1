@@ -23,14 +23,27 @@ public:
 
     );
 
-    void turnOn();
-    void turnOff();
+    void forward(const double &periodUs, const double &speed);
+    void backward(const double &periodUs, const double &speed);
 
 private:
     volatile uint8_t *port_;
 
     const uint8_t pulseWidthModulationPin_;
     const uint8_t directionPin_;
+
+    enum class Direction
+    {
+        FORWARD,
+        BACKWARD
+    };
+
+    void setDirection(const Direction &direction);
+
+    void turnOn();
+    void turnOff();
+    void wait(const double &delay);
+    void turnOnAtSpeed(const double &periodUs, const double &relativeSpeed);
 };
 
 #endif
