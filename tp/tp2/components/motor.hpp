@@ -23,6 +23,9 @@ public:
 
     );
 
+    void turnOn();
+    void turnOff();
+
 private:
     volatile uint8_t *port_;
 

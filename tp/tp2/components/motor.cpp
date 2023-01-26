@@ -29,3 +29,15 @@ Motor::Motor(
     IO::setOutput(dataDirectionRegister, pulseWidthModulationPin);
     IO::setOutput(dataDirectionRegister, directionPin);
 }
+
+void Motor::turnOn()
+{
+    // TODO implement turnOn()
+    IO::setActive(port_, pulseWidthModulationPin_);
+}
+
+void Motor::turnOff()
+{
+    // TODO implement turnOff()
+    IO::clear(port_, pulseWidthModulationPin_);
+}
