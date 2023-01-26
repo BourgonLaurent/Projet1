@@ -6,5 +6,11 @@
         "iostream": "cpp",
         "iomanip": "cpp"
     },
-    // "C_Cpp.loggingLevel": "Debug"
+    "editor.rulers": [
+        80,
+        120,
+        120,
+        120,
+    ],
+    "C_Cpp.loggingLevel": "Debug"
 }
