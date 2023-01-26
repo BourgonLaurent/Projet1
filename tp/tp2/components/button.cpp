@@ -2,7 +2,8 @@
  * Implementation of the retrieval of information from the push button.
  *
  * Hardware Identification:
- * /!\ The Data Direction Register (`dataDirectionRegister`) will be set automatically.
+ * /!\ The Data Direction Register (`dataDirectionRegister`)
+ *     will be set automatically.
  * INPUT: Push button connected to `pin` on `bit`.
  *
  * \author Mehdi Benouhoud
