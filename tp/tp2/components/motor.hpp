@@ -14,9 +14,20 @@
 class Motor
 {
 public:
-    Motor();
+    Motor(
+        volatile uint8_t *dataDirectionRegister,
+        volatile uint8_t *port,
+
+        const uint8_t pulseWidthModulationPin,
+        const uint8_t directionPin
+
+    );
 
 private:
+    volatile uint8_t *port_;
+
+    const uint8_t pulseWidthModulationPin_;
+    const uint8_t directionPin_;
 };
 
 #endif
