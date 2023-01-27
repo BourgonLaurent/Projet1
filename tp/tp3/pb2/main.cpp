@@ -27,7 +27,7 @@ void forwardIncrement(Motor &motor, const double &frequencyUs)
     {
         for (uint16_t j = 0; j < numberOfCycles; j++)
         {
-            motor.backward(periodUs, i);
+            motor.forward(periodUs, i);
         }
     }
 }
