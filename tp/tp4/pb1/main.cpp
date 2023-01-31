@@ -53,6 +53,7 @@
 #include <tp2/components/colors.hpp>
 
 constexpr uint8_t AMBER_DELAY_MS = 10;
+constexpr uint8_t DEBOUNCE_DELAY_MS = 10;
 
 enum class MachineState
 {
@@ -66,11 +67,9 @@ enum class MachineState
 
 volatile MachineState currentState = MachineState::INIT;
 
-// placer le bon type de signal d'interruption
-// à prendre en charge en argument
 ISR(INT0_vect)
 {
-    _delay_ms(30);
+    _delay_ms(DEBOUNCE_DELAY_MS);
 
     switch (::currentState)
     {
@@ -100,19 +99,13 @@ ISR(INT0_vect)
     }
 
     // Voir la note plus bas pour comprendre cette instruction et son rôle
-    EIFR |= (1 << INTF0);
+    EIFR |= _BV(INTF0);
 }
 
 int main()
 {
-    cli();
-
-    // DDRA |= _BV(PORTA0) | _BV(PORTA1);
     DDRD &= ~_BV(PIND2);
 
-    // cli est une routine qui bloque toutes les interruptions.
-    // Il serait bien mauvais d'être interrompu alors que
-    // le microcontrôleur n'est pas prêt...
     cli();
 
     // cette procédure ajuste le registre EIMSK
@@ -125,10 +118,8 @@ int main()
     EICRA |= _BV(ISC00);
     EICRA &= ~_BV(ISC01);
 
-    // sei permet de recevoir à nouveau des interruptions.
     sei();
 
-    // Button button = Button(&DDRD, &PIND, PIND2);
     LED led = LED(&DDRA, &PORTA, PORTA0, PORTA1);
 
     while (true)
@@ -143,6 +134,7 @@ int main()
             led.setColor(Color::RED);
             _delay_ms(AMBER_DELAY_MS);
             led.setColor(Color::GREEN);
+            _delay_ms(AMBER_DELAY_MS);
             break;
 
         case MachineState::FIRST_RELEASE:
