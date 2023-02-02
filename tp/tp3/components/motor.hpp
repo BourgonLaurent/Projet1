@@ -14,20 +14,14 @@
 class Motor
 {
 public:
-    Motor(
-        volatile uint8_t *dataDirectionRegister,
-        volatile uint8_t *port,
+    Motor(volatile uint8_t* dataDirectionRegister, volatile uint8_t* port,
+          const uint8_t pulseWidthModulationPin, const uint8_t directionPin);
 
-        const uint8_t pulseWidthModulationPin,
-        const uint8_t directionPin
-
-    );
-
-    void forward(const double &periodUs, const double &speed);
-    void backward(const double &periodUs, const double &speed);
+    void forward(const double& periodUs, const double& speed);
+    void backward(const double& periodUs, const double& speed);
 
 private:
-    volatile uint8_t *port_;
+    volatile uint8_t* port_;
 
     const uint8_t pulseWidthModulationPin_;
     const uint8_t directionPin_;
@@ -38,12 +32,12 @@ private:
         BACKWARD
     };
 
-    void setDirection(const Direction &direction);
+    void setDirection(const Direction& direction);
 
     void turnOn();
     void turnOff();
-    void wait(const double &delay);
-    void turnOnAtSpeed(const double &periodUs, const double &relativeSpeed);
+    void wait(const double& delay);
+    void turnOnAtSpeed(const double& periodUs, const double& relativeSpeed);
 };
 
 #endif

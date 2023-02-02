@@ -20,11 +20,9 @@
 
 #include "button.hpp"
 
-Button::Button(
-    volatile uint8_t *dataDirectionRegister,
-    volatile uint8_t *pin,
-    const uint8_t bit) : pin_(pin),
-                         bit_(bit)
+Button::Button(volatile uint8_t* dataDirectionRegister, volatile uint8_t* pin,
+               const uint8_t bit)
+    : pin_(pin), bit_(bit)
 {
     IO::setInput(dataDirectionRegister, bit);
 };
@@ -36,8 +34,7 @@ bool Button::getState() const
 
 bool Button::isPressed() const
 {
-    if (getState())
-    {
+    if (getState()) {
         _delay_ms(DEBOUNCE_DELAY_MS);
         return getState();
     }

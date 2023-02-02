@@ -18,15 +18,13 @@
 
 constexpr uint32_t DURATION = 2000000;
 
-void forwardIncrement(Motor &motor, const double &frequencyUs)
+void forwardIncrement(Motor& motor, const double& frequencyUs)
 {
     const double periodUs = 1.0 / frequencyUs;
     const double numberOfCycles = DURATION / periodUs;
 
-    for (double i = 0; i <= 1; i += 0.25)
-    {
-        for (uint16_t j = 0; j < numberOfCycles; j++)
-        {
+    for (double i = 0; i <= 1; i += 0.25) {
+        for (uint16_t j = 0; j < numberOfCycles; j++) {
             motor.forward(periodUs, i);
         }
     }

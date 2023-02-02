@@ -1,16 +1,20 @@
 {
-    "cmake.debugConfig": {
-        "args": []
-    },
-    "files.associations": {
-        "iostream": "cpp",
-        "iomanip": "cpp"
-    },
     "editor.rulers": [
         80,
         120,
         120,
         120,
     ],
-    "C_Cpp.loggingLevel": "Debug"
+    "C_Cpp.clang_format_style": "file",
+    "C_Cpp.codeAnalysis.clangTidy.enabled": true,
+    "C_Cpp.files.exclude": {
+        "**/include": true,
+        "**/.vscode": true,
+        "**/.vs": true
+    },
+    "C_Cpp.loggingLevel": "Debug",
+    "files.associations": {
+        "iostream": "cpp",
+        "iomanip": "cpp"
+    },
 }

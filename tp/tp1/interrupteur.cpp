@@ -38,8 +38,7 @@ bool isButtonPressed()
 
 bool isPressingButton()
 {
-    if (isButtonPressed())
-    {
+    if (isButtonPressed()) {
         _delay_ms(10);
         return isButtonPressed();
     }
@@ -58,14 +57,11 @@ int main()
     //  - rouge
     //  - vert
     //  - ambré
-    while (true)
-    {
-        if (isPressingButton())
-        {
+    while (true) {
+        if (isPressingButton()) {
             showRed();
         }
-        else
-        {
+        else {
             showOff();
         }
     }

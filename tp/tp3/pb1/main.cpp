@@ -14,18 +14,16 @@
 #define F_CPU 8000000UL
 #include <util/delay.h>
 
-#include <tp2/components/led.hpp>
 #include <tp2/components/colors.hpp>
+#include <tp2/components/led.hpp>
 
 void wait(double delay)
 {
-    if (delay == 0)
-    {
+    if (delay == 0) {
         return;
     }
 
-    for (uint16_t i = 0; i < delay / 40; i++)
-    {
+    for (uint16_t i = 0; i < delay / 40; i++) {
         _delay_us(10);
     }
 }
@@ -41,8 +39,7 @@ int main()
 
     double onRatio = 1;
     double offRatio = 0;
-    for (uint16_t i = 0; i < NUMBER_OF_CYCLES; i++)
-    {
+    for (uint16_t i = 0; i < NUMBER_OF_CYCLES; i++) {
         led.setColor(Color::GREEN);
         wait(PERIOD_US * onRatio);
         led.setColor(Color::OFF);

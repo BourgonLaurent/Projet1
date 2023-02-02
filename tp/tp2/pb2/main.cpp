@@ -48,8 +48,8 @@
 #include <util/delay.h>
 
 #include <tp2/components/button.hpp>
-#include <tp2/components/led.hpp>
 #include <tp2/components/colors.hpp>
+#include <tp2/components/led.hpp>
 
 constexpr uint8_t AMBER_DELAY_MS = 5;
 
@@ -70,65 +70,57 @@ int main()
 
     MachineState currentState = MachineState::INIT;
 
-    while (true)
-    {
-        switch (currentState)
-        {
-        case MachineState::INIT:
-            led.setColor(Color::RED);
+    while (true) {
+        switch (currentState) {
+            case MachineState::INIT :
+                led.setColor(Color::RED);
 
-            if (button.isPressed())
-            {
-                currentState = MachineState::FIRST_PRESS;
-            }
-            break;
+                if (button.isPressed()) {
+                    currentState = MachineState::FIRST_PRESS;
+                }
+                break;
 
-        case MachineState::FIRST_PRESS:
-            led.setColor(Color::RED);
-            _delay_ms(AMBER_DELAY_MS);
-            led.setColor(Color::GREEN);
+            case MachineState::FIRST_PRESS :
+                led.setColor(Color::RED);
+                _delay_ms(AMBER_DELAY_MS);
+                led.setColor(Color::GREEN);
 
-            if (!button.isPressed())
-            {
-                currentState = MachineState::FIRST_RELEASE;
-            }
-            break;
+                if (!button.isPressed()) {
+                    currentState = MachineState::FIRST_RELEASE;
+                }
+                break;
 
-        case MachineState::FIRST_RELEASE:
-            led.setColor(Color::GREEN);
+            case MachineState::FIRST_RELEASE :
+                led.setColor(Color::GREEN);
 
-            if (button.isPressed())
-            {
-                currentState = MachineState::SECOND_PRESS;
-            }
-            break;
+                if (button.isPressed()) {
+                    currentState = MachineState::SECOND_PRESS;
+                }
+                break;
 
-        case MachineState::SECOND_PRESS:
-            led.setColor(Color::RED);
+            case MachineState::SECOND_PRESS :
+                led.setColor(Color::RED);
 
-            if (!button.isPressed())
-            {
-                currentState = MachineState::SECOND_RELEASE;
-            }
-            break;
+                if (!button.isPressed()) {
+                    currentState = MachineState::SECOND_RELEASE;
+                }
+                break;
 
-        case MachineState::SECOND_RELEASE:
-            led.setColor(Color::OFF);
+            case MachineState::SECOND_RELEASE :
+                led.setColor(Color::OFF);
 
-            if (button.isPressed())
-            {
-                currentState = MachineState::THIRD_PRESS;
-            }
-            break;
+                if (button.isPressed()) {
+                    currentState = MachineState::THIRD_PRESS;
+                }
+                break;
 
-        case MachineState::THIRD_PRESS:
-            led.setColor(Color::GREEN);
+            case MachineState::THIRD_PRESS :
+                led.setColor(Color::GREEN);
 
-            if (!button.isPressed())
-            {
-                currentState = MachineState::INIT;
-            }
-            break;
+                if (!button.isPressed()) {
+                    currentState = MachineState::INIT;
+                }
+                break;
         }
     }
 

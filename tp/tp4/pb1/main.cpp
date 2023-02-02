@@ -44,13 +44,14 @@
  */
 
 #define F_CPU 8000000UL
-#include <avr/io.h>
+
 #include <avr/interrupt.h>
+#include <avr/io.h>
 #include <util/delay.h>
 
 #include <tp2/components/button.hpp>
-#include <tp2/components/led.hpp>
 #include <tp2/components/colors.hpp>
+#include <tp2/components/led.hpp>
 
 constexpr uint8_t AMBER_DELAY_MS = 10;
 constexpr uint8_t DEBOUNCE_DELAY_MS = 10;
@@ -71,87 +72,85 @@ ISR(INT0_vect)
 {
     _delay_ms(DEBOUNCE_DELAY_MS);
 
-    switch (::currentState)
-    {
-    case MachineState::INIT:
-        ::currentState = MachineState::FIRST_PRESS;
-        break;
+    switch (::currentState) {
+        case MachineState::INIT :
+            ::currentState = MachineState::FIRST_PRESS;
+            break;
 
-    case MachineState::FIRST_PRESS:
-        ::currentState = MachineState::FIRST_RELEASE;
-        break;
+        case MachineState::FIRST_PRESS :
+            ::currentState = MachineState::FIRST_RELEASE;
+            break;
 
-    case MachineState::FIRST_RELEASE:
-        ::currentState = MachineState::SECOND_PRESS;
-        break;
+        case MachineState::FIRST_RELEASE :
+            ::currentState = MachineState::SECOND_PRESS;
+            break;
 
-    case MachineState::SECOND_PRESS:
-        ::currentState = MachineState::SECOND_RELEASE;
-        break;
+        case MachineState::SECOND_PRESS :
+            ::currentState = MachineState::SECOND_RELEASE;
+            break;
 
-    case MachineState::SECOND_RELEASE:
-        ::currentState = MachineState::THIRD_PRESS;
-        break;
+        case MachineState::SECOND_RELEASE :
+            ::currentState = MachineState::THIRD_PRESS;
+            break;
 
-    case MachineState::THIRD_PRESS:
-        ::currentState = MachineState::INIT;
-        break;
+        case MachineState::THIRD_PRESS :
+            ::currentState = MachineState::INIT;
+            break;
     }
 
     // Voir la note plus bas pour comprendre cette instruction et son rôle
     EIFR |= _BV(INTF0);
 }
 
-int main()
+void prepareInterrupts()
 {
-    DDRD &= ~_BV(PIND2);
-
     cli();
 
-    // cette procédure ajuste le registre EIMSK
-    // de l’ATmega324PA pour permettre les interruptions externes
+    // (p.68) allow interruptions
     EIMSK |= _BV(INT0);
 
-    // il faut sensibiliser les interruptions externes aux
-    // changements de niveau du bouton-poussoir
-    // en ajustant le registre EICRA
+    // (p.67) falling + rising edge
     EICRA |= _BV(ISC00);
     EICRA &= ~_BV(ISC01);
 
     sei();
+}
 
+int main()
+{
     LED led = LED(&DDRA, &PORTA, PORTA0, PORTA1);
+    DDRD &= ~_BV(PIND2);
 
-    while (true)
-    {
-        switch (::currentState)
-        {
-        case MachineState::INIT:
-            led.setColor(Color::RED);
-            break;
+    prepareInterrupts();
 
-        case MachineState::FIRST_PRESS:
-            led.setColor(Color::RED);
-            _delay_ms(AMBER_DELAY_MS);
-            led.setColor(Color::GREEN);
-            _delay_ms(AMBER_DELAY_MS);
-            break;
+    while (true) {
+        switch (::currentState) {
+            case MachineState::INIT :
+                led.setColor(Color::RED);
+                break;
 
-        case MachineState::FIRST_RELEASE:
-            led.setColor(Color::GREEN);
-            break;
+            case MachineState::FIRST_PRESS :
+                led.setColor(Color::RED);
+                _delay_ms(AMBER_DELAY_MS);
+                led.setColor(Color::GREEN);
+                _delay_ms(AMBER_DELAY_MS);
+                break;
 
-        case MachineState::SECOND_PRESS:
-            led.setColor(Color::RED);
-            break;
+            case MachineState::FIRST_RELEASE :
+                led.setColor(Color::GREEN);
+                break;
 
-        case MachineState::SECOND_RELEASE:
-            led.setColor(Color::OFF);
-            break;
+            case MachineState::SECOND_PRESS :
+                led.setColor(Color::RED);
+                break;
 
-        case MachineState::THIRD_PRESS:
-            led.setColor(Color::GREEN);
-            break;
+            case MachineState::SECOND_RELEASE :
+                led.setColor(Color::OFF);
+                break;
+
+            case MachineState::THIRD_PRESS :
+                led.setColor(Color::GREEN);
+                break;
         }
     }
 

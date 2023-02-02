@@ -12,35 +12,31 @@
 #define F_CPU 8000000UL
 
 #include <avr/io.h>
-#include <util/delay.h>
 #include <tp2/components/io.hpp>
+#include <util/delay.h>
 
 #include "motor.hpp"
 
-Motor::Motor(
-    volatile uint8_t *dataDirectionRegister,
-    volatile uint8_t *port,
-
-    const uint8_t pulseWidthModulationPin,
-    const uint8_t directionPin) : port_(port),
-                                  pulseWidthModulationPin_(pulseWidthModulationPin),
-                                  directionPin_(directionPin)
+Motor::Motor(volatile uint8_t* dataDirectionRegister, volatile uint8_t* port,
+             const uint8_t pulseWidthModulationPin, const uint8_t directionPin)
+    : port_(port),
+      pulseWidthModulationPin_(pulseWidthModulationPin),
+      directionPin_(directionPin)
 {
     IO::setOutput(dataDirectionRegister, pulseWidthModulationPin);
     IO::setOutput(dataDirectionRegister, directionPin);
 }
 
-void Motor::setDirection(const Direction &direction)
+void Motor::setDirection(const Direction& direction)
 {
-    switch (direction)
-    {
-    case Direction::FORWARD:
-        IO::clear(port_, directionPin_);
-        break;
+    switch (direction) {
+        case Direction::FORWARD :
+            IO::clear(port_, directionPin_);
+            break;
 
-    case Direction::BACKWARD:
-        IO::setActive(port_, directionPin_);
-        break;
+        case Direction::BACKWARD :
+            IO::setActive(port_, directionPin_);
+            break;
     }
 }
 
@@ -54,32 +50,30 @@ void Motor::turnOff()
     IO::clear(port_, pulseWidthModulationPin_);
 }
 
-void Motor::wait(const double &delay)
+void Motor::wait(const double& delay)
 {
-    if (delay == 0)
-    {
+    if (delay == 0) {
         return;
     }
 
-    for (uint16_t i = 0; i < delay / 30; i++)
-    {
+    for (uint16_t i = 0; i < delay / 30; i++) {
         _delay_us(10);
     }
 }
 
-void Motor::forward(const double &periodUs, const double &relativeSpeed)
+void Motor::forward(const double& periodUs, const double& relativeSpeed)
 {
     setDirection(Direction::FORWARD);
     turnOnAtSpeed(periodUs, relativeSpeed);
 }
 
-void Motor::backward(const double &periodUs, const double &relativeSpeed)
+void Motor::backward(const double& periodUs, const double& relativeSpeed)
 {
     setDirection(Direction::BACKWARD);
     turnOnAtSpeed(periodUs, relativeSpeed);
 }
 
-void Motor::turnOnAtSpeed(const double &periodUs, const double &relativeSpeed)
+void Motor::turnOnAtSpeed(const double& periodUs, const double& relativeSpeed)
 {
     turnOn();
     wait(periodUs * relativeSpeed);

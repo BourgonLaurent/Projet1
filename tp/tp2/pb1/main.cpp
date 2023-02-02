@@ -38,9 +38,9 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-#include <tp2/components/led.hpp>
 #include <tp2/components/button.hpp>
 #include <tp2/components/colors.hpp>
+#include <tp2/components/led.hpp>
 
 constexpr uint16_t COLOR_DELAY_MS = 2000;
 
@@ -58,43 +58,38 @@ int main()
     Button button = Button(&DDRD, &PIND, PIND2);
 
     MachineState currentState = MachineState::INIT;
-    while (true)
-    {
-        switch (currentState)
-        {
-        case MachineState::INIT:
-            led.setColor(Color::OFF);
+    while (true) {
+        switch (currentState) {
+            case MachineState::INIT :
+                led.setColor(Color::OFF);
 
-            while (button.isPressed())
-            {
-                currentState = MachineState::FIRST_PRESS;
-            }
-            break;
+                while (button.isPressed()) {
+                    currentState = MachineState::FIRST_PRESS;
+                }
+                break;
 
-        case MachineState::FIRST_PRESS:
-            led.setColor(Color::OFF);
+            case MachineState::FIRST_PRESS :
+                led.setColor(Color::OFF);
 
-            while (button.isPressed())
-            {
-                currentState = MachineState::SECOND_PRESS;
-            }
-            break;
+                while (button.isPressed()) {
+                    currentState = MachineState::SECOND_PRESS;
+                }
+                break;
 
-        case MachineState::SECOND_PRESS:
-            led.setColor(Color::OFF);
+            case MachineState::SECOND_PRESS :
+                led.setColor(Color::OFF);
 
-            while (button.isPressed())
-            {
-                currentState = MachineState::THIRD_PRESS;
-            }
-            break;
+                while (button.isPressed()) {
+                    currentState = MachineState::THIRD_PRESS;
+                }
+                break;
 
-        case MachineState::THIRD_PRESS:
-            led.setColor(Color::GREEN);
-            _delay_ms(COLOR_DELAY_MS);
+            case MachineState::THIRD_PRESS :
+                led.setColor(Color::GREEN);
+                _delay_ms(COLOR_DELAY_MS);
 
-            currentState = MachineState::INIT;
-            break;
+                currentState = MachineState::INIT;
+                break;
         }
     }
 

@@ -1,0 +1,55 @@
+---
+FormatStyle: file
+Checks: >
+  readability-identifier-naming,
+  readability-identifier-length,
+  readability-else-after-return,
+  misc-definitions-in-headers,
+  cppcoreguidelines-avoid-goto
+  cppcoreguidelines-avoid-magic-numbers,
+  cppcoreguidelines-avoid-non-const-global-variables,
+  cppcoreguidelines-macro-usage,
+  cppcoreguidelines-prefer-member-initializer,
+  misc-non-private-member-variables-in-classes,
+  bugprone-assignment-in-if-condition,
+  bugprone-integer-division,
+  modernize-use-nullptr,
+
+HeaderFilterRegex: '.*'
+CheckOptions:
+  # 2
+  - key: readability-identifier-naming.EnumCase
+    value: CamelCase
+  - key: readability-identifier-naming.TypedefCase
+    value: CamelCase
+  - key: readability-identifier-naming.StructCase
+    value: CamelCase
+  - key: readability-identifier-naming.ClassCase
+    value: CamelCase
+
+  # 3
+  - key: readability-identifier-naming.VariableCase
+    value: camelBack
+  - key: readability-identifier-naming.MemberCase
+    value: camelBack
+
+  # 4
+  - key: readability-identifier-naming.GlobalConstantCase
+    value: UPPER_CASE
+  - key: readability-identifier-naming.MaccroDefinitionCase
+    value: UPPER_CASE
+
+  # 5
+  - key: readability-identifier-naming.FunctionCase
+    value: camelBack
+
+  # 6
+  - key: readability-identifier-naming.NamespaceCase
+    value: camelBack
+
+  # 11
+  - key: readability-identifier-naming.PrivateMemberSuffix
+    value: _
+
+  - key: cppcoreguidelines-macro-usage.AllowedRegexp
+    value: ^DEBUG_*|F_CPU
