@@ -56,6 +56,8 @@ void prepareInterrupts()
 
 void startTimer()
 {
+    cli();
+
     // mode CTC du timer 1 avec horloge divisée par 1024 (p. 130)
     TCCR1B |= _BV(WGM12);
     TCCR1B &= ~_BV(WGM13);
@@ -98,6 +100,5 @@ int main()
 
     led.setColor(::userWon ? Color::GREEN : Color::RED);
 
-    EICRA |= _BV(ISC00) | _BV(ISC01);
     return 0;
 }
