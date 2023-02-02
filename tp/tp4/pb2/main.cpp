@@ -12,7 +12,7 @@
 
 constexpr uint8_t TIMER_DURATION_S = 1;
 constexpr uint8_t FLASH_DURATION_MS = 100;
-constexpr uint16_t WAIT_DURATION_MS = 4000;
+constexpr uint16_t WAIT_DURATION_MS = 10000;
 
 volatile bool waitForUser = false;
 volatile bool userWon = false;
