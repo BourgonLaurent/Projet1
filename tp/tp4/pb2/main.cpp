@@ -14,10 +14,11 @@ constexpr uint16_t CYCLES_PER_SECOND = F_CPU / 1024;
 constexpr uint8_t FLASHING_DELAY_S = 1;
 constexpr uint16_t FLASHING_CYCLES = CYCLES_PER_SECOND * FLASHING_DELAY_S;
 
-constexpr uint16_t WAIT_DURATION_MS = 10000;
+constexpr uint16_t WAIT_DURATION_MS = 5000;
 
 volatile bool buttonWasPressed = false;
 volatile bool waitForUser = false;
+volatile bool userFailed = false;
 
 LED led = LED(&DDRA, &PORTA, PORTA0, PORTA1);
 
@@ -28,10 +29,13 @@ void clearInterrupts()
 
 ISR(TIMER1_COMPA_vect)
 {
-    if (!waitForUser) {
-        led.setColor(Color::RED);
+    if (::waitForUser) {
+        ::userFailed = true;
+    }
+    else {
+        ::led.setColor(Color::RED);
         _delay_ms(100);
-        led.setColor(Color::OFF);
+        ::led.setColor(Color::OFF);
     }
 
     clearInterrupts();
@@ -39,13 +43,24 @@ ISR(TIMER1_COMPA_vect)
 
 ISR(INT0_vect)
 {
-    ::buttonWasPressed = 1;
+    if (::waitForUser) {
+        ::buttonWasPressed = true;
+    }
 
     clearInterrupts();
 }
 
-void elapseTimespan()
+void prepareInterrupts()
 {
+    cli();
+
+    // (p.68) allow interruptions
+    EIMSK |= _BV(INT0);
+
+    // (p.67) falling + rising edge
+    EICRA |= _BV(ISC00);
+    EICRA &= ~_BV(ISC01);
+
     // mode CTC du timer 1 avec horloge divisée par 1024 (p. 130)
     TCCR1B |= _BV(WGM12);
     TCCR1B &= ~_BV(WGM13);
@@ -61,40 +76,32 @@ void elapseTimespan()
     TIMSK1 |= _BV(OCIE1A);
 
     OCR1A = FLASHING_CYCLES; // Output Compare Register
-}
 
-void prepareInterrupts()
-{
-    // (p.68) allow interruptions
-    EIMSK |= _BV(INT0);
-
-    // (p.67) falling + rising edge
-    EICRA |= _BV(ISC00);
-    EICRA &= ~_BV(ISC01);
+    sei();
 }
 
 int main()
 {
     DDRD &= ~_BV(PD2);
 
-    cli();
     prepareInterrupts();
-    elapseTimespan();
-    sei();
 
     _delay_ms(WAIT_DURATION_MS);
     ::waitForUser = true;
+    TCNT1 = 0;
 
     do {
-        led.setColor(Color::OFF);
-    } while (::buttonWasPressed == 0);
+        ::led.setColor(Color::OFF);
+    } while (!::buttonWasPressed && !::userFailed);
 
-    // Une interruption s'est produite. Arrêter toute
-    // forme d'interruption. Une seule réponse suffit.
     cli();
 
-    // Verifier la réponse
-    led.setColor(Color::RED);
+    if (::userFailed) {
+        ::led.setColor(Color::RED);
+    }
+    else {
+        ::led.setColor(Color::GREEN);
+    }
 
     EICRA |= _BV(ISC00) | _BV(ISC01);
     return 0;
