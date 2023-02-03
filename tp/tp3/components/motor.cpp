@@ -18,12 +18,10 @@
 #include "motor.hpp"
 
 Motor::Motor(volatile uint8_t* dataDirectionRegister, volatile uint8_t* port,
-             const uint8_t pulseWidthModulationPin, const uint8_t directionPin)
-    : port_(port),
-      pulseWidthModulationPin_(pulseWidthModulationPin),
-      directionPin_(directionPin)
+             const uint8_t activationPin, const uint8_t directionPin)
+    : port_(port), activationPin_(activationPin), directionPin_(directionPin)
 {
-    io::setOutput(dataDirectionRegister, pulseWidthModulationPin);
+    io::setOutput(dataDirectionRegister, activationPin);
     io::setOutput(dataDirectionRegister, directionPin);
 }
 
@@ -42,12 +40,12 @@ void Motor::setDirection(const Direction& direction)
 
 void Motor::turnOn()
 {
-    io::setActive(port_, pulseWidthModulationPin_);
+    io::setActive(port_, activationPin_);
 }
 
 void Motor::turnOff()
 {
-    io::clear(port_, pulseWidthModulationPin_);
+    io::clear(port_, activationPin_);
 }
 
 void Motor::wait(const double& delay)

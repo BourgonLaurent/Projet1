@@ -7,7 +7,7 @@
  * \date January 26, 2023
  *
  * Hardware Identification
- * TODO Set hardware identification
+ * OUTPUT: Motor connected to B0 for activation and B1 for direction.
  *
  */
 

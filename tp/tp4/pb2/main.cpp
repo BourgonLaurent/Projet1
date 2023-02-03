@@ -1,3 +1,17 @@
+/**
+ * Problem 2:
+ *  Reflex game.
+ *
+ * \author Mehdi Benouhoud
+ * \author Laurent Bourgon
+ * \date February 2, 2023
+ *
+ * Hardware Identification
+ * INPUT: Push button connected to D2 with a jumper.
+ * OUTPUT: Bicolor LED connected plus to A0 and minus to A1.
+ *
+ */
+
 #define F_CPU 8000000UL
 #include <avr/interrupt.h>
 #include <avr/io.h>

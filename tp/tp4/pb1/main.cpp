@@ -1,10 +1,11 @@
 /**
- * Problem 2:
- *  Cycles through LED colors based on a state table.
+ * Problem 1:
+ *  Cycles through LED colors based on a state table
+ *  using interrupts.
  *
  * \author Mehdi Benouhoud
  * \author Laurent Bourgon
- * \date January 19, 2023
+ * \date January 31, 2023
  *
  * Hardware Identification
  * INPUT: Push button connected to D2 with a jumper.
