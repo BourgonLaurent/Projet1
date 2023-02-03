@@ -11,7 +11,7 @@
 
 #include <avr/io.h>
 
-namespace IO {
+namespace io {
     static inline void setActive(volatile uint8_t* port, const uint8_t bit)
     {
         *port |= _BV(bit);
@@ -36,6 +36,6 @@ namespace IO {
     {
         setActive(port, bit);
     }
-} // namespace IO
+} // namespace io
 
 #endif

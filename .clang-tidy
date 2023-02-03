@@ -13,6 +13,9 @@ Checks: >
   misc-non-private-member-variables-in-classes,
   bugprone-assignment-in-if-condition,
   bugprone-integer-division,
+  bugprone-too-small-loop-variable,
+  bugprone-branch-clone,
+  bugprone-misplaced-widening-cast
   modernize-use-nullptr,
 
 HeaderFilterRegex: '.*'

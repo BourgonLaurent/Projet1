@@ -9,7 +9,7 @@ void InterruptTimer::initialize()
     interrupts::stopCatching();
 
     // Force Output Compare for A (p.131)
-    IO::clear(&TCCR1C, FOC1A);
+    io::clear(&TCCR1C, FOC1A);
 
     setMode(Mode::NORMAL);
     setPrescaleMode(PrescaleMode::CLK);
@@ -30,17 +30,17 @@ void InterruptTimer::setMode(const Mode& mode)
     // Following Table 16-5 (p.130)
     switch (mode) {
         case Mode::NORMAL :
-            IO::clear(&TCCR1A, WGM10);
-            IO::clear(&TCCR1A, WGM11);
-            IO::clear(&TCCR1B, WGM12);
-            IO::clear(&TCCR1B, WGM13);
+            io::clear(&TCCR1A, WGM10);
+            io::clear(&TCCR1A, WGM11);
+            io::clear(&TCCR1B, WGM12);
+            io::clear(&TCCR1B, WGM13);
             break;
 
         case Mode::CTC :
-            IO::clear(&TCCR1A, WGM10);
-            IO::clear(&TCCR1A, WGM11);
-            IO::setActive(&TCCR1B, WGM12);
-            IO::clear(&TCCR1B, WGM13);
+            io::clear(&TCCR1A, WGM10);
+            io::clear(&TCCR1A, WGM11);
+            io::setActive(&TCCR1B, WGM12);
+            io::clear(&TCCR1B, WGM13);
             break;
     }
 }
@@ -50,15 +50,15 @@ void InterruptTimer::setPrescaleMode(const PrescaleMode& prescaleMode)
     // Following Table 16-6 (p.131)
     switch (prescaleMode) {
         case PrescaleMode::CLK :
-            IO::setActive(&TCCR1B, CS10);
-            IO::clear(&TCCR1B, CS11);
-            IO::clear(&TCCR1B, CS12);
+            io::setActive(&TCCR1B, CS10);
+            io::clear(&TCCR1B, CS11);
+            io::clear(&TCCR1B, CS12);
             break;
 
         case PrescaleMode::CLK1024 :
-            IO::setActive(&TCCR1B, CS10);
-            IO::clear(&TCCR1B, CS11);
-            IO::setActive(&TCCR1B, CS12);
+            io::setActive(&TCCR1B, CS10);
+            io::clear(&TCCR1B, CS11);
+            io::setActive(&TCCR1B, CS12);
             break;
     }
 }
@@ -68,13 +68,13 @@ void InterruptTimer::start()
     reset();
 
     // Output Compare Enable Interrupt A (p.134)
-    IO::setActive(&TIMSK1, OCIE1A);
+    io::setActive(&TIMSK1, OCIE1A);
 }
 
 void InterruptTimer::stop()
 {
     // Output Compare Enable Interrupt A (p.134)
-    IO::clear(&TIMSK1, OCIE1A);
+    io::clear(&TIMSK1, OCIE1A);
 }
 
 void InterruptTimer::reset()

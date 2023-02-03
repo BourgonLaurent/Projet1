@@ -53,6 +53,9 @@
 #include <tp2/components/colors.hpp>
 #include <tp2/components/led.hpp>
 
+#include <tp4/components/interruptButton.hpp>
+#include <tp4/components/interrupts.hpp>
+
 constexpr uint8_t AMBER_DELAY_MS = 10;
 constexpr uint8_t DEBOUNCE_DELAY_MS = 10;
 
@@ -68,10 +71,8 @@ enum class MachineState
 
 volatile MachineState currentState = MachineState::INIT;
 
-ISR(INT0_vect)
+void InterruptButton::whenPressed()
 {
-    _delay_ms(DEBOUNCE_DELAY_MS);
-
     switch (::currentState) {
         case MachineState::INIT :
             ::currentState = MachineState::FIRST_PRESS;
@@ -97,32 +98,16 @@ ISR(INT0_vect)
             ::currentState = MachineState::INIT;
             break;
     }
-
-    // Voir la note plus bas pour comprendre cette instruction et son rôle
-    EIFR |= _BV(INTF0);
-}
-
-void prepareInterrupts()
-{
-    cli();
-
-    // (p.68) allow interruptions
-    EIMSK |= _BV(INT0);
-
-    // (p.67) falling + rising edge
-    EICRA |= _BV(ISC00);
-    EICRA &= ~_BV(ISC01);
-
-    sei();
 }
 
 int main()
 {
     LED led = LED(&DDRA, &PORTA, PORTA0, PORTA1);
-    DDRD &= ~_BV(PIND2);
 
-    prepareInterrupts();
+    InterruptButton::initialize();
+    InterruptButton::setMode(InterruptButton::Mode::ANY);
 
+    InterruptButton::start();
     while (true) {
         switch (::currentState) {
             case MachineState::INIT :

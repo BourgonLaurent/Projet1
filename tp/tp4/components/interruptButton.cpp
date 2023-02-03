@@ -14,7 +14,7 @@ void InterruptButton::initialize()
 {
     interrupts::stopCatching();
 
-    IO::setInput(&DDRD, PD2);
+    io::setInput(&DDRD, PD2);
 
     setMode(Mode::ANY);
     start();
@@ -25,13 +25,13 @@ void InterruptButton::initialize()
 void InterruptButton::start()
 {
     // External Interrupt Mask: External Interrupt 0 Enable (p.68)
-    IO::setActive(&EIMSK, INT0);
+    io::setActive(&EIMSK, INT0);
 }
 
 void InterruptButton::stop()
 {
     // External Interrupt Mask: External Interrupt 0 Enable (p.68)
-    IO::clear(&EIMSK, INT0);
+    io::clear(&EIMSK, INT0);
 }
 
 void InterruptButton::setMode(const Mode& mode)
@@ -39,18 +39,18 @@ void InterruptButton::setMode(const Mode& mode)
     // Following Table 13-1 (p.68)
     switch (mode) {
         case Mode::ANY :
-            IO::setActive(&EICRA, ISC00);
-            IO::clear(&EICRA, ISC01);
+            io::setActive(&EICRA, ISC00);
+            io::clear(&EICRA, ISC01);
             break;
 
         case Mode::FALLING :
-            IO::clear(&EICRA, ISC00);
-            IO::setActive(&EICRA, ISC01);
+            io::clear(&EICRA, ISC00);
+            io::setActive(&EICRA, ISC01);
             break;
 
         case Mode::RISING :
-            IO::setActive(&EICRA, ISC00);
-            IO::setActive(&EICRA, ISC01);
+            io::setActive(&EICRA, ISC00);
+            io::setActive(&EICRA, ISC01);
             break;
     }
 }

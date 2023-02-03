@@ -23,31 +23,31 @@ Motor::Motor(volatile uint8_t* dataDirectionRegister, volatile uint8_t* port,
       pulseWidthModulationPin_(pulseWidthModulationPin),
       directionPin_(directionPin)
 {
-    IO::setOutput(dataDirectionRegister, pulseWidthModulationPin);
-    IO::setOutput(dataDirectionRegister, directionPin);
+    io::setOutput(dataDirectionRegister, pulseWidthModulationPin);
+    io::setOutput(dataDirectionRegister, directionPin);
 }
 
 void Motor::setDirection(const Direction& direction)
 {
     switch (direction) {
         case Direction::FORWARD :
-            IO::clear(port_, directionPin_);
+            io::clear(port_, directionPin_);
             break;
 
         case Direction::BACKWARD :
-            IO::setActive(port_, directionPin_);
+            io::setActive(port_, directionPin_);
             break;
     }
 }
 
 void Motor::turnOn()
 {
-    IO::setActive(port_, pulseWidthModulationPin_);
+    io::setActive(port_, pulseWidthModulationPin_);
 }
 
 void Motor::turnOff()
 {
-    IO::clear(port_, pulseWidthModulationPin_);
+    io::clear(port_, pulseWidthModulationPin_);
 }
 
 void Motor::wait(const double& delay)

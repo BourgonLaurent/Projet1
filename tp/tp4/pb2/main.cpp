@@ -23,14 +23,13 @@ void InterruptTimer::whenFinished()
         ::userWon = false;
         ::waitForUser = false;
     }
-
-    interrupts::clear();
 }
 
 void InterruptButton::whenPressed()
 {
     if (::waitForUser) {
         ::userWon = true;
+        ::waitForUser = false;
     }
 }
 
@@ -55,8 +54,7 @@ int main()
     InterruptTimer::start();
     ::waitForUser = true;
 
-    while (::waitForUser && !::userWon) {
-    }
+    while (::waitForUser) {}
 
     interrupts::stopCatching();
 

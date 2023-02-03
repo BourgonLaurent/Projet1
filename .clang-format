@@ -1,5 +1,5 @@
 BasedOnStyle: LLVM
-# Language: Cpp
+Language: Cpp
 UseTab: Never
 IndentWidth: 4
 TabWidth: 4
@@ -12,13 +12,13 @@ ColumnLimit: 80
 
 # 39
 BreakBeforeBinaryOperators: NonAssignment
-# OperandAlignmentStyle: Align
+AlignOperands: Align
 
 # 41
 IncludeBlocks: Preserve
 
 # 36
-# EmptyLineBeforeAccessModifierStyle: Always
+EmptyLineBeforeAccessModifier: Always
 
 # 50
 PointerAlignment: Left
@@ -54,11 +54,12 @@ BraceWrapping:
 IndentCaseLabels: true
 SpaceBeforeCaseColon: true
 AlwaysBreakTemplateDeclarations: Yes
-# ShortBlockStyle: Empty
+AllowShortBlocksOnASingleLine: Empty
+
 
 AllowAllParametersOfDeclarationOnNextLine: true
 AllowAllArgumentsOnNextLine: true
 ConstructorInitializerAllOnOneLineOrOnePerLine: true
-# PackConstructorInitializersStyle: NextLine
+PackConstructorInitializers: NextLine
 AllowAllConstructorInitializersOnNextLine: true
-# BreakConstructorInitializersStyle: BeforeColon
+BreakConstructorInitializers: BeforeColon

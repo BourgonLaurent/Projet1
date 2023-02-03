@@ -24,12 +24,12 @@ Button::Button(volatile uint8_t* dataDirectionRegister, volatile uint8_t* pin,
                const uint8_t bit)
     : pin_(pin), bit_(bit)
 {
-    IO::setInput(dataDirectionRegister, bit);
+    io::setInput(dataDirectionRegister, bit);
 };
 
 bool Button::getState() const
 {
-    return IO::get(pin_, bit_);
+    return io::get(pin_, bit_);
 }
 
 bool Button::isPressed() const

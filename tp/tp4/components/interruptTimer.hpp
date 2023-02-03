@@ -24,13 +24,13 @@ public:
     };
     static void setPrescaleMode(const PrescaleMode& prescaleMode);
 
-    static void whenFinished();
-
     static void setSecondsDelay(uint8_t delayS);
 
     static void start();
     static void stop();
     static void reset();
+
+    static void whenFinished();
 
 private:
     static constexpr uint16_t CYCLES_PER_SECOND = F_CPU / 1024;
