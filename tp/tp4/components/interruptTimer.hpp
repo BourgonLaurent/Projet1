@@ -24,7 +24,7 @@ public:
     };
     static void setPrescaleMode(const PrescaleMode& prescaleMode);
 
-    static void setSecondsDelay(uint8_t delayS);
+    static void setSeconds(uint8_t delayS);
 
     static void start();
     static void stop();

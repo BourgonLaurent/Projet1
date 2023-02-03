@@ -43,7 +43,7 @@ int main()
     InterruptTimer::initialize();
     InterruptTimer::setMode(InterruptTimer::Mode::CTC);
     InterruptTimer::setPrescaleMode(InterruptTimer::PrescaleMode::CLK1024);
-    InterruptTimer::setSecondsDelay(TIMER_DURATION_S);
+    InterruptTimer::setSeconds(TIMER_DURATION_S);
 
     _delay_ms(WAIT_DURATION_MS);
 
