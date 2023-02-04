@@ -1,32 +1,48 @@
 #define F_CPU 8000000UL
 #include <util/delay.h>
 
+#include <tp2/components/io.hpp>
+
 #include <tp3/components/motor.hpp>
 
-// void ajustementPwm('modifier ici')
-// {
+#include <tp4/components/interruptTimer.hpp>
+#include <tp4/components/interrupts.hpp>
 
-//     // mise à un des sorties OC1A et OC1B sur comparaison
+void InterruptTimer::whenFinished() {}
 
-//     // réussie en mode PWM 8 bits, phase correcte
+void ajustementPwm(const double& relativeSpeed)
+{
+    io::setActive(&TCCR1A, COM1A1);
+    io::setActive(&TCCR1A, COM1B1);
 
-//     // et valeur de TOP fixe à 0xFF (mode #1 de la table 16-5
+    OCR1A = relativeSpeed * 0x00FF;
+    OCR1B = relativeSpeed * 0x00FF;
 
-//     // page 130 de la description technique du ATmega324PA)
+    TCCR1C = 0;
+}
 
-//     OCR1A = 'modifier ici';
-
-//     OCR1B = 'modifier ici';
-
-//     // division d'horloge par 8 - implique une fréquence de PWM fixe
-
-//     TCCR1A = 'modifier ici';
-
-//     TCCR1B = 'modifier ici';
-
-//     TCCR1C = 0;
-// }
 int main()
 {
+    io::setOutput(&DDRD, DDD4);
+    io::setOutput(&DDRD, DDD5);
+    io::setOutput(&DDRD, DDD6);
+    io::setOutput(&DDRD, DDD7);
+
+    io::clear(&PORTD, PORTD6);
+    io::clear(&PORTD, PORTD7);
+
+    InterruptTimer::initialize();
+    InterruptTimer::setMode(InterruptTimer::Mode::PWM_PHASE_CORRECT);
+    InterruptTimer::setPrescaleMode(InterruptTimer::PrescaleMode::CLK1024);
+    interrupts::startCatching();
+
+    for (double i = 0; i <= 1; i += 0.25) {
+        ajustementPwm(i);
+
+        _delay_ms(2000);
+    }
+
+    ajustementPwm(0);
+
     return 0;
 }

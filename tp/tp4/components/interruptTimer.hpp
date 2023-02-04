@@ -14,6 +14,7 @@ public:
     {
         NORMAL,
         CTC,
+        PWM_PHASE_CORRECT
     };
     static void setMode(const Mode& mode);
 

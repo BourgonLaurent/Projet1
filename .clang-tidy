@@ -1,6 +1,5 @@
 ---
 FormatStyle: file
-  # cppcoreguidelines-avoid-non-const-global-variables,
 Checks: >
   readability-identifier-naming,
   readability-identifier-length,

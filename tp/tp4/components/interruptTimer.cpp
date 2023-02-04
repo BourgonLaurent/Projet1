@@ -13,14 +13,14 @@ void InterruptTimer::initialize()
 
     setMode(Mode::NORMAL);
     setPrescaleMode(PrescaleMode::CLK);
-    setSecondsDelay(0);
+    setSeconds(0);
 
     stop();
 
     interrupts::startCatching();
 }
 
-void InterruptTimer::setSecondsDelay(uint8_t delayS)
+void InterruptTimer::setSeconds(uint8_t delayS)
 {
     OCR1A = delayS * CYCLES_PER_SECOND;
 }
@@ -42,6 +42,12 @@ void InterruptTimer::setMode(const Mode& mode)
             io::setActive(&TCCR1B, WGM12);
             io::clear(&TCCR1B, WGM13);
             break;
+
+        case Mode::PWM_PHASE_CORRECT :
+            io::setActive(&TCCR1A, WGM10);
+            io::clear(&TCCR1A, WGM11);
+            io::clear(&TCCR1B, WGM12);
+            io::clear(&TCCR1B, WGM13);
     }
 }
 
