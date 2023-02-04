@@ -5,25 +5,12 @@
 
 #include <avr/io.h>
 
-class InterruptTimer
+#include <tp4/components/timer.hpp>
+
+class InterruptTimer : public Timer
 {
 public:
     static void initialize();
-
-    enum class Mode
-    {
-        NORMAL,
-        CTC,
-        PWM_PHASE_CORRECT
-    };
-    static void setMode(const Mode& mode);
-
-    enum class PrescaleMode
-    {
-        CLK,
-        CLK1024
-    };
-    static void setPrescaleMode(const PrescaleMode& prescaleMode);
 
     static void setSeconds(uint8_t delayS);
 
