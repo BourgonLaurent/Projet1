@@ -8,14 +8,16 @@ void PwmMotor::initialize(const Side &side)
 {
     switch (side) {
         case Side::LEFT :
-            io::setOutput(&OC1A_DDR, OC1A_BIT);
             io::setActive(&TCCR1A, COM1A1);
+
+            io::setOutput(&OC1A_DDR, OC1A_BIT);
             io::setOutput(&DDRD, DDD7);
             break;
 
         case Side::RIGHT :
-            io::setOutput(&OC1B_DDR, OC1B_BIT);
             io::setActive(&TCCR1A, COM1B1);
+
+            io::setOutput(&OC1B_DDR, OC1B_BIT);
             io::setOutput(&DDRD, DDD6);
             break;
 

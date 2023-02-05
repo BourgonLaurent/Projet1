@@ -2,7 +2,7 @@
 
 #include <tp2/components/io.hpp>
 
-void Timer::setMode(const Mode& mode)
+void Timer::setMode(const Mode &mode)
 {
     // Following Table 16-5 (p.130)
     switch (mode) {
@@ -28,7 +28,7 @@ void Timer::setMode(const Mode& mode)
     }
 }
 
-void Timer::setPrescaleMode(const PrescaleMode& prescaleMode)
+void Timer::setPrescaleMode(const PrescaleMode &prescaleMode)
 {
     // Following Table 16-6 (p.131)
     switch (prescaleMode) {

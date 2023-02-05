@@ -51,13 +51,13 @@ int main()
 {
     LED led = LED(&DDRA, &PORTA, PORTA0, PORTA1);
 
-    InterruptButton::initialize();
-    InterruptButton::setMode(InterruptButton::Mode::RISING);
-
     InterruptTimer::initialize();
     InterruptTimer::setMode(InterruptTimer::Mode::CTC);
     InterruptTimer::setPrescaleMode(InterruptTimer::PrescaleMode::CLK1024);
     InterruptTimer::setSeconds(TIMER_DURATION_S);
+
+    InterruptButton::initialize();
+    InterruptButton::setMode(InterruptButton::Mode::RISING);
 
     _delay_ms(WAIT_DURATION_MS);
 
@@ -71,6 +71,7 @@ int main()
     while (::waitForUser) {}
 
     interrupts::stopCatching();
+    InterruptTimer::stop();
 
     led.setColor(::userWon ? Color::GREEN : Color::RED);
 

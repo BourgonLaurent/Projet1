@@ -10,14 +10,14 @@ public:
         CTC,
         PWM_PHASE_CORRECT
     };
-    static void setMode(const Mode& mode);
+    static void setMode(const Mode &mode);
 
     enum class PrescaleMode
     {
         CLK,
         CLK1024
     };
-    static void setPrescaleMode(const PrescaleMode& prescaleMode);
+    static void setPrescaleMode(const PrescaleMode &prescaleMode);
 };
 
 #endif
