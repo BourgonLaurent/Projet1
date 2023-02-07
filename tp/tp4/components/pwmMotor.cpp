@@ -22,17 +22,17 @@ void PwmMotor::initialize(const Side &side)
 {
     switch (side) {
         case Side::LEFT :
-            io::setActive(&TCCR1A, COM1A1);
-
-            io::setOutput(&DDRD, DDD5);
-            io::setOutput(&DDRD, DDD7);
-            break;
-
-        case Side::RIGHT :
             io::setActive(&TCCR1A, COM1B1);
 
             io::setOutput(&DDRD, DDD4);
             io::setOutput(&DDRD, DDD6);
+            break;
+
+        case Side::RIGHT :
+            io::setActive(&TCCR1A, COM1A1);
+
+            io::setOutput(&DDRD, DDD5);
+            io::setOutput(&DDRD, DDD7);
             break;
 
         case Side::BOTH :
@@ -51,11 +51,11 @@ void PwmMotor::setDirection(const Side &side, const Direction &direction)
 {
     switch (side) {
         case Side::LEFT :
-            setDirectionOfPin(DDD7, direction);
+            setDirectionOfPin(DDD6, direction);
             break;
 
         case Side::RIGHT :
-            setDirectionOfPin(DDD6, direction);
+            setDirectionOfPin(DDD7, direction);
             break;
 
         case Side::BOTH :
@@ -69,11 +69,11 @@ void PwmMotor::setSpeed(const Side &side, const double speed)
 {
     switch (side) {
         case Side::LEFT :
-            OCR1A = speed * TOP_VALUE;
+            OCR1B = speed * TOP_VALUE;
             break;
 
         case Side::RIGHT :
-            OCR1B = speed * TOP_VALUE;
+            OCR1A = speed * TOP_VALUE;
             break;
 
         case Side::BOTH :
