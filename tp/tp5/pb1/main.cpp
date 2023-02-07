@@ -7,7 +7,9 @@
  */
 
 #define F_CPU 8000000UL
+#include <avr/delay.h>
 #include <avr/io.h>
+#include <string.h>
 
 #include <tp2/components/colors.hpp>
 #include <tp2/components/io.hpp>
@@ -15,23 +17,38 @@
 
 #include <tp5/memory/memoire_24.hpp>
 
+constexpr uint8_t STRING_END_CHAR = 0x00;
+constexpr uint16_t ADDRESS = 0x0000;
+
 int main()
 {
-    uint8_t myString[] = {'y', 'o', 'm', 'a', 'm', 'a'};
-    uint8_t lect[6];
     Memoire24CXXX memory = Memoire24CXXX();
-    LED led = LED(&DDRA, &PORTA, PORTA0, PORTA1);
+    LED feedbackLed = LED(&DDRA, &PORTA, PORTA0, PORTA1);
 
-    memory.ecriture(0x0000, myString, sizeof(myString) - 1);
+    const char* polytechniqueMontreal =
+        "*P*O*L*Y*T*E*C*H*N*I*Q*U*E* *M*O*N*T*R*E*A*L*";
 
-    memory.lecture(0x0000, lect, 6);
-    if (myString == lect) {
-        led.setColor(Color::GREEN);
+    uint8_t readString[sizeof(polytechniqueMontreal)];
+
+    memory.ecriture(ADDRESS, (uint8_t*)polytechniqueMontreal,
+                    strlen(polytechniqueMontreal));
+    // memory.ecriture(ADDRESS + strlen(polytechniqueMontreal),
+    // STRING_END_CHAR);
+
+    _delay_ms(5);
+
+    memory.lecture(ADDRESS, &readString[0], strlen(polytechniqueMontreal));
+
+    // feedbackLed.setColor(Color::RED);
+    if (strlen((char*)readString) == strlen(polytechniqueMontreal)) {
+        feedbackLed.setColor(Color::GREEN);
+        _delay_ms(2000);
     }
     else {
-        led.setColor(Color::RED);
+        feedbackLed.setColor(Color::RED);
+        _delay_ms(2000);
     }
-    led.setColor(Color::OFF);
+    // feedbackLed.setColor(Color::OFF);
 
     return 0;
 }
