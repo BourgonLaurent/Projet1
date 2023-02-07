@@ -1,3 +1,11 @@
+/**
+ * Interrupt a program with a timer.
+ *
+ * \author Mehdi Benouhoud
+ * \author Laurent Bourgon
+ * \date February 2, 2023
+ */
+
 #ifndef INTERRUPTTIMER_H
 #define INTERRUPTTIMER_H
 

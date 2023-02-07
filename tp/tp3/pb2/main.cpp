@@ -1,6 +1,6 @@
 /**
  * Problem 2:
- *  Motor control
+ *  Motor control.
  *
  * \author Mehdi Benouhoud
  * \author Laurent Bourgon
@@ -18,7 +18,7 @@
 
 constexpr uint32_t DURATION = 2000000;
 
-void forwardIncrement(Motor& motor, const double& frequencyUs)
+void forwardIncrement(Motor &motor, const double &frequencyUs)
 {
     const double periodUs = 1.0 / frequencyUs;
     const double numberOfCycles = DURATION / periodUs;

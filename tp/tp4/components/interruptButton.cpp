@@ -1,3 +1,17 @@
+/**
+ * Interrupt a program with a push button.
+ *
+ * Hardware Identification:
+ * /!\ The Data Direction Register (DDRD) will be set automatically.
+ * INPUT: Push button connected to D2.
+ *
+ * WARNING: InterruptButton::whenPressed() must be declared.
+ *
+ * \author Mehdi Benouhoud
+ * \author Laurent Bourgon
+ * \date February 2, 2023
+ */
+
 #define F_CPU 8000000UL
 
 #include "interruptButton.hpp"
@@ -12,31 +26,27 @@
 
 void InterruptButton::initialize()
 {
-    interrupts::stopCatching();
-
     io::setInput(&DDRD, PD2);
 
     setMode(Mode::ANY);
     start();
-
-    interrupts::startCatching();
 }
 
 void InterruptButton::start()
 {
-    // External Interrupt Mask: External Interrupt 0 Enable (p.68)
+    // (p.68) External Interrupt Mask: Interrupt 0
     io::setActive(&EIMSK, INT0);
 }
 
 void InterruptButton::stop()
 {
-    // External Interrupt Mask: External Interrupt 0 Enable (p.68)
+    // (p.68) External Interrupt Mask: Interrupt 0
     io::clear(&EIMSK, INT0);
 }
 
-void InterruptButton::setMode(const Mode& mode)
+void InterruptButton::setMode(const Mode &mode)
 {
-    // Following Table 13-1 (p.68)
+    // (p.68) Following Table 13-1
     switch (mode) {
         case Mode::ANY :
             io::setActive(&EICRA, ISC00);

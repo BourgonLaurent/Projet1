@@ -1,6 +1,6 @@
 /**
  * Problem 1:
- *  LED attenuation
+ *  LED attenuation.
  *
  * \author Mehdi Benouhoud
  * \author Laurent Bourgon

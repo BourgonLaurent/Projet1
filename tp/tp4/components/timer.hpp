@@ -1,3 +1,11 @@
+/**
+ * Control 16-bit Timer 1.
+ *
+ * \author Mehdi Benouhoud
+ * \author Laurent Bourgon
+ * \date February 2, 2023
+ */
+
 #ifndef TIMER_H
 #define TIMER_H
 

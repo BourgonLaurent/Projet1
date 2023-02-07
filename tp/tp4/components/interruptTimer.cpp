@@ -1,3 +1,11 @@
+/**
+ * Interrupt a program with a timer.
+ *
+ * \author Mehdi Benouhoud
+ * \author Laurent Bourgon
+ * \date February 2, 2023
+ */
+
 #include "interruptTimer.hpp"
 
 #include <tp2/components/io.hpp>
@@ -7,8 +15,6 @@
 
 void InterruptTimer::initialize()
 {
-    interrupts::stopCatching();
-
     // Force Output Compare for A (p.131)
     io::clear(&TCCR1C, FOC1A);
 
@@ -17,8 +23,6 @@ void InterruptTimer::initialize()
     setSeconds(0);
 
     stop();
-
-    interrupts::startCatching();
 }
 
 void InterruptTimer::setSeconds(uint8_t delayS)

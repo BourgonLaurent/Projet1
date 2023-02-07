@@ -1,3 +1,17 @@
+/**
+ * Control H-bridge using a PWM.
+ *
+ * Hardware Identification:
+ * /!\ The Data Direction Register (DDRD) will be set automatically.
+ * OUTPUT: Left motor on D5 (enable) and D7 (direction).
+ * OUTPUT: Right motor on D4 (enable) D6 (direction).
+ *
+ *
+ * \author Mehdi Benouhoud
+ * \author Laurent Bourgon
+ * \date February 2, 2023
+ */
+
 #include "pwmMotor.hpp"
 
 #include <avr/io.h>
@@ -10,14 +24,14 @@ void PwmMotor::initialize(const Side &side)
         case Side::LEFT :
             io::setActive(&TCCR1A, COM1A1);
 
-            io::setOutput(&OC1A_DDR, OC1A_BIT);
+            io::setOutput(&DDRD, DDD5);
             io::setOutput(&DDRD, DDD7);
             break;
 
         case Side::RIGHT :
             io::setActive(&TCCR1A, COM1B1);
 
-            io::setOutput(&OC1B_DDR, OC1B_BIT);
+            io::setOutput(&DDRD, DDD4);
             io::setOutput(&DDRD, DDD6);
             break;
 
@@ -69,7 +83,7 @@ void PwmMotor::setSpeed(const Side &side, const double speed)
     }
 }
 
-void PwmMotor::setDirectionOfPin(const uint8_t pin, const Direction &direction)
+void PwmMotor::setDirectionOfPin(const uint8_t &pin, const Direction &direction)
 {
     switch (direction) {
         case Direction::FORWARD :

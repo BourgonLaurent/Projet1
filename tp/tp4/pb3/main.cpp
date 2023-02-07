@@ -1,3 +1,17 @@
+/**
+ * Control H-bridge using a PWM.
+ *
+ * Hardware Identification:
+ * /!\ The Data Direction Register (DDRD) will be set automatically.
+ * OUTPUT: Left motor on D5 (enable) and D7 (direction).
+ * OUTPUT: Right motor on D4 (enable) D6 (direction).
+ *
+ *
+ * \author Mehdi Benouhoud
+ * \author Laurent Bourgon
+ * \date February 2, 2023
+ */
+
 #define F_CPU 8000000UL
 #include <util/delay.h>
 

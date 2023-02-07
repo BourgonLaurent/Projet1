@@ -51,6 +51,8 @@ int main()
 {
     LED led = LED(&DDRA, &PORTA, PORTA0, PORTA1);
 
+    interrupts::stopCatching();
+
     InterruptTimer::initialize();
     InterruptTimer::setMode(InterruptTimer::Mode::CTC);
     InterruptTimer::setPrescaleMode(InterruptTimer::PrescaleMode::CLK1024);
@@ -58,6 +60,8 @@ int main()
 
     InterruptButton::initialize();
     InterruptButton::setMode(InterruptButton::Mode::RISING);
+
+    interrupts::startCatching();
 
     _delay_ms(WAIT_DURATION_MS);
 

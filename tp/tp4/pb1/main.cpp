@@ -50,7 +50,6 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-#include <tp2/components/button.hpp>
 #include <tp2/components/colors.hpp>
 #include <tp2/components/led.hpp>
 
@@ -105,10 +104,14 @@ int main()
 {
     LED led = LED(&DDRA, &PORTA, PORTA0, PORTA1);
 
+    interrupts::stopCatching();
+
     InterruptButton::initialize();
     InterruptButton::setMode(InterruptButton::Mode::ANY);
 
+    interrupts::startCatching();
     InterruptButton::start();
+
     while (true) {
         switch (::currentState) {
             case MachineState::INIT :

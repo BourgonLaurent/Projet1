@@ -1,8 +1,5 @@
 /**
- * TODO Describe file
- *
- * Hardware Identification:
- * TODO describe hardware identification
+ * Basic control a motor.
  *
  * \author Mehdi Benouhoud
  * \author Laurent Bourgon
@@ -25,7 +22,7 @@ Motor::Motor(volatile uint8_t* dataDirectionRegister, volatile uint8_t* port,
     io::setOutput(dataDirectionRegister, directionPin);
 }
 
-void Motor::setDirection(const Direction& direction)
+void Motor::setDirection(const Direction &direction)
 {
     switch (direction) {
         case Direction::FORWARD :
@@ -48,7 +45,7 @@ void Motor::turnOff()
     io::clear(port_, activationPin_);
 }
 
-void Motor::wait(const double& delay)
+void Motor::wait(const double &delay)
 {
     if (delay == 0) {
         return;
@@ -59,19 +56,19 @@ void Motor::wait(const double& delay)
     }
 }
 
-void Motor::forward(const double& periodUs, const double& relativeSpeed)
+void Motor::forward(const double &periodUs, const double &relativeSpeed)
 {
     setDirection(Direction::FORWARD);
     turnOnAtSpeed(periodUs, relativeSpeed);
 }
 
-void Motor::backward(const double& periodUs, const double& relativeSpeed)
+void Motor::backward(const double &periodUs, const double &relativeSpeed)
 {
     setDirection(Direction::BACKWARD);
     turnOnAtSpeed(periodUs, relativeSpeed);
 }
 
-void Motor::turnOnAtSpeed(const double& periodUs, const double& relativeSpeed)
+void Motor::turnOnAtSpeed(const double &periodUs, const double &relativeSpeed)
 {
     turnOn();
     wait(periodUs * relativeSpeed);

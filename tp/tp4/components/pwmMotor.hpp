@@ -1,3 +1,17 @@
+/**
+ * Control H-bridge using a PWM.
+ *
+ * Hardware Identification:
+ * /!\ The Data Direction Register (DDRD) will be set automatically.
+ * OUTPUT: Left motor on D5 (enable) and D7 (direction).
+ * OUTPUT: Right motor on D4 (enable) D6 (direction).
+ *
+ *
+ * \author Mehdi Benouhoud
+ * \author Laurent Bourgon
+ * \date February 2, 2023
+ */
+
 #ifndef PWMMOTOR_H
 #define PWMMOTOR_H
 
@@ -29,7 +43,7 @@ public:
 private:
     static constexpr uint8_t TOP_VALUE = 0xFF; // p. 130
 
-    static void setDirectionOfPin(const uint8_t pin,
+    static void setDirectionOfPin(const uint8_t &pin,
                                   const Direction &direction);
 };
 

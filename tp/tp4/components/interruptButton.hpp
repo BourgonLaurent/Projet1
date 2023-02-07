@@ -1,3 +1,17 @@
+/**
+ * Interrupt a program with a push button.
+ *
+ * Hardware Identification:
+ * /!\ The Data Direction Register (DDRD) will be set automatically.
+ * INPUT: Push button connected to D2.
+ *
+ * WARNING: InterruptButton::whenPressed() must be declared.
+ *
+ * \author Mehdi Benouhoud
+ * \author Laurent Bourgon
+ * \date February 2, 2023
+ */
+
 #ifndef INTERRUPTBUTTON_H
 #define INTERRUPTBUTTON_H
 
@@ -20,7 +34,7 @@ public:
 
     static void waitForDebounce();
 
-    static void setMode(const Mode& mode);
+    static void setMode(const Mode &mode);
 
     static void whenPressed();
 
