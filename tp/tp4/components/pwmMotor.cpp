@@ -22,6 +22,9 @@ void PwmMotor::initialize(const Side &side)
 {
     switch (side) {
         case Side::LEFT :
+            // (p.129) Clear OCnA/OCnB on Compare Match when upcounting.
+            //         Set OCnA/OCnB on Compare Match when downcounting.
+            io::clear(&TCCR1A, COM1B0);
             io::setActive(&TCCR1A, COM1B1);
 
             io::setOutput(&DDRD, DDD4);
@@ -29,6 +32,9 @@ void PwmMotor::initialize(const Side &side)
             break;
 
         case Side::RIGHT :
+            // (p.129) Clear OCnA/OCnB on Compare Match when upcounting.
+            //         Set OCnA/OCnB on Compare Match when downcounting.
+            io::clear(&TCCR1A, COM1A0);
             io::setActive(&TCCR1A, COM1A1);
 
             io::setOutput(&DDRD, DDD5);
@@ -69,10 +75,12 @@ void PwmMotor::setSpeed(const Side &side, const double speed)
 {
     switch (side) {
         case Side::LEFT :
+            // (p.132) Output Compare Register 1 B
             OCR1B = speed * TOP_VALUE;
             break;
 
         case Side::RIGHT :
+            // (p.132) Output Compare Register 1 A
             OCR1A = speed * TOP_VALUE;
             break;
 

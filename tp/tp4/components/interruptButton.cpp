@@ -46,7 +46,8 @@ void InterruptButton::stop()
 
 void InterruptButton::setMode(const Mode &mode)
 {
-    // (p.68) Following Table 13-1
+    // (p.68) Following Table 13-1:
+    //        Control External Interrupt Control Register A
     switch (mode) {
         case Mode::ANY :
             io::setActive(&EICRA, ISC00);
