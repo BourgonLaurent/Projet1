@@ -32,7 +32,7 @@ int main()
     char* readString[MESSAGE_SIZE];
     memory.lecture(START_ADDRESS, (uint8_t*)readString, MESSAGE_SIZE);
 
-    if (strcmp(MESSAGE, (char*)readString) == 0) {
+    if (strcmp(MESSAGE, (const char*)readString) == 0) {
         feedbackLed.setColor(Color::GREEN);
     }
     else {
