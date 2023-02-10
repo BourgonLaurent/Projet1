@@ -1,5 +1,6 @@
 /**
- *
+ * Problem 1:
+ *  Write to memory.
  *
  * \author Mehdi Benouhoud
  * \author Laurent Bourgon
@@ -29,7 +30,7 @@ int main()
     memory.ecriture(START_ADDRESS, (uint8_t*)MESSAGE, MESSAGE_SIZE);
     _delay_ms(5);
 
-    char* readString[MESSAGE_SIZE];
+    char readString[MESSAGE_SIZE];
     memory.lecture(START_ADDRESS, (uint8_t*)readString, MESSAGE_SIZE);
 
     if (strcmp(MESSAGE, (const char*)readString) == 0) {
