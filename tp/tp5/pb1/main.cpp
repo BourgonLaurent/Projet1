@@ -8,8 +8,10 @@
  */
 
 #define F_CPU 8000000UL
-#include <avr/io.h>
+
 #include <string.h>
+
+#include <avr/io.h>
 #include <util/delay.h>
 
 #include <tp2/components/colors.hpp>
