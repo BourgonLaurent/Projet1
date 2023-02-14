@@ -1,13 +1,31 @@
-
-#define F_CPU 8000000UL;
-#include <tp2/components/button.hpp>
-#include <tp2/components/io.hpp>
 #include <tp2/components/led.hpp>
+#include <tp4/components/interruptButton.hpp>
+#include <tp4/components/interrupts.hpp>
+
+#include <util/delay.h>
+
+enum class MachineState
+{
+    READY,
+    PRESSED,
+    PRESS_REACTION,
+    WAIT,
+    FLASH,
+    STEADY
+};
+
+volatile MachineState currentState = MachineState::READY;
 
 int main()
 {
-    Button button = Button(&DDRD, &PIND, DDD2);
     LED led = LED(&DDRB, &PORTB, DDD1, DDD0);
+    interrupts::stopCatching();
+
+    InterruptButton::initialize();
+    InterruptButton::setMode(InterruptButton::Mode::FALLING);
+
+    interrupts::startCatching();
+    InterruptButton::start();
 
     return 0;
 }
