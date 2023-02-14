@@ -15,7 +15,7 @@
  *      0: Pressed
  *      1: Released
  * ╔═══════════════╦════════╦═════════╦═════════════╦════════════════╦═══════╗
- * ║ CURRENT STATE ║ BUTTON ║ COUNTER ║    TIMER    ║   NEXT STATE   ║ LED   ║
+ * ║ CURRENT STATE ║ BUTTON ║ COUNTER ║    TIMER    ║   NEXT STATE   ║  LED  ║
  * ╠═══════════════╬════════╬═════════╬═════════════╬════════════════╬═══════╣
  * ║               ║    1   ║    x    ║      x      ║      READY     ║       ║
  * ║     READY     ╠════════╬═════════╬═════════════╬════════════════╣  OFF  ║
