@@ -39,15 +39,16 @@
 
 #include <tp2/components/led.hpp>
 #include <tp4/components/interruptButton.hpp>
+#include <tp4/components/interruptTimer.hpp>
 #include <tp4/components/interrupts.hpp>
-
+#define F_CPU 8000000UL
 #include <util/delay.h>
 
 enum class MachineState
 {
     READY,
     PRESSED,
-    PRESS_REACTION,
+    RELEASED,
     WAIT,
     FLASH,
     STEADY
@@ -55,16 +56,72 @@ enum class MachineState
 
 volatile MachineState currentState = MachineState::READY;
 
+void InterruptButton::whenPressed()
+{
+    switch (::currentState) {
+        case MachineState::READY :
+            currentState = MachineState::PRESSED;
+            break;
+        case MachineState::PRESSED :
+            currentState = MachineState::RELEASED;
+            break;
+        default :
+            break;
+    }
+}
+
+void InterruptTimer::whenFinished()
+{
+    switch (::currentState) {
+        case MachineState::PRESSED :
+            currentState = MachineState::FLASH;
+            break;
+    }
+}
+
+constexpr uint8_t DURATION_S = 1;
+volatile bool flashIsDone = false;
+
 int main()
 {
     LED led = LED(&DDRB, &PORTB, DDD1, DDD0);
     interrupts::stopCatching();
 
     InterruptButton::initialize();
-    InterruptButton::setMode(InterruptButton::Mode::FALLING);
+    InterruptButton::setMode(InterruptButton::Mode::ANY);
+
+    InterruptTimer::initialize();
+    InterruptTimer::setMode(InterruptTimer::Mode::CTC);
+    InterruptTimer::setPrescaleMode(InterruptTimer::PrescaleMode::CLK1024);
+    InterruptTimer::setSeconds(DURATION_S);
 
     interrupts::startCatching();
     InterruptButton::start();
+
+    while (true) {
+        switch (::currentState) {
+            case MachineState::READY :
+                led.setColor(Color::OFF);
+                break;
+            case MachineState::PRESSED :
+                led.setColor(Color::OFF);
+                break;
+            case MachineState::RELEASED :
+                led.setColor(Color::GREEN);
+                break;
+            case MachineState::WAIT :
+                led.setColor(Color::OFF);
+                break;
+            case MachineState::FLASH :
+                InterruptTimer::start();
+                led.setColor(Color::GREEN);
+                led.setColor(Color::OFF);
+                break;
+            case MachineState::STEADY :
+                led.setColor(Color::GREEN);
+                break;
+        }
+    }
 
     return 0;
 }
