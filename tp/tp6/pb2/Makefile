@@ -23,13 +23,13 @@ MCU=atmega324pa
 
 # Nom de votre projet
 # (utilisez un seul mot, exemple: 'monprojet')
-PROJECTNAME=TP6_pb1
+PROJECTNAME=TP6_pb2
 
 # Fichiers sources
 # Utilisez le suffixe .cpp pour les fichiers C++
 # Listez tous les fichiers a compiler, separes par
 # un espace. exemple: 'tp1.c tp2.cpp'
-PRJSRC=main.cpp ../../tp4/components/interruptButton.cpp ../../tp2/components/led.cpp ../../tp5/components/usart.cpp ../../tp4/components/timer.cpp ../../tp4/components/interruptTimer.cpp
+PRJSRC=main.cpp  ../components/can.cpp ../../tp2/components/led.cpp ../../tp5/components/usart.cpp
 
 # Inclusions additionnels (ex: -I/path/to/mydir)
 INC=-I../../
