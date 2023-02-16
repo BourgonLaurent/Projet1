@@ -41,6 +41,7 @@
 #include <tp4/components/interruptButton.hpp>
 #include <tp4/components/interruptTimer.hpp>
 #include <tp4/components/interrupts.hpp>
+#include <tp5/components/usart.hpp>
 #define F_CPU 8000000UL
 #include <util/delay.h>
 
@@ -56,11 +57,20 @@ enum class MachineState
 
 volatile MachineState currentState = MachineState::READY;
 
+volatile uint8_t counter = 0;
+
+constexpr uint8_t DURATION_S = 1;
+constexpr uint8_t FLASH_DURATION_NS = 50;
+volatile bool flashIsDone = false;
+volatile bool isTimerDone = false;
+
 void InterruptButton::whenPressed()
 {
     switch (::currentState) {
         case MachineState::READY :
             currentState = MachineState::PRESSED;
+            counter = 0;
+            InterruptTimer::start();
             break;
         case MachineState::PRESSED :
             currentState = MachineState::RELEASED;
@@ -72,18 +82,14 @@ void InterruptButton::whenPressed()
 
 void InterruptTimer::whenFinished()
 {
-    switch (::currentState) {
-        case MachineState::PRESSED :
-            currentState = MachineState::FLASH;
-            break;
-    }
+    counter += 10;
+    Usart::transmit(counter);
 }
-
-constexpr uint8_t DURATION_S = 1;
-volatile bool flashIsDone = false;
 
 int main()
 {
+    Usart::initialize();
+
     LED led = LED(&DDRB, &PORTB, DDD1, DDD0);
     interrupts::stopCatching();
 
@@ -95,33 +101,65 @@ int main()
     InterruptTimer::setPrescaleMode(InterruptTimer::PrescaleMode::CLK1024);
     InterruptTimer::setSeconds(DURATION_S);
 
-    interrupts::startCatching();
-    InterruptButton::start();
-
     while (true) {
         switch (::currentState) {
             case MachineState::READY :
+                counter = 0;
                 led.setColor(Color::OFF);
+                interrupts::startCatching();
+                InterruptButton::start();
                 break;
+
             case MachineState::PRESSED :
+                Usart::transmit(counter);
                 led.setColor(Color::OFF);
+                if (counter == 120) {
+                    Usart::transmit(0xFF);
+                    InterruptTimer::stop();
+                    interrupts::stopCatching();
+                    currentState = MachineState::RELEASED;
+                }
                 break;
+
             case MachineState::RELEASED :
+                interrupts::stopCatching();
+                InterruptTimer::stop();
                 led.setColor(Color::GREEN);
+                _delay_ms(FLASH_DURATION_NS * 10);
+                led.setColor(Color::OFF);
+                currentState = MachineState::WAIT;
                 break;
+
             case MachineState::WAIT :
                 led.setColor(Color::OFF);
+                _delay_ms(2000);
+                currentState = MachineState::FLASH;
                 break;
+
             case MachineState::FLASH :
-                InterruptTimer::start();
-                led.setColor(Color::GREEN);
-                led.setColor(Color::OFF);
+                for (uint8_t i = 0; i < (counter / 4); i++) {
+                    _delay_ms(300);
+                    led.setColor(Color::RED);
+                    _delay_ms(20);
+                    led.setColor(Color::OFF);
+                    _delay_ms(300);
+                    led.setColor(Color::RED);
+                    _delay_ms(20);
+                    led.setColor(Color::OFF);
+                    _delay_ms(300);
+                }
+                currentState = MachineState::STEADY;
                 break;
+
             case MachineState::STEADY :
                 led.setColor(Color::GREEN);
+                _delay_ms(1000);
+                currentState = MachineState::READY;
                 break;
         }
     }
+
+    interrupts::stopCatching();
 
     return 0;
 }
