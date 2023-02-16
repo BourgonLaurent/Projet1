@@ -11,39 +11,40 @@
  * OUTPUT: Bicolor LED connected plus to B0 and minus to B1.
  *
  * Implements the following state table:
- *  Note: For the Button input:
+ *  -----------Note-----------
+ *   For the Button input:
  *      0: Pressed
  *      1: Released
- * ╔═══════════════╦════════╦═════════╦═════════════╦════════════════╦═══════╗
- * ║ CURRENT STATE ║ BUTTON ║ COUNTER ║    TIMER    ║   NEXT STATE   ║  LED  ║
- * ╠═══════════════╬════════╬═════════╬═════════════╬════════════════╬═══════╣
- * ║               ║    1   ║    x    ║      x      ║      READY     ║       ║
- * ║     READY     ╠════════╬═════════╬═════════════╬════════════════╣  OFF  ║
- * ║               ║    0   ║    x    ║      x      ║     PRESSED    ║       ║
- * ╠═══════════════╬════════╬═════════╬═════════════╬════════════════╬═══════╣
- * ║               ║    1   ║    x    ║      x      ║ PRESS_REACTION ║       ║
- * ║               ╠════════╬═════════╬═════════════╬════════════════╣       ║
- * ║    PRESSED    ║    0   ║    x    ║      x      ║     PRESSED    ║  OFF  ║
- * ║               ╠════════╬═════════╬═════════════╬════════════════╣       ║
- * ║               ║    x   ║   120   ║      x      ║     PRESSED    ║       ║
- * ╠═══════════════╬════════╬═════════╬═════════════╬════════════════╬═══════╣
- * ║    RELEASED   ║    x   ║    x    ║     0.5s    ║      WAIT      ║ GREEN ║
- * ╠═══════════════╬════════╬═════════╬═════════════╬════════════════╬═══════╣
- * ║      WAIT     ║    x   ║    x    ║      2s     ║      FLASH     ║  OFF  ║
- * ╠═══════════════╬════════╬═════════╬═════════════╬════════════════╬═══════╣
- * ║     FLASH     ║    x   ║    x    ║ COUNTER/2 s ║     STEADY     ║  RED  ║
- * ╠═══════════════╬════════╬═════════╬═════════════╬════════════════╬═══════╣
- * ║     STEADY    ║    x   ║    x    ║      1s     ║      READY     ║ GREEN ║
- * ╚═══════════════╩════════╩═════════╩═════════════╩════════════════╩═══════╝
+ *  --------------------------
+ * ╔═══════════════╦════════╦═════════╦════════════════╦═══════╗
+ * ║ CURRENT STATE ║ BUTTON ║ COUNTER ║   NEXT STATE   ║  LED  ║
+ * ╠═══════════════╬════════╬═════════╬════════════════╬═══════╣
+ * ║               ║    0   ║    x    ║     PRESSED    ║       ║
+ * ║     READY     ╠════════╬═════════╬════════════════╣  OFF  ║
+ * ║               ║    1   ║    x    ║      READY     ║       ║
+ * ╠═══════════════╬════════╬═════════╬════════════════╬═══════╣
+ * ║               ║    0   ║    x    ║     PRESSED    ║       ║
+ * ║               ╠════════╬═════════╬════════════════╣       ║
+ * ║    PRESSED    ║    1   ║    x    ║    RELEASED    ║  OFF  ║
+ * ║               ╠════════╬═════════╬════════════════╣       ║
+ * ║               ║    x   ║   120   ║    RELEASED    ║       ║
+ * ╠═══════════════╬════════╬═════════╬════════════════╬═══════╣
+ * ║    RELEASED   ║    x   ║    x    ║      WAIT      ║ GREEN ║
+ * ╚═══════════════╩════════╩═════════╩════════════════╩═══════╝
  */
 
+#define F_CPU 8000000UL
+
+#include <avr/io.h>
+#include <util/delay.h>
+
+#include <tp2/components/colors.hpp>
+#include <tp2/components/io.hpp>
 #include <tp2/components/led.hpp>
 #include <tp4/components/interruptButton.hpp>
 #include <tp4/components/interruptTimer.hpp>
 #include <tp4/components/interrupts.hpp>
 #include <tp5/components/usart.hpp>
-#define F_CPU 8000000UL
-#include <util/delay.h>
 
 enum class MachineState
 {
@@ -79,6 +80,8 @@ void InterruptButton::whenPressed()
 
         case MachineState::PRESSED :
             ::currentState = MachineState::RELEASED;
+            interrupts::stopCatching();
+            InterruptTimer::stop();
             break;
         default :
             break;
@@ -88,7 +91,6 @@ void InterruptButton::whenPressed()
 void InterruptTimer::whenFinished()
 {
     ::counter += 10;
-    Usart::transmit(counter);
 }
 
 int main()
@@ -115,7 +117,6 @@ int main()
                 break;
 
             case MachineState::PRESSED :
-                Usart::transmit(::counter);
                 led.setColor(Color::OFF);
 
                 if (::counter == 120) {
@@ -127,8 +128,7 @@ int main()
                 break;
 
             case MachineState::RELEASED :
-                interrupts::stopCatching();
-                InterruptTimer::stop();
+                Usart::transmit(::counter);
 
                 led.setColor(Color::GREEN);
                 _delay_ms(RELEAED_DURATION_NS * 10);
@@ -154,8 +154,6 @@ int main()
                 break;
         }
     }
-
-    interrupts::stopCatching();
 
     return 0;
 }
