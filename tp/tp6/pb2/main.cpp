@@ -14,6 +14,9 @@
 #include <tp2/components/led.hpp>
 #include <tp6/components/can.h>
 
+constexpr uint8_t THRESHOLD_LOW_LIGHT = 170;
+// constexpr uint8_t
+
 int main()
 {
     LED led = LED(&DDRB, &PORTB, PORTB1, PORTB0);
