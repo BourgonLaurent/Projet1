@@ -50,30 +50,35 @@ enum class MachineState
     READY,
     PRESSED,
     RELEASED,
-    WAIT,
-    FLASH,
-    STEADY
 };
 
 volatile MachineState currentState = MachineState::READY;
-
 volatile uint8_t counter = 0;
 
 constexpr uint8_t DURATION_S = 1;
-constexpr uint8_t FLASH_DURATION_NS = 50;
-volatile bool flashIsDone = false;
-volatile bool isTimerDone = false;
+constexpr uint8_t RELEAED_DURATION_NS = 50;
+
+constexpr uint8_t WAIT_DURATION_S = 2;
+
+constexpr uint8_t FLASH_DURATION_MS = 20;
+constexpr uint8_t FLASH_PERIOD_S = 1;
+constexpr uint8_t N_FLASH = 2;
+constexpr uint8_t N_END_FLASH = 1;
+constexpr uint16_t FLASH_DELAY_MS =
+    (FLASH_PERIOD_S * 1000 - N_FLASH * FLASH_DURATION_MS)
+    / (N_FLASH + N_END_FLASH);
 
 void InterruptButton::whenPressed()
 {
     switch (::currentState) {
         case MachineState::READY :
-            currentState = MachineState::PRESSED;
-            counter = 0;
+            ::currentState = MachineState::PRESSED;
+            ::counter = 0;
             InterruptTimer::start();
             break;
+
         case MachineState::PRESSED :
-            currentState = MachineState::RELEASED;
+            ::currentState = MachineState::RELEASED;
             break;
         default :
             break;
@@ -82,7 +87,7 @@ void InterruptButton::whenPressed()
 
 void InterruptTimer::whenFinished()
 {
-    counter += 10;
+    ::counter += 10;
     Usart::transmit(counter);
 }
 
@@ -104,57 +109,48 @@ int main()
     while (true) {
         switch (::currentState) {
             case MachineState::READY :
-                counter = 0;
                 led.setColor(Color::OFF);
                 interrupts::startCatching();
                 InterruptButton::start();
                 break;
 
             case MachineState::PRESSED :
-                Usart::transmit(counter);
+                Usart::transmit(::counter);
                 led.setColor(Color::OFF);
-                if (counter == 120) {
+
+                if (::counter == 120) {
                     Usart::transmit(0xFF);
                     InterruptTimer::stop();
                     interrupts::stopCatching();
-                    currentState = MachineState::RELEASED;
+                    ::currentState = MachineState::RELEASED;
                 }
                 break;
 
             case MachineState::RELEASED :
                 interrupts::stopCatching();
                 InterruptTimer::stop();
+
                 led.setColor(Color::GREEN);
-                _delay_ms(FLASH_DURATION_NS * 10);
+                _delay_ms(RELEAED_DURATION_NS * 10);
                 led.setColor(Color::OFF);
-                currentState = MachineState::WAIT;
-                break;
 
-            case MachineState::WAIT :
                 led.setColor(Color::OFF);
-                _delay_ms(2000);
-                currentState = MachineState::FLASH;
-                break;
+                _delay_ms(WAIT_DURATION_S * 1000);
 
-            case MachineState::FLASH :
                 for (uint8_t i = 0; i < (counter / 4); i++) {
-                    _delay_ms(300);
-                    led.setColor(Color::RED);
-                    _delay_ms(20);
-                    led.setColor(Color::OFF);
-                    _delay_ms(300);
-                    led.setColor(Color::RED);
-                    _delay_ms(20);
-                    led.setColor(Color::OFF);
-                    _delay_ms(300);
-                }
-                currentState = MachineState::STEADY;
-                break;
+                    for (uint8_t j = 0; j < N_FLASH; j++) {
+                        _delay_ms(FLASH_DELAY_MS);
+                        led.setColor(Color::RED);
+                        _delay_ms(FLASH_DURATION_MS);
+                        led.setColor(Color::OFF);
+                    }
 
-            case MachineState::STEADY :
+                    _delay_ms(FLASH_DELAY_MS);
+                }
+
                 led.setColor(Color::GREEN);
                 _delay_ms(1000);
-                currentState = MachineState::READY;
+                ::currentState = MachineState::READY;
                 break;
         }
     }
