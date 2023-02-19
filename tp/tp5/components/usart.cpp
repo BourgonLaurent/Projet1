@@ -17,7 +17,6 @@ void Usart::initialize()
     UBRR0L = 0xCF;
 
     // permettre la réception et la transmission par le UART0
-    io::setActive(&UCSR0A, UDRE0);
     io::setActive(&UCSR0B, RXEN0);
     io::setActive(&UCSR0B, TXEN0);
 
