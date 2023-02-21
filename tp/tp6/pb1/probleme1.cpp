@@ -15,6 +15,8 @@ const uint8_t DELAY_COLOR_AMBRER = 5;
 volatile uint8_t gBoutonPoussoir = 0;
 volatile uint8_t change = 0;
 volatile uint8_t compteur = 0;
+uint8_t valeurCompteur = 0;
+
 
 void initialisationUART(void)
 {
@@ -53,16 +55,18 @@ bool debounceButton()
     return false;
 }
 
-void starTime()
+void starTime(uint8_t duree)
 {
     cli();
     TCNT1 = 0;
     TCCR1A = 0;
-    TCCR1B = (1 << CS10) | (1 << CS12);
+    TCCR1B = (1 << CS10) | (1 << CS12) | (1 << WGM12);
     TCCR1C = 0;
-    OCR1A = 7812;
-    TIMSK1 = (1 << OCIE1A) | (1 << OCIE1B);
+    OCR1A = 7812 * duree;
+    TIMSK1 = (1 << OCIE1A);
+    TIFR1 = (1 << OCF1A);
     sei();
+
 }
 
 void initialisation(void)
@@ -100,6 +104,7 @@ void setNextState()
     case States::WAIT:
         if ((compteur == 120) || (gBoutonPoussoir == 1))
         {
+            valeurCompteur =compteur;
             state = States::GREEN1;
             gBoutonPoussoir = 0;
         }
@@ -136,7 +141,7 @@ void setColorLed()
     switch (state)
     {
     case States::RED1:
-        for (uint8_t i = 0; i < compteur / 2; i++)
+        for (uint8_t i = 0; i < valeurCompteur / 2; i++)
         {
             PORTA = LED_RED;
             _delay_ms(500);
@@ -174,12 +179,14 @@ ISR(INT0_vect)
 {
     _delay_ms(10);
     gBoutonPoussoir = 1;
+    starTime(1);
     EIFR |= (1 << INTF0);
 }
 
 ISR(TIMER1_COMPA_vect)
 {
     compteur += 10;
+    transmissionUART(compteur);
 }
 
 int main()
@@ -187,10 +194,9 @@ int main()
     DDRA = 0xff;
 
     initialisation();
-
+    initialisationUART();
     while (true)
     {
-        transmissionUART(compteur);
         setNextState();
         setColorLed();
     }
