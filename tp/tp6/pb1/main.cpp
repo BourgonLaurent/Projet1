@@ -86,9 +86,6 @@ void InterruptButton::whenPressed()
             break;
 
         case MachineState::PRESSED :
-            InterruptTimer::stop();
-            interrupts::stopCatching();
-
             ::currentState = MachineState::RELEASED;
             break;
 
@@ -122,6 +119,7 @@ int main()
         switch (::currentState) {
             case MachineState::READY :
                 led.setColor(Color::OFF);
+
                 interrupts::startCatching();
                 InterruptButton::start();
                 break;
@@ -131,12 +129,14 @@ int main()
 
                 if (::counter == MAX_COUNTER) {
                     ::currentState = MachineState::RELEASED;
-                    InterruptTimer::stop();
-                    interrupts::stopCatching();
                 }
                 break;
 
             case MachineState::RELEASED :
+                InterruptTimer::stop();
+                InterruptButton::stop();
+                interrupts::stopCatching();
+
                 led.setColor(Color::GREEN);
                 _delay_ms(delay::RELEASED_MS);
                 led.setColor(Color::OFF);
