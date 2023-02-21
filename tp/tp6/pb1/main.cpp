@@ -44,7 +44,6 @@
 #include <tp4/components/interruptButton.hpp>
 #include <tp4/components/interruptTimer.hpp>
 #include <tp4/components/interrupts.hpp>
-#include <tp5/components/usart.hpp>
 
 enum class MachineState
 {
@@ -53,7 +52,7 @@ enum class MachineState
     RELEASED,
 };
 
-volatile MachineState currentState = MachineState::READY;
+volatile MachineState machineState = MachineState::READY;
 volatile uint8_t counter = 0;
 
 constexpr double COUNTER_INCREMENT_S = 0.100;
@@ -77,16 +76,16 @@ namespace delay {
 
 void InterruptButton::whenPressed()
 {
-    switch (::currentState) {
+    switch (::machineState) {
         case MachineState::READY :
             ::counter = 0;
             InterruptTimer::start();
 
-            ::currentState = MachineState::PRESSED;
+            ::machineState = MachineState::PRESSED;
             break;
 
         case MachineState::PRESSED :
-            ::currentState = MachineState::RELEASED;
+            ::machineState = MachineState::RELEASED;
             break;
 
         default :
@@ -97,15 +96,12 @@ void InterruptButton::whenPressed()
 void InterruptTimer::whenFinished()
 {
     ::counter++;
-    Usart::transmit(::counter);
 }
 
 int main()
 {
-    Usart::initialize();
-    interrupts::stopCatching();
-
     LED led = LED(&DDRB, &PORTB, PB0, PB1);
+    interrupts::stopCatching();
 
     InterruptButton::initialize();
     InterruptButton::setMode(InterruptButton::Mode::ANY);
@@ -116,7 +112,7 @@ int main()
     InterruptTimer::setSeconds(COUNTER_INCREMENT_S);
 
     while (true) {
-        switch (::currentState) {
+        switch (::machineState) {
             case MachineState::READY :
                 led.setColor(Color::OFF);
 
@@ -127,8 +123,8 @@ int main()
             case MachineState::PRESSED :
                 led.setColor(Color::OFF);
 
-                if (::counter == MAX_COUNTER) {
-                    ::currentState = MachineState::RELEASED;
+                if (::counter == 120) {
+                    ::machineState = MachineState::RELEASED;
                 }
                 break;
 
@@ -143,11 +139,9 @@ int main()
 
                 _delay_ms(delay::WAIT_MS);
 
-                Usart::transmit(::counter);
-
-                bool hadSubsequentFlash = false;
+                bool flashedInsideInterval = false;
                 for (uint8_t i = 0; i < ::counter / 2; i++) {
-                    if (hadSubsequentFlash) {
+                    if (flashedInsideInterval) {
                         _delay_ms(delay::flash::DELAY_INBETWEEN_MS);
                     }
 
@@ -155,18 +149,20 @@ int main()
                     _delay_ms(delay::flash::DURATION_MS);
                     led.setColor(Color::OFF);
 
-                    if (hadSubsequentFlash) {
+                    if (flashedInsideInterval) {
                         _delay_ms(delay::flash::WAIT_MS);
-                        hadSubsequentFlash = false;
+                        flashedInsideInterval = false;
                     }
                     else {
-                        hadSubsequentFlash = true;
+                        flashedInsideInterval = true;
                     }
                 }
 
+                _delay_ms(delay::END_MS);
                 led.setColor(Color::GREEN);
                 _delay_ms(delay::END_MS);
-                ::currentState = MachineState::READY;
+
+                ::machineState = MachineState::READY;
                 break;
         }
     }
