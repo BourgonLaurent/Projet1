@@ -91,13 +91,14 @@ void InterruptButton::whenPressed()
 void InterruptTimer::whenFinished()
 {
     ::counter += 10;
+    Usart::transmit(::counter);
 }
 
 int main()
 {
     Usart::initialize();
 
-    LED led = LED(&DDRB, &PORTB, DDD1, DDD0);
+    LED led = LED(&DDRB, &PORTB, PB0, PB1);
     interrupts::stopCatching();
 
     InterruptButton::initialize();
