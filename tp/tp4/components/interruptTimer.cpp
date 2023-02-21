@@ -11,7 +11,6 @@
 #include <tp2/components/io.hpp>
 
 #include <tp4/components/interrupts.hpp>
-// #include <tp4/components/timer.hpp>
 
 void InterruptTimer::initialize()
 {
@@ -25,9 +24,9 @@ void InterruptTimer::initialize()
     stop();
 }
 
-void InterruptTimer::setSeconds(uint8_t delayS)
+void InterruptTimer::setSeconds(const double delayS)
 {
-    OCR1A = delayS * CYCLES_PER_SECOND;
+    OCR1A = delayS * getCyclesPerSeconds();
 }
 
 void InterruptTimer::start()
@@ -54,4 +53,9 @@ ISR(TIMER1_COMPA_vect)
     InterruptTimer::whenFinished();
 
     interrupts::clear();
+}
+
+uint16_t InterruptTimer::getCyclesPerSeconds()
+{
+    return F_CPU / getPrescaleValue();
 }

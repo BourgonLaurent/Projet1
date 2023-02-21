@@ -52,4 +52,13 @@ void Timer::setPrescaleMode(const PrescaleMode &prescaleMode)
             io::setActive(&TCCR1B, CS12);
             break;
     }
+
+    prescaleMode_ = prescaleMode;
+}
+
+Timer::PrescaleMode Timer::prescaleMode_ = PrescaleMode::CLK;
+
+uint16_t Timer::getPrescaleValue()
+{
+    return static_cast<uint16_t>(prescaleMode_);
 }

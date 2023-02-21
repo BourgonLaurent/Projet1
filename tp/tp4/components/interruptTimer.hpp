@@ -20,7 +20,7 @@ class InterruptTimer : public Timer
 public:
     static void initialize();
 
-    static void setSeconds(uint8_t delayS);
+    static void setSeconds(const double delayS);
 
     static void start();
     static void stop();
@@ -29,7 +29,7 @@ public:
     static void whenFinished();
 
 private:
-    static constexpr uint16_t CYCLES_PER_SECOND = F_CPU / 1024;
+    static uint16_t getCyclesPerSeconds();
 };
 
 #endif

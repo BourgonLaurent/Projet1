@@ -9,6 +9,8 @@
 #ifndef TIMER_H
 #define TIMER_H
 
+#include <avr/io.h>
+
 class Timer
 {
 public:
@@ -20,12 +22,16 @@ public:
     };
     static void setMode(const Mode &mode);
 
-    enum class PrescaleMode
+    enum class PrescaleMode : uint16_t
     {
-        CLK,
-        CLK1024
+        CLK = 1,
+        CLK1024 = 1024
     };
     static void setPrescaleMode(const PrescaleMode &prescaleMode);
+
+protected:
+    static uint16_t getPrescaleValue();
+    static PrescaleMode prescaleMode_;
 };
 
 #endif
