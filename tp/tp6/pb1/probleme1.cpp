@@ -15,8 +15,6 @@ const uint8_t DELAY_COLOR_AMBRER = 5;
 volatile uint8_t gBoutonPoussoir = 0;
 volatile uint8_t change = 0;
 volatile uint8_t compteur = 0;
-uint8_t valeurCompteur = 0;
-
 
 void initialisationUART(void)
 {
@@ -66,7 +64,6 @@ void starTime(uint8_t duree)
     TIMSK1 = (1 << OCIE1A);
     TIFR1 = (1 << OCF1A);
     sei();
-
 }
 
 void initialisation(void)
@@ -96,15 +93,15 @@ void setNextState()
     case States::READY:
         if (gBoutonPoussoir == 1)
         {
-            state = States::WAIT;
             gBoutonPoussoir = 0;
+            state = States::WAIT;
         }
         break;
 
     case States::WAIT:
         if ((compteur == 120) || (gBoutonPoussoir == 1))
         {
-            valeurCompteur =compteur;
+            valeurCompteur = compteur;
             state = States::GREEN1;
             gBoutonPoussoir = 0;
         }
