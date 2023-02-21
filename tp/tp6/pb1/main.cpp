@@ -56,18 +56,24 @@ enum class MachineState
 volatile MachineState currentState = MachineState::READY;
 volatile uint8_t counter = 0;
 
-constexpr uint8_t DURATION_S = 1;
-constexpr uint8_t RELEAED_DURATION_NS = 50;
+constexpr uint8_t COUNTER_INCREMENT_S = 1;
+constexpr uint8_t MAX_COUNTER = 120;
 
-constexpr uint8_t WAIT_DURATION_S = 2;
+namespace delay {
+    constexpr uint16_t RELEASED_MS = 500;
+    constexpr uint16_t WAIT_MS = 2000;
+    constexpr uint16_t END_MS = 500;
 
-constexpr uint8_t FLASH_DURATION_MS = 20;
-constexpr uint8_t FLASH_PERIOD_S = 1;
-constexpr uint8_t N_FLASH = 2;
-constexpr uint8_t N_END_FLASH = 1;
-constexpr uint16_t FLASH_DELAY_MS =
-    (FLASH_PERIOD_S * 1000 - N_FLASH * FLASH_DURATION_MS)
-    / (N_FLASH + N_END_FLASH);
+    namespace flash {
+        constexpr uint16_t N_FLASH = 2;
+        constexpr uint16_t DURATION_MS = 20;
+        constexpr uint16_t PERIOD_MS = 1000;
+        constexpr uint16_t DELAY_INBETWEEN_MS =
+            (PERIOD_MS - (N_FLASH * DURATION_MS)) / 3;
+        constexpr uint16_t WAIT_MS =
+            PERIOD_MS - N_FLASH * DURATION_MS - DELAY_INBETWEEN_MS;
+    } // namespace flash
+} // namespace delay
 
 void InterruptButton::whenPressed()
 {
@@ -90,7 +96,7 @@ void InterruptButton::whenPressed()
 
 void InterruptTimer::whenFinished()
 {
-    ::counter += 10;
+    ::counter++;
     Usart::transmit(::counter);
 }
 
@@ -107,7 +113,8 @@ int main()
     InterruptTimer::initialize();
     InterruptTimer::setMode(InterruptTimer::Mode::CTC);
     InterruptTimer::setPrescaleMode(InterruptTimer::PrescaleMode::CLK1024);
-    InterruptTimer::setSeconds(DURATION_S);
+    // InterruptTimer::setSeconds(DURATION_S);
+    OCR1A = 7812 / 10;
 
     while (true) {
         switch (::currentState) {
@@ -120,7 +127,7 @@ int main()
             case MachineState::PRESSED :
                 led.setColor(Color::OFF);
 
-                if (::counter == 120) {
+                if (::counter == MAX_COUNTER) {
                     Usart::transmit(0xFF);
                     InterruptTimer::stop();
                     interrupts::stopCatching();
@@ -132,25 +139,32 @@ int main()
                 Usart::transmit(::counter);
 
                 led.setColor(Color::GREEN);
-                _delay_ms(RELEAED_DURATION_NS * 10);
+                _delay_ms(delay::RELEASED_MS);
                 led.setColor(Color::OFF);
 
-                led.setColor(Color::OFF);
-                _delay_ms(WAIT_DURATION_S * 1000);
+                _delay_ms(delay::WAIT_MS);
 
-                for (uint8_t i = 0; i < (counter / 4); i++) {
-                    for (uint8_t j = 0; j < N_FLASH; j++) {
-                        _delay_ms(FLASH_DELAY_MS);
-                        led.setColor(Color::RED);
-                        _delay_ms(FLASH_DURATION_MS);
-                        led.setColor(Color::OFF);
+                bool hadSubsequentFlash = false;
+                for (uint8_t i = 0; i < ::counter / 2; i++) {
+                    if (hadSubsequentFlash) {
+                        _delay_ms(delay::flash::DELAY_INBETWEEN_MS);
                     }
 
-                    _delay_ms(FLASH_DELAY_MS);
+                    led.setColor(Color::RED);
+                    _delay_ms(delay::flash::DURATION_MS);
+                    led.setColor(Color::OFF);
+
+                    if (hadSubsequentFlash) {
+                        _delay_ms(delay::flash::WAIT_MS);
+                        hadSubsequentFlash = false;
+                    }
+                    else {
+                        hadSubsequentFlash = true;
+                    }
                 }
 
                 led.setColor(Color::GREEN);
-                _delay_ms(1000);
+                _delay_ms(delay::END_MS);
                 ::currentState = MachineState::READY;
                 break;
         }
