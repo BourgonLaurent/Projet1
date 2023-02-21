@@ -1,10 +1,17 @@
 /**
  * Problem 2:
- *  Blablablou
+ *  Set color of LED based on light intensity:
+ *      Poor: Green
+ *      Ambient: Amber
+ *      Flashlight: Red
  *
  * \author Mehdi Benouhoud
  * \author Laurent Bourgon
  * \date February 16, 2023
+ *
+ * Hardware Identification
+ * INPUT: Photoresistor connected to A0.
+ * OUTPUT: Bicolor LED connected plus to B0 and minus to B1.
  *
  */
 
@@ -20,16 +27,16 @@ constexpr uint8_t AMBER_DELAY_MS = 10;
 
 int main()
 {
-    LED led = LED(&DDRB, &PORTB, PORTB1, PORTB0);
+    LED led = LED(&DDRB, &PORTB, PB1, PB0);
     can analogDigitalConverter = can();
 
     while (true) {
-        uint8_t readValue = analogDigitalConverter.lecture(PA0) >> 2;
+        uint8_t lightIntensity = analogDigitalConverter.lecture(PA0) >> 2;
 
-        if (readValue <= THRESHOLD_LOW_LIGHT) {
+        if (lightIntensity <= THRESHOLD_LOW_LIGHT) {
             led.setColor(Color::GREEN);
         }
-        else if (readValue >= THRESHOLD_HIGH_LIGHT) {
+        else if (lightIntensity >= THRESHOLD_HIGH_LIGHT) {
             led.setColor(Color::RED);
         }
         else {

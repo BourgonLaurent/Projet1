@@ -7,7 +7,7 @@
  * \date February 14, 2023
  *
  * Hardware Identification
- * INPUT: Push button connected to D2 through the breadboard. Pushed returns 0.
+ * INPUT: Push button connected to D2. Pushed sets at 0.
  * OUTPUT: Bicolor LED connected plus to B0 and minus to B1.
  *
  * Implements the following state table:
@@ -29,7 +29,7 @@
  * ║               ╠════════╬═════════╬════════════════╣       ║
  * ║               ║    x   ║   120   ║    RELEASED    ║       ║
  * ╠═══════════════╬════════╬═════════╬════════════════╬═══════╣
- * ║    RELEASED   ║    x   ║    x    ║      WAIT      ║ GREEN ║
+ * ║    RELEASED   ║    x   ║    x    ║      WAIT      ║   X   ║
  * ╚═══════════════╩════════╩═════════╩════════════════╩═══════╝
  */
 
