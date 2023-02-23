@@ -2,6 +2,7 @@
  * Problem 1:
  *  Write to memory.
  *
+ * Team #45
  * \author Mehdi Benouhoud
  * \author Laurent Bourgon
  * \date February 7, 2023

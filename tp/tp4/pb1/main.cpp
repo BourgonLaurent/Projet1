@@ -3,6 +3,7 @@
  *  Cycles through LED colors based on a state table
  *  using interrupts.
  *
+ * Team #45
  * \author Mehdi Benouhoud
  * \author Laurent Bourgon
  * \date January 31, 2023

@@ -2,6 +2,7 @@
  * Problem 2:
  *  Send with RS232.
  *
+ * Team #45
  * \author Mehdi Benouhoud
  * \author Laurent Bourgon
  * \date February 9, 2023

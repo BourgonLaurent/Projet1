@@ -1,6 +1,7 @@
 /**
  * Interrupts manipulation.
  *
+ * Team #45
  * \author Mehdi Benouhoud
  * \author Laurent Bourgon
  * \date February 2, 2023

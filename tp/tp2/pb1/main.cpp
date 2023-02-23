@@ -2,6 +2,7 @@
  * Problem 1:
  *  Press three times the push button to turn the LED green.
  *
+ * Team #45
  * \author Mehdi Benouhoud
  * \author Laurent Bourgon
  * \date January 17, 2023

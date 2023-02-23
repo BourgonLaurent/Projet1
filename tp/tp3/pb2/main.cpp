@@ -2,6 +2,7 @@
  * Problem 2:
  *  Motor control.
  *
+ * Team #45
  * \author Mehdi Benouhoud
  * \author Laurent Bourgon
  * \date January 26, 2023

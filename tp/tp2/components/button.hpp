@@ -6,6 +6,7 @@
  *     will be set automatically.
  * INPUT: Push button connected to `pin` on `bit`.
  *
+ * Team #45
  * \author Mehdi Benouhoud
  * \author Laurent Bourgon
  * \date January 17, 2023

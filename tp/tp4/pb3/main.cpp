@@ -7,6 +7,7 @@
  * OUTPUT: Right motor on D4 (enable) D6 (direction).
  *
  *
+ * Team #45
  * \author Mehdi Benouhoud
  * \author Laurent Bourgon
  * \date February 2, 2023

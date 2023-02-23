@@ -2,6 +2,7 @@
  * Problem 2:
  *  Cycles through LED colors based on a state table.
  *
+ * Team #45
  * \author Mehdi Benouhoud
  * \author Laurent Bourgon
  * \date January 19, 2023

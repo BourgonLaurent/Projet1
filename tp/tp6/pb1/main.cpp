@@ -2,6 +2,7 @@
  * Problem 1:
  *  Control external LED with a counter.
  *
+ * Team #45
  * \author Mehdi Benouhoud
  * \author Laurent Bourgon
  * \date February 14, 2023
@@ -68,11 +69,14 @@ namespace delay {
         constexpr uint16_t N_FLASH = 2;
         constexpr uint16_t DURATION_MS = 20;
         constexpr uint16_t PERIOD_MS = 1000;
+
         constexpr uint16_t DELAY_INBETWEEN_MS =
-            (PERIOD_MS - N_FLASH * DURATION_MS) / 3;
+            (PERIOD_MS - N_FLASH * DURATION_MS) / 3; // FIXME: calcul constantes
+
         constexpr uint16_t WAIT_MS =
-            PERIOD_MS - N_FLASH * DURATION_MS - DELAY_INBETWEEN_MS;
-    } // namespace flash
+            PERIOD_MS - N_FLASH * DURATION_MS
+            - DELAY_INBETWEEN_MS; // FIXME: calcul constantes
+    }                             // namespace flash
 } // namespace delay
 
 void InterruptButton::whenPressed()
@@ -127,6 +131,7 @@ int main()
                 if (::counter == MAX_COUNTER) {
                     ::machineState = MachineState::RELEASED;
                 }
+
                 break;
 
             case MachineState::RELEASED :

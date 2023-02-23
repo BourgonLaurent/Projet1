@@ -5,6 +5,7 @@
  *      Ambient: Amber
  *      Flashlight: Red
  *
+ * Team #45
  * \author Mehdi Benouhoud
  * \author Laurent Bourgon
  * \date February 16, 2023
