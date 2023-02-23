@@ -18,16 +18,16 @@
 #define F_CPU 8000000UL
 #include <util/delay.h>
 
-#include <tp2/components/led.hpp>
 #include <tp6/components/can.h>
+#include <tp6/components/led.hpp>
 
 constexpr uint8_t THRESHOLD_LOW_LIGHT = 170;
-constexpr uint8_t THRESHOLD_HIGH_LIGHT = 235;
+constexpr uint8_t THRESHOLD_HIGH_LIGHT = 240;
 constexpr uint8_t AMBER_DELAY_MS = 10;
 
 int main()
 {
-    LED led = LED(&DDRB, &PORTB, PB1, PB0);
+    LED led = LED(&DDRB, &PORTB, PB0, PB1);
     can analogDigitalConverter = can();
 
     while (true) {

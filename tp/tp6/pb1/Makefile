@@ -29,7 +29,11 @@ PROJECTNAME=TP6_pb1
 # Utilisez le suffixe .cpp pour les fichiers C++
 # Listez tous les fichiers a compiler, separes par
 # un espace. exemple: 'tp1.c tp2.cpp'
-PRJSRC=main.cpp ../../tp4/components/interruptButton.cpp ../../tp2/components/led.cpp ../../tp5/components/usart.cpp ../../tp4/components/timer.cpp ../../tp4/components/interruptTimer.cpp
+PRJSRC=main.cpp \
+../../tp6/components/interruptButton.cpp \
+../../tp6/components/led.cpp \
+../../tp6/components/timer.cpp \
+../../tp6/components/interruptTimer.cpp
 
 # Inclusions additionnels (ex: -I/path/to/mydir)
 INC=-I../../

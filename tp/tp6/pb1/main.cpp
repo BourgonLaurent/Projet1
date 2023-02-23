@@ -24,12 +24,12 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-#include <tp2/components/colors.hpp>
-#include <tp2/components/io.hpp>
-#include <tp2/components/led.hpp>
-#include <tp4/components/interruptButton.hpp>
-#include <tp4/components/interruptTimer.hpp>
-#include <tp4/components/interrupts.hpp>
+#include <tp6/components/colors.hpp>
+#include <tp6/components/interruptButton.hpp>
+#include <tp6/components/interruptTimer.hpp>
+#include <tp6/components/interrupts.hpp>
+#include <tp6/components/io.hpp>
+#include <tp6/components/led.hpp>
 
 enum class MachineState
 {
