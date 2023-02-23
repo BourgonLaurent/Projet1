@@ -57,7 +57,7 @@ volatile MachineState machineState = MachineState::READY;
 volatile uint8_t counter = 0;
 
 constexpr double COUNTER_INCREMENT_S = 0.100;
-constexpr uint8_t COUNTER_DIVIDER = 2;
+constexpr uint8_t COUNTER_DIVISOR = 2;
 constexpr uint8_t MAX_COUNTER = 120;
 
 namespace delay {
@@ -66,17 +66,15 @@ namespace delay {
     constexpr uint16_t END_MS = 500;
 
     namespace flash {
-        constexpr uint16_t N_FLASH = 2;
-        constexpr uint16_t DURATION_MS = 20;
+        constexpr uint8_t N_FLASH = 2;
+        constexpr uint8_t DURATION_MS = 20;
         constexpr uint16_t PERIOD_MS = 1000;
+        constexpr uint8_t INBETWEEN_MS = 250;
 
-        constexpr uint16_t DELAY_INBETWEEN_MS =
-            (PERIOD_MS - N_FLASH * DURATION_MS) / 3; // FIXME: calcul constantes
-
-        constexpr uint16_t WAIT_MS =
-            PERIOD_MS - N_FLASH * DURATION_MS
-            - DELAY_INBETWEEN_MS; // FIXME: calcul constantes
-    }                             // namespace flash
+        // Time left in the period after the flash delays
+        constexpr uint16_t PERIOD_REMAINDER_MS =
+            PERIOD_MS - N_FLASH * DURATION_MS - INBETWEEN_MS;
+    } // namespace flash
 } // namespace delay
 
 void InterruptButton::whenPressed()
@@ -145,22 +143,22 @@ int main()
 
                 _delay_ms(delay::WAIT_MS);
 
-                bool flashedInsideInterval = false;
-                for (uint8_t i = 0; i < ::counter / COUNTER_DIVIDER; i++) {
-                    if (flashedInsideInterval) {
-                        _delay_ms(delay::flash::DELAY_INBETWEEN_MS);
+                bool flashedInsidePeriod = false;
+                for (uint8_t i = 0; i < ::counter / COUNTER_DIVISOR; i++) {
+                    if (flashedInsidePeriod) {
+                        _delay_ms(delay::flash::INBETWEEN_MS);
                     }
 
                     led.setColor(Color::RED);
                     _delay_ms(delay::flash::DURATION_MS);
                     led.setColor(Color::OFF);
 
-                    if (flashedInsideInterval) {
-                        _delay_ms(delay::flash::WAIT_MS);
-                        flashedInsideInterval = false;
+                    if (flashedInsidePeriod) {
+                        _delay_ms(delay::flash::PERIOD_REMAINDER_MS);
+                        flashedInsidePeriod = false;
                     }
                     else {
-                        flashedInsideInterval = true;
+                        flashedInsidePeriod = true;
                     }
                 }
 
