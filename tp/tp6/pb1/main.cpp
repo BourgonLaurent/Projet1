@@ -56,6 +56,7 @@ volatile MachineState machineState = MachineState::READY;
 volatile uint8_t counter = 0;
 
 constexpr double COUNTER_INCREMENT_S = 0.100;
+constexpr uint8_t COUNTER_DIVIDER = 2;
 constexpr uint8_t MAX_COUNTER = 120;
 
 namespace delay {
@@ -68,7 +69,7 @@ namespace delay {
         constexpr uint16_t DURATION_MS = 20;
         constexpr uint16_t PERIOD_MS = 1000;
         constexpr uint16_t DELAY_INBETWEEN_MS =
-            (PERIOD_MS - (N_FLASH * DURATION_MS)) / 3;
+            (PERIOD_MS - N_FLASH * DURATION_MS) / 3;
         constexpr uint16_t WAIT_MS =
             PERIOD_MS - N_FLASH * DURATION_MS - DELAY_INBETWEEN_MS;
     } // namespace flash
@@ -123,7 +124,7 @@ int main()
             case MachineState::PRESSED :
                 led.setColor(Color::OFF);
 
-                if (::counter == 120) {
+                if (::counter == MAX_COUNTER) {
                     ::machineState = MachineState::RELEASED;
                 }
                 break;
@@ -140,7 +141,7 @@ int main()
                 _delay_ms(delay::WAIT_MS);
 
                 bool flashedInsideInterval = false;
-                for (uint8_t i = 0; i < ::counter / 2; i++) {
+                for (uint8_t i = 0; i < ::counter / COUNTER_DIVIDER; i++) {
                     if (flashedInsideInterval) {
                         _delay_ms(delay::flash::DELAY_INBETWEEN_MS);
                     }
