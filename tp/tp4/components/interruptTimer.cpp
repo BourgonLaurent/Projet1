@@ -1,6 +1,8 @@
 /**
  * Interrupt a program with a timer.
  *
+ * WARNING: InterruptTimer::whenFinished() must be declared.
+ *
  * Team #45
  * \author Mehdi Benouhoud
  * \author Laurent Bourgon

@@ -13,7 +13,6 @@
  * Hardware Identification
  * INPUT: Photoresistor connected to A0.
  * OUTPUT: Bicolor LED connected plus to B0 and minus to B1.
- *
  */
 
 #define F_CPU 8000000UL
