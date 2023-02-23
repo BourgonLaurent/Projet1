@@ -17,21 +17,6 @@
  *      0: Pressed
  *      1: Released
  *  --------------------------
- * ╔═══════════════╦════════╦═════════╦════════════════╦═══════╗
- * ║ CURRENT STATE ║ BUTTON ║ COUNTER ║   NEXT STATE   ║  LED  ║
- * ╠═══════════════╬════════╬═════════╬════════════════╬═══════╣
- * ║               ║    0   ║    x    ║     PRESSED    ║       ║
- * ║     READY     ╠════════╬═════════╬════════════════╣  OFF  ║
- * ║               ║    1   ║    x    ║      READY     ║       ║
- * ╠═══════════════╬════════╬═════════╬════════════════╬═══════╣
- * ║               ║    0   ║    x    ║     PRESSED    ║       ║
- * ║               ╠════════╬═════════╬════════════════╣       ║
- * ║    PRESSED    ║    1   ║    x    ║    RELEASED    ║  OFF  ║
- * ║               ╠════════╬═════════╬════════════════╣       ║
- * ║               ║    x   ║   120   ║    RELEASED    ║       ║
- * ╠═══════════════╬════════╬═════════╬════════════════╬═══════╣
- * ║    RELEASED   ║    x   ║    x    ║      WAIT      ║   X   ║
- * ╚═══════════════╩════════╩═════════╩════════════════╩═══════╝
  */
 
 #define F_CPU 8000000UL
@@ -52,9 +37,6 @@ enum class MachineState
     PRESSED,
     RELEASED,
 };
-
-volatile MachineState machineState = MachineState::READY;
-volatile uint8_t counter = 0;
 
 constexpr double COUNTER_INCREMENT_S = 0.100;
 constexpr uint8_t COUNTER_DIVISOR = 2;
@@ -77,23 +59,12 @@ namespace delay {
     } // namespace flash
 } // namespace delay
 
+volatile bool buttonIsPressed = false;
+volatile uint8_t counter = 0;
+
 void InterruptButton::whenPressed()
 {
-    switch (::machineState) {
-        case MachineState::READY :
-            ::counter = 0;
-            InterruptTimer::start();
-
-            ::machineState = MachineState::PRESSED;
-            break;
-
-        case MachineState::PRESSED :
-            ::machineState = MachineState::RELEASED;
-            break;
-
-        default :
-            break;
-    }
+    ::buttonIsPressed = !::buttonIsPressed;
 }
 
 void InterruptTimer::whenFinished()
@@ -103,7 +74,8 @@ void InterruptTimer::whenFinished()
 
 int main()
 {
-    LED led = LED(&DDRB, &PORTB, PB0, PB1);
+    LED led(&DDRB, &PORTB, PB0, PB1);
+
     interrupts::stopCatching();
 
     InterruptButton::initialize();
@@ -115,60 +87,48 @@ int main()
     InterruptTimer::setSeconds(COUNTER_INCREMENT_S);
 
     while (true) {
-        switch (::machineState) {
-            case MachineState::READY :
-                led.setColor(Color::OFF);
+        led.setColor(Color::OFF);
 
-                interrupts::startCatching();
-                InterruptButton::start();
-                break;
+        interrupts::startCatching();
+        InterruptButton::start();
 
-            case MachineState::PRESSED :
-                led.setColor(Color::OFF);
+        while (!::buttonIsPressed) {}
 
-                if (::counter == MAX_COUNTER) {
-                    ::machineState = MachineState::RELEASED;
-                }
+        ::counter = 0;
+        InterruptTimer::start();
 
-                break;
+        while (::buttonIsPressed && ::counter != MAX_COUNTER) {}
 
-            case MachineState::RELEASED :
-                InterruptTimer::stop();
-                InterruptButton::stop();
-                interrupts::stopCatching();
+        InterruptTimer::stop();
+        InterruptButton::stop();
+        interrupts::stopCatching();
 
-                led.setColor(Color::GREEN);
-                _delay_ms(delay::RELEASED_MS);
-                led.setColor(Color::OFF);
+        led.setColor(Color::GREEN);
+        _delay_ms(delay::RELEASED_MS);
+        led.setColor(Color::OFF);
 
-                _delay_ms(delay::WAIT_MS);
+        _delay_ms(delay::WAIT_MS);
 
-                bool flashedInsidePeriod = false;
-                for (uint8_t i = 0; i < ::counter / COUNTER_DIVISOR; i++) {
-                    if (flashedInsidePeriod) {
-                        _delay_ms(delay::flash::INBETWEEN_MS);
-                    }
+        bool flashedInsidePeriod = false;
+        for (uint8_t i = 0; i < ::counter / COUNTER_DIVISOR; i++) {
+            if (flashedInsidePeriod) {
+                _delay_ms(delay::flash::INBETWEEN_MS);
+            }
 
-                    led.setColor(Color::RED);
-                    _delay_ms(delay::flash::DURATION_MS);
-                    led.setColor(Color::OFF);
+            led.setColor(Color::RED);
+            _delay_ms(delay::flash::DURATION_MS);
+            led.setColor(Color::OFF);
 
-                    if (flashedInsidePeriod) {
-                        _delay_ms(delay::flash::PERIOD_REMAINDER_MS);
-                        flashedInsidePeriod = false;
-                    }
-                    else {
-                        flashedInsidePeriod = true;
-                    }
-                }
+            if (flashedInsidePeriod) {
+                _delay_ms(delay::flash::PERIOD_REMAINDER_MS);
+            }
 
-                _delay_ms(delay::END_MS);
-                led.setColor(Color::GREEN);
-                _delay_ms(delay::END_MS);
-
-                ::machineState = MachineState::READY;
-                break;
+            flashedInsidePeriod = !flashedInsidePeriod;
         }
+
+        _delay_ms(delay::END_MS);
+        led.setColor(Color::GREEN);
+        _delay_ms(delay::END_MS);
     }
 
     return 0;
