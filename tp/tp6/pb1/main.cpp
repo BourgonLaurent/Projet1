@@ -97,7 +97,7 @@ int main()
         ::counter = 0;
         InterruptTimer::start();
 
-        while (::buttonIsPressed && ::counter != MAX_COUNTER) {}
+        while (::buttonIsPressed && ::counter <= MAX_COUNTER) {}
 
         InterruptTimer::stop();
         InterruptButton::stop();
