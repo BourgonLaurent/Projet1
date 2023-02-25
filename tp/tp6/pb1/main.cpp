@@ -24,19 +24,12 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-#include <tp2/components/colors.hpp>
-#include <tp2/components/io.hpp>
-#include <tp2/components/led.hpp>
-#include <tp4/components/interruptButton.hpp>
-#include <tp4/components/interruptTimer.hpp>
-#include <tp4/components/interrupts.hpp>
-
-enum class MachineState
-{
-    READY,
-    PRESSED,
-    RELEASED,
-};
+#include <tp6/components/colors.hpp>
+#include <tp6/components/interruptButton.hpp>
+#include <tp6/components/interruptTimer.hpp>
+#include <tp6/components/interrupts.hpp>
+#include <tp6/components/io.hpp>
+#include <tp6/components/led.hpp>
 
 constexpr double COUNTER_INCREMENT_S = 0.100;
 constexpr uint8_t COUNTER_DIVISOR = 2;
@@ -97,7 +90,7 @@ int main()
         ::counter = 0;
         InterruptTimer::start();
 
-        while (::buttonIsPressed && ::counter != MAX_COUNTER) {}
+        while (::buttonIsPressed && ::counter <= MAX_COUNTER) {}
 
         InterruptTimer::stop();
         InterruptButton::stop();
