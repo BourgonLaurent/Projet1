@@ -31,13 +31,6 @@
 #include <tp6/components/io.hpp>
 #include <tp6/components/led.hpp>
 
-enum class MachineState
-{
-    READY,
-    PRESSED,
-    RELEASED,
-};
-
 constexpr double COUNTER_INCREMENT_S = 0.100;
 constexpr uint8_t COUNTER_DIVISOR = 2;
 constexpr uint8_t MAX_COUNTER = 120;
