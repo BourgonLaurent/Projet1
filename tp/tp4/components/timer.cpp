@@ -59,7 +59,7 @@ void Timer::setPrescaleMode(const PrescaleMode &prescaleMode)
 
 Timer::PrescaleMode Timer::prescaleMode_ = PrescaleMode::CLK;
 
-uint16_t Timer::getPrescaleValue()
+uint16_t Timer::getPrescale()
 {
     return static_cast<uint16_t>(prescaleMode_);
 }

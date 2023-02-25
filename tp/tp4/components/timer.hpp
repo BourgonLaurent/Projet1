@@ -31,7 +31,9 @@ public:
     static void setPrescaleMode(const PrescaleMode &prescaleMode);
 
 protected:
-    static uint16_t getPrescaleValue();
+    static uint16_t getPrescale();
+
+private:
     static PrescaleMode prescaleMode_;
 };
 

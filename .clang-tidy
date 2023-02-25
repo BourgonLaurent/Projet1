@@ -53,5 +53,10 @@ CheckOptions:
   - key: readability-identifier-naming.PrivateMemberSuffix
     value: _
 
+  - key: readability-identifier-naming.StaticVariableCase
+    value: camelBack
+  - key: readability-identifier-naming.StaticVariableSuffix
+    value: _
+
   - key: cppcoreguidelines-macro-usage.AllowedRegexp
     value: ^DEBUG_*|F_CPU

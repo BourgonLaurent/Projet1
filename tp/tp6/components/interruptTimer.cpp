@@ -59,5 +59,5 @@ ISR(TIMER1_COMPA_vect)
 
 uint16_t InterruptTimer::getCyclesPerSeconds()
 {
-    return F_CPU / getPrescaleValue();
+    return F_CPU / getPrescale();
 }
