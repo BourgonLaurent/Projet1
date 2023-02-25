@@ -31,23 +31,23 @@ State table:
 +---------------+---------+---------+--------+------------+------+------+
 | WAIT          | 0       | <120    | X             | WAIT       | Off  |
 +---------------+---------+---------+--------+------------+------+------+
-| WAIT          | 1       | X       | X             | GREEN1     | Off  |
+| WAIT          | 1       | X       | X             | GREEN_FLASH     | Off  |
 +---------------+---------+---------+--------+------------+------+------+
-| WAIT          | 0       | 120     | X             | GREEN1     | Off  |
+| WAIT          | 0       | 120     | X             | GREEN_FLASH     | Off  |
 +---------------+---------+---------+--------+------------+------+------+
-| WAIT          | 1       | 120     | X             | GREEN1     | Off  |
+| WAIT          | 1       | 120     | X             | GREEN_FLASH     | Off  |
 +---------------+---------+---------+--------+------------+------+------+
-| GREEN1        | X       | X       | 0             | GREEN1     |Green |
+| GREEN_FLASH        | X       | X       | 0             | GREEN_FLASH     |Green |
 +---------------+---------+---------+--------+------------+------+------+
-| GREEN1        | X       | X       | 1             | RED1       |Green |
+| GREEN_FLASH        | X       | X       | 1             | RED_FLASH       |Green |
 +---------------+---------+---------+--------+------------+------+------+
-| RED1          | X       | X       | 0             | RED1       | Red  |
+| RED_FLASH          | X       | X       | 0             | RED_FLASH       | Red  |
 +---------------+---------+---------+--------+------------+------+------+
-| RED1          | X       | X       | 1             | GREEN2     | Red  |
+| RED_FLASH          | X       | X       | 1             | GREEN     | Red  |
 +---------------+---------+---------+--------+------------+------+------+
-| GREEN2        | X       | X       | 0             | GREEN2     |Green |
+| GREEN        | X       | X       | 0             | GREEN     |Green |
 +---------------+---------+---------+--------+------------+------+------+
-| GREEN2        | X       | X       | 1             | READY      |Green |
+| GREEN        | X       | X       | 1             | READY      |Green |
 +---------------+---------+---------+--------+------------+------+------+
  */
 
@@ -61,11 +61,11 @@ const uint8_t LED_RED = 1 << PB1;
 const uint8_t LED_OFF = 0;
 const uint8_t DELAY_DEBOUNCE_MS = 10;
 const uint16_t DELAY_FLASH_RED_MS = 500;
-const uint8_t DELAY_FLASH_GREEN_MS = 50;
-const uint16_t DELAY_GREEN2_MS = 1000;
-const uint16_t DELAY_RED1_MS = 2000;
-const uint8_t MASK_D2 = 1 << PD2;
+const uint16_t DELAY_FLASH_GREEN_MS = 50;
+const uint16_t DELAY_GREEN_HALF_SECOND_MS = 1000;
+const uint16_t DELAY_BEFORE_RED_FLASH_MS = 2000;
 volatile uint8_t gButton = 0;
+volatile uint8_t stateButton = 0;
 volatile uint8_t readyToChange = 0;
 volatile uint8_t counter = 0;
 uint8_t valueCounter = 0;
@@ -74,27 +74,49 @@ enum class States
 {
     READY,
     WAIT,
-    GREEN1,
-    RED1,
-    GREEN2
+    GREEN_FLASH,
+    RED_FLASH,
+    GREEN_HALF_SECOND
 };
 
 volatile States state = States::READY;
 
-bool isPressed()
+enum class Color
 {
-    return (PIND & MASK_D2);
+    OFF,
+    RED,
+    GREEN,
+};
+
+volatile Color currentColor = Color::OFF;
+
+void changeState(States nextState)
+{
+    if (readyToChange == 1)
+    {
+        readyToChange = 0;
+        state = nextState;
+    }
 }
 
-bool debounceButton()
+void setLed(Color currentColor)
 {
-    if (isPressed())
-    {
-        _delay_ms(DELAY_DEBOUNCE_MS);
-        return (isPressed());
-    }
+    if (currentColor == Color::OFF)
+        PORTB = LED_OFF;
 
-    return false;
+    if (currentColor == Color::GREEN)
+        PORTB = LED_GREEN;
+
+    if (currentColor == Color::RED)
+        PORTB = LED_RED;
+}
+template <typename T>
+void setLedFlash(Color currentColor, T DELAY)
+{
+    setLed(currentColor);
+    _delay_ms(DELAY);
+    setLed(Color::OFF);
+    _delay_ms(DELAY);
 }
 
 void starTime(uint8_t delay)
@@ -134,72 +156,53 @@ void setNextState()
         if ((counter == 120) || (gButton == 1))
         {
             valueCounter = counter;
-            state = States::GREEN1;
+            state = States::GREEN_FLASH;
             gButton = 0;
         }
 
-    case States::GREEN1:
-        if (readyToChange == 1)
-        {
-            readyToChange = 0;
-            state = States::RED1;
-        }
+    case States::GREEN_FLASH:
+        changeState(States::RED_FLASH);
         break;
 
-    case States::RED1:
-        if (readyToChange == 1)
-        {
-            readyToChange = 0;
-            state = States::GREEN2;
-        }
+    case States::RED_FLASH:
+        changeState(States::GREEN_HALF_SECOND);
         break;
 
-    case States::GREEN2:
-        if (readyToChange == 1)
-        {
-            readyToChange = 0;
-            state = States::READY;
-        }
+    case States::GREEN_HALF_SECOND:
+        changeState(States::READY);
         break;
     }
 }
 
 void setColorLed()
 {
-
     switch (state)
     {
     case States::READY:
     case States::WAIT:
-        PORTB = LED_OFF;
+        setLed(Color::OFF);
         break;
 
-    case States::GREEN1:
+    case States::GREEN_FLASH:
         for (uint8_t i = 0; i < 5; i++)
         {
-            PORTB = LED_GREEN;
-            _delay_ms(DELAY_FLASH_GREEN_MS);
-            PORTB = LED_OFF;
-            _delay_ms(DELAY_FLASH_GREEN_MS);
+            setLedFlash(Color::GREEN, DELAY_FLASH_GREEN_MS);
         }
         readyToChange = 1;
         break;
 
-    case States::RED1:
-        _delay_ms(DELAY_RED1_MS);
+    case States::RED_FLASH:
+        _delay_ms(DELAY_BEFORE_RED_FLASH_MS);
         for (uint8_t i = 0; 2 * i < valueCounter; i++)
         {
-            PORTB = LED_RED;
-            _delay_ms(DELAY_FLASH_RED_MS);
-            PORTB = LED_OFF;
-            _delay_ms(DELAY_FLASH_RED_MS);
+            setLedFlash(Color::RED, DELAY_FLASH_RED_MS);
         }
         readyToChange = 1;
         break;
 
-    case States::GREEN2:
-        PORTB = LED_GREEN;
-        _delay_ms(DELAY_GREEN2_MS);
+    case States::GREEN_HALF_SECOND:
+        setLed(Color::GREEN);
+        _delay_ms(DELAY_GREEN_HALF_SECOND_MS);
         readyToChange = 1;
         break;
     }

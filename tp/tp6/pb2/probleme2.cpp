@@ -26,11 +26,30 @@ const uint8_t DELAY_COLOR_AMBRER_MS = 5;
 const uint8_t LIMIT_LOW_VALUE = 70;
 const uint8_t LIMIT_HIGHT_VALUE = 180;
 
-void ledAMBRERColor()
+enum class Color
 {
-    PORTB = LED_GREEN;
+    RED,
+    GREEN,
+};
+
+void setLed(Color currentColor)
+{
+    if (currentColor == Color::GREEN)
+    {
+        PORTB = LED_GREEN;
+    }
+
+    if (currentColor == Color::RED)
+    {
+        PORTB = LED_RED;
+    }
+}
+
+void ledAmberColor()
+{
+    setLed(Color::GREEN);
     _delay_ms(DELAY_COLOR_AMBRER_MS);
-    PORTB = LED_RED;
+    setLed(Color::RED);
     _delay_ms(DELAY_COLOR_AMBRER_MS);
     return;
 }
@@ -48,11 +67,11 @@ int main()
         digitalValue = digitalValue >> 2; // The two LSB are not significant
 
         if (digitalValue < LIMIT_LOW_VALUE)
-            PORTB = LED_GREEN;
+            setLed(Color::GREEN);
         else if (digitalValue >= LIMIT_HIGHT_VALUE)
-            PORTB = LED_RED;
+            setLed(Color::RED);
         else
-            ledAMBRERColor();
+            ledAmberColor();
     }
 
     return 0;
