@@ -22,33 +22,33 @@ an interruption when the button is pressed and released.
 
 
 State table:
-+---------------+---------+---------+--------+------------+-------+-----+
-| Current state | gButton | counter | readyToChange | Next state | LED  |
-+---------------+---------+---------+--------+------------+------+------+
-| READY         | 0       | X       | X             | READY      | Off  |
-+---------------+---------+---------+--------+------------+------+------+
-| READY         | 1       | X       | X             | WAIT       | Off  |
-+---------------+---------+---------+--------+------------+------+------+
-| WAIT          | 0       | <120    | X             | WAIT       | Off  |
-+---------------+---------+---------+--------+------------+------+------+
-| WAIT          | 1       | X       | X             | GREEN_FLASH     | Off  |
-+---------------+---------+---------+--------+------------+------+------+
-| WAIT          | 0       | 120     | X             | GREEN_FLASH     | Off  |
-+---------------+---------+---------+--------+------------+------+------+
-| WAIT          | 1       | 120     | X             | GREEN_FLASH     | Off  |
-+---------------+---------+---------+--------+------------+------+------+
-| GREEN_FLASH        | X       | X       | 0             | GREEN_FLASH     |Green |
-+---------------+---------+---------+--------+------------+------+------+
-| GREEN_FLASH        | X       | X       | 1             | RED_FLASH       |Green |
-+---------------+---------+---------+--------+------------+------+------+
-| RED_FLASH          | X       | X       | 0             | RED_FLASH       | Red  |
-+---------------+---------+---------+--------+------------+------+------+
-| RED_FLASH          | X       | X       | 1             | GREEN     | Red  |
-+---------------+---------+---------+--------+------------+------+------+
-| GREEN        | X       | X       | 0             | GREEN     |Green |
-+---------------+---------+---------+--------+------------+------+------+
-| GREEN        | X       | X       | 1             | READY      |Green |
-+---------------+---------+---------+--------+------------+------+------+
++---------------+---------+---------+---------------+---------------+-----+
+| Current state | gButton | counter | readyToChange | Next state  | LED   |
++---------------+---------+---------+---------------+-------------+-------+
+| READY         | 0       | X       | X             | READY       | Off   |
++---------------+---------+---------+---------------+-------------+-------+
+| READY         | 1       | X       | X             | WAIT        | Off   |
++---------------+---------+---------+---------------+-------------+-------+
+| WAIT          | 0       | <120    | X             | WAIT        | Off   |
++---------------+---------+---------+---------------+-------------+-------+
+| WAIT          | 1       | X       | X             | GREEN_FLASH | Off   |
++---------------+---------+---------+---------------+-------------+-------+
+| WAIT          | 0       | 120     | X             | GREEN_FLASH | Off   |
++---------------+---------+---------+---------------+-------------+-------+
+| WAIT          | 1       | 120     | X             | GREEN_FLASH | Off   |
++---------------+---------+---------+---------------+-------------+-------+
+| GREEN_FLASH   | X       | X       | 0             | GREEN_FLASH | Green |
++---------------+---------+---------+---------------+-------------+-------+
+| GREEN_FLASH   | X       | X       | 1             | RED_FLASH   | Green |
++---------------+---------+---------+---------------+-------------+-------+
+| RED_FLASH     | X       | X       | 0             | RED_FLASH   | Red   |
++---------------+---------+---------+---------------+-------------+-------+
+| RED_FLASH     | X       | X       | 1             | GREEN       | Red   |
++---------------+---------+---------+---------------+-------------+-------+
+| GREEN         | X       | X       | 0             | GREEN       | Green |
++---------------+---------+---------+---------------+-------------+-------+
+| GREEN         | X       | X       | 1             | READY       | Green |
++---------------+---------+---------+---------------+-------------+-------+
  */
 
 #include <avr/io.h>
@@ -64,6 +64,8 @@ const uint16_t DELAY_FLASH_RED_MS = 500;
 const uint16_t DELAY_FLASH_GREEN_MS = 50;
 const uint16_t DELAY_GREEN_HALF_SECOND_MS = 1000;
 const uint16_t DELAY_BEFORE_RED_FLASH_MS = 2000;
+const uint8_t MAXIMUM_VALUE_COUNTER = 120;
+const uint16_t TIMER_VALUE_FOR_COMPARE = 781; // top value divided by 10 (7812/10) for 100ms
 volatile uint8_t gButton = 0;
 volatile uint8_t stateButton = 0;
 volatile uint8_t readyToChange = 0;
@@ -126,9 +128,9 @@ void starTime(uint8_t delay)
     TCCR1A = 0;
     TCCR1B = (1 << CS10) | (1 << CS12) | (1 << WGM12); // clk/1024 from prescaler and mode CTC
     TCCR1C = 0;
-    OCR1A = 781 * delay;    // output compare every 100ms seconds (7812/10)
-    TIMSK1 = (1 << OCIE1A); // enable output compare A match interrupt
-    TIFR1 = (1 << OCF1A);   // interrupt request when counter value reaches the TOP value
+    OCR1A = TIMER_VALUE_FOR_COMPARE * delay; // output compare every 100ms seconds
+    TIMSK1 = (1 << OCIE1A);                  // enable output compare A match interrupt
+    TIFR1 = (1 << OCF1A);                    // interrupt request when counter value reaches the TOP value
     sei();
 }
 
@@ -153,7 +155,7 @@ void setNextState()
         break;
 
     case States::WAIT:
-        if ((counter == 120) || (gButton == 1))
+        if ((counter == MAXIMUM_VALUE_COUNTER) || (gButton == 1))
         {
             valueCounter = counter;
             state = States::GREEN_FLASH;
