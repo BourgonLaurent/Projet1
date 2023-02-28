@@ -16,16 +16,18 @@
 # Library name
 LIB=library
 
+# ==== INCLUDE C++ SOURCES HERE ====
+CPP-SOURCES=led.cpp
+
 # Compiler options
 COMPILER=avr-gcc
 CPP-VERSION=c++14
 MCU=atmega324pa
-CPP-SOURCES=led.cpp
 
 # Linker options
 LINKER=avr-ar
 LINKER-OPTIONS=crs
-OBJECT-FILES=led.o
+OBJECT-FILES=$(CPP-SOURCES:.cpp=.o)
 LIBRARY-FILE=$(LIB).a
 
 # File clean options
