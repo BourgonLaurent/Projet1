@@ -1,0 +1,83 @@
+# Common variables & rules to the project
+#
+# Team #4546
+# 	Catalina-Andrea Araya-Figueroa
+# 	Mehdi Benouhoud
+# 	Laurent Bourgon
+# 	Ihsane Majdoubi
+#
+# Requirements:
+# 	`make clean`: set ARTIFACTS
+#		ex. ARTIFACTS=$(OBJECTS) $(OBJECTS:.o=.d)
+#	`make install`: set HEXTRG
+#		ex. HEXTRG=$(HEXROMTRG) $(PROJECTNAME).ee.hex
+#
+# March 1, 2023
+
+##### CONFIG #####
+
+# Microcontroller
+MCU=atmega324pa
+F_CPU=8000000
+
+
+####### Compiler #######
+CC=avr-gcc
+CCVERSION=c++14
+
+# Optimization level
+# s (size opt), 1, 2, 3 or 0 (off)
+OPTLEVEL=s
+
+# C
+CFLAGS=-I. -I/usr/include/simavr \
+	-MMD $(INC) -g \
+	-mmcu=$(MCU) -DF_CPU=$(F_CPU)UL \
+	-O$(OPTLEVEL) \
+	-std=$(CCVERSION) \
+	-fpack-struct -fshort-enums \
+	-funsigned-bitfields -funsigned-char \
+	-Wall
+
+# C++
+CXXFLAGS=-fno-exceptions
+
+# Linker
+LDFLAGS=-Wl,-Map,$(TRG).map -mmcu=$(MCU)
+
+# Archiver
+ARCHIVER=avr-ar
+ARCHIVERFLAGS=-crs
+
+# Commands
+OBJCOPY=avr-objcopy
+AVRDUDE=avrdude
+REMOVE=rm -f
+
+HEXFORMAT=ihex
+
+AVRDUDE_PROGRAMMERID=usbasp
+
+##### RULES #####
+
+# make clean: delete compilation files
+clean:
+	$(REMOVE) $(ARTIFACTS)
+
+# Build objects
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+%.o: %.cpp
+	$(CC) $(CFLAGS) $(CXXFLAGS) -c $< -o $@
+
+# Include dependencies
+-include *.d
+
+%.hex: %.elf
+	$(OBJCOPY) -j .text -j .data \
+		-O $(HEXFORMAT) $< $@
+
+install: $(HEXROMTRG)
+	$(AVRDUDE) -c $(AVRDUDE_PROGRAMMERID)   \
+	-p $(MCU) -P -e -U flash:w:$(HEXROMTRG)

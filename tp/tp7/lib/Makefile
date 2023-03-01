@@ -1,51 +1,39 @@
+# Build library
+#
 # Team #4546
+# 	Catalina-Andrea Araya-Figueroa
+# 	Mehdi Benouhoud
+# 	Laurent Bourgon
+# 	Ihsane Majdoubi
 #
-# Authors:
-# 	- Mehdi Benouhoud
-# 	- Laurent Bourgon
-# 	- Ihsane Majdoubi
-# 	- Catalina-Andrea Araya-Figueroa
+# March 1, 2023
 #
-# Date: March 1st, 2023
+# all (default): build the .a of the library
+# clean: remove all compilation files
 
-# Making PHONY targets
-.PHONY: all build clean
+##### CONFIG #####
 
-# Library variables
+# Name of the library (must start with 'lib')
+LIBNAME=lib1900
 
-# Library name
-LIB=embedded1900
+LIB=$(LIBNAME).a
 
-# ==== INCLUDE C++ SOURCES HERE ====
-CPP-SOURCES=led.cpp
-# ====
+# Source files
+SOURCES=$(wildcard *.cpp)
+OBJECTS=$(SOURCES:.cpp=.o)
 
-# Compiler options
-COMPILER=avr-gcc
-CPP-VERSION=c++14
-MCU=atmega324pa
+ARTIFACTS=$(LIB) $(OBJECTS) $(OBJECTS:.o=.d)
 
-# Linker options
-LINKER=avr-ar
-LINKER-OPTIONS=crs
-OBJECT-FILES=$(CPP-SOURCES:.cpp=.o)
-LIBRARY-FILE=lib$(LIB).a
 
-# File clean options
-REMOVE=rm
-REMOVE-FLAGS=-f
-ARTIFACTS=$(OBJECT-FILES) $(LIBRARY-FILE)
+##### RULES #####
 
-all: build
+.PHONY: all clean
 
-build:
-	@echo [$(LIB)] Compiling library...
-	$(COMPILER) -I. -std=$(CPP-VERSION) -mmcu=$(MCU) -c $(CPP-SOURCES) 
-	@echo [$(LIB)] Compiled .o files
-	@echo [$(LIB)] Linking/archiving links...
-	$(LINKER) $(LINKER-OPTIONS) $(LIBRARY-FILE) $(OBJECT-FILES)
-	@echo [$(LIB)] Linked/archived links into $(LIBRARY-FILE)
-clean:
-	@echo [$(LIB)] Cleaning files...
-	$(REMOVE) $(REMOVE-FLAGS) $(ARTIFACTS)
-	@echo [$(LIB)] Cleaned files
+# make all (default): build library
+all: $(LIB)
+
+# Include common variables and rules
+include ../../../Makefile.common
+
+$(LIB): $(OBJECTS)
+	$(ARCHIVER) $(ARCHIVERFLAGS) $(LIB) $(OBJECTS)

@@ -15,6 +15,7 @@
     "C_Cpp.loggingLevel": "Debug",
     "files.associations": {
         "iostream": "cpp",
-        "iomanip": "cpp"
+        "iomanip": "cpp",
+        "Makefile.common": "makefile"
     },
 }
