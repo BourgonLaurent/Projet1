@@ -18,7 +18,7 @@
 
 #include <avr/io.h>
 
-#include <colors.hpp>
+#include "colors.hpp"
 
 class LED
 {
@@ -26,7 +26,7 @@ public:
     LED(volatile uint8_t* dataDirectionRegister, volatile uint8_t* port,
         const uint8_t plusBit, const uint8_t minusBit);
 
-    void setColor(const Color& color);
+    void setColor(const Color &color);
 
 private:
     volatile uint8_t* port_;

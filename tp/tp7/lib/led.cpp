@@ -12,12 +12,12 @@
  * \date January 19, 2023
  */
 
+#include "led.hpp"
+
 #include <avr/io.h>
 
-#include <colors.hpp>
-#include <io.hpp>
-
-#include "led.hpp"
+#include "colors.hpp"
+#include "io.hpp"
 
 LED::LED(volatile uint8_t* dataDirectionRegister, volatile uint8_t* port,
          const uint8_t plusBit, const uint8_t minusBit)
@@ -27,7 +27,7 @@ LED::LED(volatile uint8_t* dataDirectionRegister, volatile uint8_t* port,
     io::setOutput(dataDirectionRegister, minusBit);
 };
 
-void LED::setColor(const Color& color)
+void LED::setColor(const Color &color)
 {
     switch (color) {
         case Color::OFF :

@@ -23,10 +23,10 @@ PROJECTNAME=TP7_exec
 PRJSRC=main.cpp
 
 # Additional inclusions (ex: -I/path/to/mydir)
-INC=
+INC=-I../../
 
 # Librairies (ex: -lmylib)
-LIBS=
+LIBS=-l1900 -L ../lib
 
 ####### Target #######
 
