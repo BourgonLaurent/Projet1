@@ -13,27 +13,35 @@
 #include <avr/io.h>
 
 namespace io {
-    static inline void setActive(volatile uint8_t* port, const uint8_t bit)
+    using Register = volatile uint8_t*;
+    using Port = Register;
+    using Pin = Register;
+    using DataDirectionRegister = Register;
+    using PinPosition = uint8_t;
+
+    static inline void setActive(Register port, const PinPosition bit)
     {
         *port |= _BV(bit);
     }
 
-    static inline void clear(volatile uint8_t* port, const uint8_t bit)
+    static inline void clear(Register port, const PinPosition bit)
     {
         *port &= ~_BV(bit);
     }
 
-    static inline bool get(volatile uint8_t* pin, const uint8_t bit)
+    static inline bool get(Register pin, const PinPosition bit)
     {
         return *pin & _BV(bit);
     }
 
-    static inline void setInput(volatile uint8_t* port, const uint8_t bit)
+    static inline void setInput(DataDirectionRegister port,
+                                const PinPosition bit)
     {
         clear(port, bit);
     }
 
-    static inline void setOutput(volatile uint8_t* port, const uint8_t bit)
+    static inline void setOutput(DataDirectionRegister port,
+                                 const PinPosition bit)
     {
         setActive(port, bit);
     }

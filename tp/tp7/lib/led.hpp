@@ -19,19 +19,20 @@
 #include <avr/io.h>
 
 #include <lib/colors.hpp>
+#include <lib/io.hpp>
 
 class LED
 {
 public:
-    LED(volatile uint8_t* dataDirectionRegister, volatile uint8_t* port,
-        const uint8_t plusBit, const uint8_t minusBit);
+    LED(io::DataDirectionRegister dataDirectionRegister, io::Port port,
+        const io::PinPosition plus, const io::PinPosition minus);
 
     void setColor(const Color &color);
 
 private:
-    volatile uint8_t* port_;
-    const uint8_t plusBit_;
-    const uint8_t minusBit_;
+    io::Port port_;
+    const io::PinPosition plus_;
+    const io::PinPosition minus_;
 };
 
 #endif

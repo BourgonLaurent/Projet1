@@ -30,8 +30,8 @@ public:
 
 private:
     volatile uint8_t* port_;
-    const uint8_t plusBit_;
-    const uint8_t minusBit_;
+    const uint8_t plus_;
+    const uint8_t minus_;
 };
 
 #endif
