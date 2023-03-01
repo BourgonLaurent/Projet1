@@ -6,7 +6,7 @@
 # 	- Ihsane Majdoubi
 # 	- Catalina-Andrea Araya-Figueroa
 #
-# Date: February 28th, 2023
+# Date: March 1st, 2023
 
 # Making PHONY targets
 .PHONY: all build clean
@@ -14,10 +14,11 @@
 # Library variables
 
 # Library name
-LIB=library
+LIB=embedded1900
 
 # ==== INCLUDE C++ SOURCES HERE ====
 CPP-SOURCES=led.cpp
+# ====
 
 # Compiler options
 COMPILER=avr-gcc
@@ -28,7 +29,7 @@ MCU=atmega324pa
 LINKER=avr-ar
 LINKER-OPTIONS=crs
 OBJECT-FILES=$(CPP-SOURCES:.cpp=.o)
-LIBRARY-FILE=$(LIB).a
+LIBRARY-FILE=lib$(LIB).a
 
 # File clean options
 REMOVE=rm
@@ -46,5 +47,5 @@ build:
 	@echo [$(LIB)] Linked/archived links into $(LIBRARY-FILE)
 clean:
 	@echo [$(LIB)] Cleaning files...
-	rm -f $(ARTIFACTS)
+	$(REMOVE) $(REMOVE-FLAGS) $(ARTIFACTS)
 	@echo [$(LIB)] Cleaned files
