@@ -19,18 +19,21 @@
 #include <lib/colors.hpp>
 #include <lib/io.hpp>
 
-class LED
+class Led
 {
 public:
-    LED(io::DataDirectionRegister dataDirectionRegister, io::Port port,
+    Led(io::DataDirectionRegister dataDirectionRegister, io::Port port,
         const io::PinPosition plus, const io::PinPosition minus);
 
     void setColor(const Color &color);
+    void setAmberForMs(const uint16_t durationMs);
 
 private:
     io::Port port_;
     const io::PinPosition plus_;
     const io::PinPosition minus_;
+
+    constexpr static uint16_t AMBER_DELAY_US = 500;
 };
 
 #endif

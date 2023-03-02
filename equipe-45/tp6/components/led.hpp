@@ -20,10 +20,10 @@
 
 #include <tp6/components/colors.hpp>
 
-class LED
+class Led
 {
 public:
-    LED(volatile uint8_t* dataDirectionRegister, volatile uint8_t* port,
+    Led(volatile uint8_t* dataDirectionRegister, volatile uint8_t* port,
         const uint8_t plusBit, const uint8_t minusBit);
 
     void setColor(const Color &color);

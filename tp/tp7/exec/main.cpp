@@ -15,12 +15,16 @@
  */
 
 #include <avr/io.h>
+#include <util/delay.h>
 
 #include <lib/led.hpp>
 
 int main()
 {
-    LED led(&DDRB, &PORTB, PB0, PB1);
-    led.setColor(Color::GREEN);
+    Led led(&DDRB, &PORTB, PB0, PB1);
+    while (true) {
+        led.setAmberForMs(1000);
+        _delay_ms(1000);
+    }
     return 0;
 }
