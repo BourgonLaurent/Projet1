@@ -10,8 +10,6 @@
 #ifndef COLORS_H
 #define COLORS_H
 
-#include <avr/io.h>
-
 enum class Color
 {
     OFF,

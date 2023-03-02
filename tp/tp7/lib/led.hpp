@@ -16,8 +16,6 @@
 #ifndef LED_H
 #define LED_H
 
-#include <avr/io.h>
-
 #include <lib/colors.hpp>
 #include <lib/io.hpp>
 

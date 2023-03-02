@@ -14,8 +14,6 @@
 
 #include "led.hpp"
 
-#include <avr/io.h>
-
 #include <lib/colors.hpp>
 #include <lib/io.hpp>
 

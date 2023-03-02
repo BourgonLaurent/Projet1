@@ -16,7 +16,7 @@
 
 #include <avr/io.h>
 
-#include <tp7/lib/led.hpp>
+#include <lib/led.hpp>
 
 int main()
 {
