@@ -2,7 +2,7 @@
  * Tests lib1900.
  *
  * Team #4546
- * \author Catalina-Andrea Araya-Figueroa
+ * \author Catalina Andrea Araya Figueroa
  * \author Mehdi Benouhoud
  * \author Laurent Bourgon
  * \author Ihsane Majdoubi

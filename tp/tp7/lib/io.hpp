@@ -1,10 +1,13 @@
 /**
  * Bit manipulation.
  *
- * Team #45
+ * Team #4546
+ * \author Catalina Andrea Araya Figueroa
  * \author Mehdi Benouhoud
  * \author Laurent Bourgon
- * \date January 19, 2023
+ * \author Ihsane Majdoubi
+ *
+ * \date February 16, 2023
  */
 
 #ifndef IO_H

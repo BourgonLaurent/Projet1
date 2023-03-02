@@ -1,7 +1,7 @@
 # Compile C/C++ for AVR
 #
 # Team #4546
-# 	Catalina-Andrea Araya-Figueroa
+# 	Catalina Andrea Araya Figueroa
 # 	Mehdi Benouhoud
 # 	Laurent Bourgon
 # 	Ihsane Majdoubi
