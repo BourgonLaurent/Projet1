@@ -30,7 +30,7 @@
 \section{Description de la librairie}
 
 \subsection{Classes}
-\subsubsection{LED}
+\subsubsection{Led}
 Depuis le début du cours, nous utilisons un diode électro-luminescente située
 sur le circuit imprimé du robot. Cette diode est dite  \textquote{bi-colore}, c'est-à-dire
 qu'elle peut s'allumer en rouge ou en vert, dépendament du sens du courant qu'on
@@ -39,14 +39,14 @@ on obtient une troisième couleur: ambrée.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.5]{LED_diagramme_classe}
-    \caption{Diagramme de classe UML de \textbf{LED}}
+    \includegraphics[scale=0.75]{LED_diagramme_classe}
+    \caption{Diagramme de classe UML de \textbf{Led}}
 \end{figure}
 
 La classe est doté d'un constructeur, nous permettant d'indiquer où est branchée
 la diode.
 \begin{verbatim}
-    LED(io::DataDirectionRegister dataDirectionRegister, io::Port port,
+    Led(io::DataDirectionRegister dataDirectionRegister, io::Port port,
         const io::PinPosition plus, const io::PinPosition minus)
 \end{verbatim}
 

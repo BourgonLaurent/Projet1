@@ -21,7 +21,7 @@
 
 int main()
 {
-    LED led(&DDRB, &PORTB, PB0, PB1);
+    Led led(&DDRB, &PORTB, PB0, PB1);
     while (true) {
         led.setAmberForMs(1000);
         _delay_ms(1000);

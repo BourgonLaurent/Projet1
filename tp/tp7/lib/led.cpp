@@ -19,7 +19,7 @@
 #include <lib/colors.hpp>
 #include <lib/io.hpp>
 
-LED::LED(io::DataDirectionRegister dataDirectionRegister, io::Port port,
+Led::Led(io::DataDirectionRegister dataDirectionRegister, io::Port port,
          const io::PinPosition plus, const io::PinPosition minus)
     : port_(port), plus_(plus), minus_(minus)
 {
@@ -27,7 +27,7 @@ LED::LED(io::DataDirectionRegister dataDirectionRegister, io::Port port,
     io::setOutput(dataDirectionRegister, minus_);
 };
 
-void LED::setColor(const Color &color)
+void Led::setColor(const Color &color)
 {
     switch (color) {
         case Color::OFF :
@@ -47,7 +47,7 @@ void LED::setColor(const Color &color)
     }
 }
 
-void LED::setAmberForMs(const uint16_t durationMs)
+void Led::setAmberForMs(const uint16_t durationMs)
 {
     for (uint16_t i = 0; i < durationMs; i++) {
         setColor(Color::GREEN);
@@ -55,4 +55,5 @@ void LED::setAmberForMs(const uint16_t durationMs)
         setColor(Color::RED);
         _delay_us(AMBER_DELAY_US);
     }
+    setColor(Color::OFF);
 }
