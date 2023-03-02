@@ -41,8 +41,8 @@ void LED::setColor(const Color &color)
             break;
 
         case Color::RED :
-            io::setActive(port_, plus_);
             io::clear(port_, minus_);
+            io::setActive(port_, plus_);
             break;
     }
 }
