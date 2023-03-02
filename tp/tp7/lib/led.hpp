@@ -33,7 +33,7 @@ private:
     const io::PinPosition plus_;
     const io::PinPosition minus_;
 
-    const static double AMBER_DELAY_US = 500;
+    constexpr static double AMBER_DELAY_US = 500;
 };
 
 #endif
