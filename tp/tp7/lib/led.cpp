@@ -16,8 +16,8 @@
 
 #include <avr/io.h>
 
-#include "colors.hpp"
-#include "io.hpp"
+#include <lib/colors.hpp>
+#include <lib/io.hpp>
 
 LED::LED(volatile uint8_t* dataDirectionRegister, volatile uint8_t* port,
          const uint8_t plusBit, const uint8_t minusBit)

@@ -16,6 +16,8 @@
 # Name of the library (must start with 'lib')
 LIBNAME=lib1900
 
+INC=-I../
+
 LIB=$(LIBNAME).a
 
 # Source files

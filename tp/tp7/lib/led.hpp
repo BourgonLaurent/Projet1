@@ -18,7 +18,7 @@
 
 #include <avr/io.h>
 
-#include "colors.hpp"
+#include <lib/colors.hpp>
 
 class LED
 {
