@@ -17,10 +17,15 @@
 
 namespace io {
     using Register = volatile uint8_t*;
+    using DataDirectionRegister = Register;
     using Port = Register;
     using Pin = Register;
-    using DataDirectionRegister = Register;
     using PinPosition = uint8_t;
+
+    static inline bool get(Register pin, const PinPosition bit)
+    {
+        return *pin & _BV(bit);
+    }
 
     static inline void setActive(Register port, const PinPosition bit)
     {
@@ -30,11 +35,6 @@ namespace io {
     static inline void clear(Register port, const PinPosition bit)
     {
         *port &= ~_BV(bit);
-    }
-
-    static inline bool get(Register pin, const PinPosition bit)
-    {
-        return *pin & _BV(bit);
     }
 
     static inline void setInput(DataDirectionRegister port,
