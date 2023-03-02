@@ -19,12 +19,6 @@
 #include "io.hpp"
 
 namespace interrupts {
-    static inline void clear()
-    {
-        // (p.68) External Interrupt Flag Register
-        io::setActive(&EIFR, INTF0);
-    }
-
     static inline void startCatching()
     {
         sei();
