@@ -14,9 +14,6 @@
 #define INTERRUPTS_H
 
 #include <avr/interrupt.h>
-#include <avr/io.h>
-
-#include "io.hpp"
 
 namespace interrupts {
     static inline void startCatching()
