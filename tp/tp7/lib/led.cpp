@@ -14,9 +14,10 @@
 
 #include "led.hpp"
 
-#include <colors.hpp>
-#include <io.hpp>
 #include <util/delay.h>
+
+#include <lib/colors.hpp>
+#include <lib/io.hpp>
 
 LED::LED(io::DataDirectionRegister dataDirectionRegister, io::Port port,
          const io::PinPosition plus, const io::PinPosition minus)
