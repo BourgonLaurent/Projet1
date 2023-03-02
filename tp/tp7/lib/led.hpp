@@ -26,11 +26,14 @@ public:
         const io::PinPosition plus, const io::PinPosition minus);
 
     void setColor(const Color &color);
+    void setAmberForMs(const uint16_t durationMs);
 
 private:
     io::Port port_;
     const io::PinPosition plus_;
     const io::PinPosition minus_;
+
+    const static double AMBER_DELAY_US = 500;
 };
 
 #endif

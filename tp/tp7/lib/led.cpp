@@ -14,8 +14,9 @@
 
 #include "led.hpp"
 
-#include <lib/colors.hpp>
-#include <lib/io.hpp>
+#include <colors.hpp>
+#include <io.hpp>
+#include <util/delay.h>
 
 LED::LED(io::DataDirectionRegister dataDirectionRegister, io::Port port,
          const io::PinPosition plus, const io::PinPosition minus)
@@ -42,5 +43,15 @@ void LED::setColor(const Color &color)
             io::setActive(port_, plus_);
             io::clear(port_, minus_);
             break;
+    }
+}
+
+void LED::setAmberForMs(const uint16_t durationMs)
+{
+    for (uint16_t i = 0; i < durationMs; i++) {
+        this->setColor(Color::GREEN);
+        _delay_us(LED::AMBER_DELAY_US);
+        this->setColor(Color::RED);
+        _delay_us(LED::AMBER_DELAY_US);
     }
 }
