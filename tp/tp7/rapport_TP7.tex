@@ -5,6 +5,8 @@
 \usepackage{fancyhdr}
 \usepackage{csquotes}
 \usepackage[french]{babel}
+\usepackage{graphicx}
+\graphicspath{ {./images_rapport/} }
 
 \pagestyle{fancy}
 % \fancyhead[R]{} - Active if we don't want the base fancy header
@@ -34,7 +36,35 @@ sur le circuit imprimé du robot. Cette diode est dite  \textquote{bi-colore}, c
 qu'elle peut s'allumer en rouge ou en vert, dépendament du sens du courant qu'on
 lui transmets. En faisant clignoter rapidement la diode en alternant la couleur,
 on obtient une troisième couleur: ambrée.
-% METTRE DIAGRAMME DE CLASSE ICI
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.5]{LED_diagramme_classe}
+    \caption{Diagramme de classe UML de \textbf{LED}}
+\end{figure}
+
+La classe est doté d'un constructeur, nous permettant d'indiquer où est branchée
+la diode.
+\begin{verbatim}
+    LED(io::DataDirectionRegister dataDirectionRegister, io::Port port,
+        const io::PinPosition plus, const io::PinPosition minus)
+\end{verbatim}
+
+\verb|dataDirectionRegister| indique le registre de direction des données où la
+diode est branchée, \verb|port| indique son port et finalement
+\verb|plus| et \verb|minus| indique les broches sur lesquelles sont branchés la
+respectivement cathode et l'anode de la diode. Il est important de respecter ce
+sens afin de permettre à la méthode \verb|setColor(const Color &color)| de
+fonctionner adéquatement.
+\\ \\
+La méthode \verb|setColor(const Color &color)| permet d'allumer la diode en rouge
+ou en vert, en passant en paramètre \verb|Color::RED| ou \verb|Color::GREEN|.
+\\ \\
+La méthode \verb|setAmberForMs(const uint16_t durationMs)| permets d'allumer la
+diode en ambrée. Nous devont passer une durée (en milisecondes) en paramètre. En
+effet, puisque la diode doit alterner rapidement entre le rouge et le vert, il
+est impossible d'effectuer cette opération indéfiniement.
+% TODO Peut-être mieux expliquer pourquoi on peut pas faire ça?
 \newpage
 \section{Modifications apportées au \textit{Makefile} de départ}
 
