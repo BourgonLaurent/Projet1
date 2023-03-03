@@ -95,12 +95,14 @@ InterruptTimer::getFlooredPrescaleMode(const uint16_t idealPrescale)
 
 uint16_t InterruptTimer::getCyclesPerSeconds()
 {
+    PrescaleMode prescaleMode = getPrescaleMode();
+
     // Prevent dividing by 0
-    if (prescaleMode_ == PrescaleMode::OFF) {
+    if (prescaleMode == PrescaleMode::OFF) {
         return 0;
     }
 
-    return F_CPU / static_cast<uint16_t>(prescaleMode_);
+    return F_CPU / static_cast<uint16_t>(prescaleMode);
 }
 
 void InterruptTimer::setMode(const Mode &mode)
@@ -123,14 +125,34 @@ void InterruptTimer::setMode(const Mode &mode)
     }
 }
 
-InterruptTimer::PrescaleMode InterruptTimer::prescaleMode_ = PrescaleMode::OFF;
+InterruptTimer::PrescaleMode InterruptTimer::getPrescaleMode()
+{
+    // Following Table 16-6 (p.131)
+    switch (TCCR1B & (_BV(CS12) | _BV(CS11) | _BV(CS10))) {
+        case _BV(CS10) :
+            return PrescaleMode::CLK;
+
+        case _BV(CS11) :
+            return PrescaleMode::CLK8;
+
+        case _BV(CS11) | _BV(CS10) :
+            return PrescaleMode::CLK64;
+
+        case _BV(CS12) :
+            return PrescaleMode::CLK256;
+
+        case _BV(CS12) | _BV(CS10) :
+            return PrescaleMode::CLK1024;
+
+        default :
+            return PrescaleMode::OFF;
+    }
+}
 
 void InterruptTimer::setPrescaleMode(const PrescaleMode &prescaleMode)
 {
-    prescaleMode_ = prescaleMode;
-
     // Following Table 16-6 (p.131)
-    switch (prescaleMode_) {
+    switch (prescaleMode) {
         case PrescaleMode::OFF :
             io::clear(&TCCR1B, CS12);
             io::clear(&TCCR1B, CS11);

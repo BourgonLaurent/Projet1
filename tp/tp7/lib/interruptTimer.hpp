@@ -48,8 +48,8 @@ private:
         CLK256 = 256,
         CLK1024 = 1024
     };
-    static PrescaleMode prescaleMode_;
 
+    static PrescaleMode getPrescaleMode();
     static void setPrescaleMode(const PrescaleMode &prescaleMode);
     static void setBestPrescaleMode(const double delayS);
     static PrescaleMode getFlooredPrescaleMode(const uint16_t idealPrescale);

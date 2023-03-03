@@ -32,7 +32,7 @@ int main()
 {
     Led led(&DDRB, &PORTB, PB0, PB1);
 
-    InterruptTimer::initialize(2, InterruptTimer::Mode::CLEAR_ON_COMPARE);
+    InterruptTimer::initialize(1, InterruptTimer::Mode::CLEAR_ON_COMPARE);
     InterruptTimer::start();
 
     interrupts::startCatching();
