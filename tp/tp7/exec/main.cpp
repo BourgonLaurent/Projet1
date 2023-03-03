@@ -38,7 +38,7 @@ int main()
     interrupts::startCatching();
 
     while (true) {
-        led.setColor(::isGreen ? Color::GREEN : Color::RED);
+        led.setColor(::isGreen ? Led::Color::GREEN : Led::Color::RED);
     }
 
     return 0;

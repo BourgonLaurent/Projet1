@@ -1,14 +1,16 @@
 /**
- * Control of an LED.
+ * Control of a bicolor LED.
  *
  * Hardware Identification:
- * /!\ The Data Direction Register (`dataDirectionRegister`)
- *     will be set automatically.
- * OUTPUT: Bicolor LED connected plus to `plusBit` and minus to `minusBit`.
+ * WARNING: The Data Direction Register will be set automatically.
+ * OUTPUT: Bicolor LED connected plus to `plus` and minus to `minus`.
  *
- * Team #45
+ * Team #4546
+ * \author Catalina Andrea Araya Figueroa
  * \author Mehdi Benouhoud
  * \author Laurent Bourgon
+ * \author Ihsane Majdoubi
+ *
  * \date January 19, 2023
  */
 
@@ -16,7 +18,6 @@
 
 #include <util/delay.h>
 
-#include <lib/colors.hpp>
 #include <lib/io.hpp>
 
 Led::Led(io::DataDirectionRegister dataDirectionRegister, io::Port port,
