@@ -1,22 +1,22 @@
 /**
- * Implementation of the control of an LED.
+ * Implementation of the control of a bicolor LED.
  *
  * Hardware Identification:
- * /!\ The Data Direction Register (`dataDirectionRegister`)
- *     will be set automatically.
- * OUTPUT: Bicolor LED connected plus to `plusBit` and minus to `minusBit`.
+ * WARNING: The Data Direction Register will be set automatically.
+ * OUTPUT: Bicolor LED connected plus to `plus` and minus to `minus`.
  *
- *
- * Team #45
+ * Team #4546
+ * \author Catalina Andrea Araya Figueroa
  * \author Mehdi Benouhoud
  * \author Laurent Bourgon
+ * \author Ihsane Majdoubi
+ *
  * \date January 19, 2023
  */
 
 #ifndef LED_H
 #define LED_H
 
-#include <lib/colors.hpp>
 #include <lib/io.hpp>
 
 class Led
@@ -24,6 +24,13 @@ class Led
 public:
     Led(io::DataDirectionRegister dataDirectionRegister, io::Port port,
         const io::PinPosition plus, const io::PinPosition minus);
+
+    enum class Color
+    {
+        OFF,
+        GREEN,
+        RED
+    };
 
     void setColor(const Color &color);
     void setAmberForMs(const uint16_t durationMs);
