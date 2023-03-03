@@ -1,0 +1,20 @@
+name: clang-format
+on: pull_request
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: C/C++ Linter
+        id: linter
+        uses: cpp-linter/cpp-linter-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          style: file
+          tidy-checks: '-*'
+          files-changed-only: true
+
+      - name: Lint fail
+        if: steps.linter.outputs.checks-failed > 0
+        run: exit 1
