@@ -17,14 +17,29 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
+#include <lib/interruptTimer.hpp>
+#include <lib/interrupts.hpp>
 #include <lib/led.hpp>
+
+volatile bool isGreen = false;
+
+void InterruptTimer::whenFinished()
+{
+    ::isGreen = !::isGreen;
+}
 
 int main()
 {
     Led led(&DDRB, &PORTB, PB0, PB1);
+
+    InterruptTimer::initialize(2, InterruptTimer::Mode::CLEAR_ON_COMPARE);
+    InterruptTimer::start();
+
+    interrupts::startCatching();
+
     while (true) {
-        led.setAmberForMs(1000);
-        _delay_ms(1000);
+        led.setColor(::isGreen ? Color::GREEN : Color::RED);
     }
+
     return 0;
 }
