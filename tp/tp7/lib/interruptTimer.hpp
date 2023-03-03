@@ -10,6 +10,9 @@
  * \author Ihsane Majdoubi
  *
  * \date February 2, 2023
+ *
+ * Hardware Identification
+ * TIMER: Timer 1.
  */
 
 #ifndef INTERRUPTTIMER_H
@@ -32,9 +35,9 @@ public:
 
     static void initialize(const double delayS, const Mode &mode);
 
+    static void reset();
     static void start();
     static void stop();
-    static void reset();
 
     static void whenFinished(); // needs to be declared
 
@@ -49,10 +52,11 @@ private:
         CLK1024 = 1024
     };
 
-    static PrescaleMode getPrescaleMode();
-    static void setPrescaleMode(const PrescaleMode &prescaleMode);
     static void setBestPrescaleMode(const double delayS);
+    static void setPrescaleMode(const PrescaleMode &prescaleMode);
     static PrescaleMode getCeiledPrescaleMode(const uint16_t idealPrescale);
+    static PrescaleMode getPrescaleMode();
+
     static uint16_t getCyclesPerSeconds();
 };
 
