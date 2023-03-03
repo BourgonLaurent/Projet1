@@ -64,12 +64,12 @@ void InterruptTimer::setSeconds(const double delayS)
 void InterruptTimer::setBestPrescaleMode(const double delayS)
 {
     const uint16_t idealPrescale = (delayS * F_CPU) / UINT16_MAX;
-    const PrescaleMode bestPrescaleMode = getFlooredPrescaleMode(idealPrescale);
+    const PrescaleMode bestPrescaleMode = getCeiledPrescaleMode(idealPrescale);
     setPrescaleMode(bestPrescaleMode);
 }
 
 InterruptTimer::PrescaleMode
-InterruptTimer::getFlooredPrescaleMode(const uint16_t idealPrescale)
+InterruptTimer::getCeiledPrescaleMode(const uint16_t idealPrescale)
 {
     if (idealPrescale <= (uint16_t)PrescaleMode::OFF) {
         return PrescaleMode::OFF;
