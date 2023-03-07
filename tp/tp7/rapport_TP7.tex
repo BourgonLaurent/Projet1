@@ -6,6 +6,7 @@
 \usepackage{csquotes}
 \usepackage[french]{babel}
 \usepackage{graphicx}
+\usepackage{minted}
 \graphicspath{ {./images_rapport/} }
 
 \pagestyle{fancy}
@@ -45,22 +46,22 @@ on obtient une troisième couleur: ambrée.
 
 La classe est doté d'un constructeur, nous permettant d'indiquer où est branchée
 la diode.
-\begin{verbatim}
+\begin{minted}{cpp}
     Led(io::DataDirectionRegister dataDirectionRegister, io::Port port,
         const io::PinPosition plus, const io::PinPosition minus)
-\end{verbatim}
+\end{minted}
 
-\verb|dataDirectionRegister| indique le registre de direction des données où la
-diode est branchée, \verb|port| indique son port et finalement
-\verb|plus| et \verb|minus| indique les broches sur lesquelles sont branchés la
+\mintinline{cpp}{dataDirectionRegister} indique le registre de direction des données où la
+diode est branchée, \mintinline{cpp}{port} indique son port et finalement \mintinline{cpp}{plus}
+et \mintinline{cpp}{minus} indique les broches sur lesquelles sont branchés la
 respectivement cathode et l'anode de la diode. Il est important de respecter ce
-sens afin de permettre à la méthode \verb|setColor(const Color &color)| de
+sens afin de permettre à la méthode \mintinline{cpp}{setColor(const Color &color)} de
 fonctionner adéquatement.
 \\ \\
-La méthode \verb|setColor(const Color &color)| permet d'allumer la diode en rouge
-ou en vert, en passant en paramètre \verb|Color::RED| ou \verb|Color::GREEN|.
+La méthode \mintinline{cpp}{setColor(const Color &color)} permet d'allumer la diode en rouge
+ou en vert, en passant en paramètre \mintinline{cpp}{Color::RED} ou \mintinline{cpp}{Color::GREEN}.
 \\ \\
-La méthode \verb|setAmberForMs(const uint16_t durationMs)| permets d'allumer la
+La méthode \mintinline{cpp}{setAmberForMs(const uint16_t durationMs)} permets d'allumer la
 diode en ambrée. Nous devont passer une durée (en milisecondes) en paramètre. En
 effet, puisque la diode doit alterner rapidement entre le rouge et le vert, il
 est impossible d'effectuer cette opération indéfiniement.
@@ -68,17 +69,17 @@ est impossible d'effectuer cette opération indéfiniement.
 \newpage
 \section{Modifications apportées au \textit{Makefile} de départ}
 % Est-ce que je mets Makefile en « verb » ?
-Depuis le début du cours, nous utilisons le \verb|Makefile| fourni afin de
+Depuis le début du cours, nous utilisons le \mintinline{cpp}{Makefile} fourni afin de
 compiler notre code et l'installer sur le robot. Ayant créé une librairie, il a
 fallu faire quelques modifications.
 \subsection{Ajout d'une Makefile pour la librairie}
-La compilation et l'archivage d'une librairie en un fichier \verb|.a| implique
+La compilation et l'archivage d'une librairie en un fichier \mintinline{cpp}{.a} implique
 des variables et instructions supplémentaires par rapport à ce que le
-\verb|Makefile| de départ nous permettait de faire.
+\mintinline{cpp}{Makefile} de départ nous permettait de faire.
 
-Ce nouveau \verb|Makefile|,
-situé dans le répertoire \verb|lib|, permets de faire l'édition et l'archivage
-des liens des fichiers objets \verb|.o| avec l'outil \verb|avr-ar|. De plus il
+Ce nouveau \mintinline{cpp}{Makefile},
+situé dans le répertoire \mintinline{cpp}{lib}, permets de faire l'édition et l'archivage
+des liens des fichiers objets \mintinline{cpp}{.o} avec l'outil \mintinline{cpp}{avr-ar}. De plus il
 contient quelques variables supplémentaires:
 \begin{itemize}
     \item \verb|LIBNAME| qui indique le nom de la librairie (lib1900)
