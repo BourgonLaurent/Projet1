@@ -18,4 +18,33 @@
         "iomanip": "cpp",
         "Makefile.common": "makefile"
     },
+    // LaTeX Workshop
+    "latex-workshop.view.pdf.viewer": "tab",
+    "latex-workshop.latex.tools": [
+        {
+            "name": "latexmk",
+            "command": "latexmk",
+            "args": [
+                "-shell-escape",
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-pdf",
+                "-outdir=%OUTDIR%",
+                "%DOC%"
+            ],
+            "env": {}
+        },
+    ],
+    "latex-workshop.view.pdf.invertMode.enabled": "never",
+    "latex-workshop.view.pdf.invert": 0.8,
+    "latex-workshop.view.pdf.invertMode.brightness": 1.4,
+    "latex-workshop.intellisense.package.enabled": true,
+    "latex-workshop.intellisense.package.env.enabled": true,
+    "[latex]": {
+        "editor.formatOnPaste": true,
+        "editor.suggestSelection": "recentlyUsedByPrefix",
+        "editor.wrappingIndent": "indent"
+    },
+    "latex-workshop.latex.clean.subfolder.enabled": true,
 }
