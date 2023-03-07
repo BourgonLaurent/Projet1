@@ -1,8 +1,6 @@
 /**
  * Interrupt a program with a timer.
  *
- * WARNING: InterruptTimer::whenFinished() must be declared.
- *
  * Team #4546
  * \author Catalina Andrea Araya Figueroa
  * \author Mehdi Benouhoud
@@ -13,6 +11,12 @@
  *
  * Hardware Identification
  * TIMER: Timer 1.
+ *
+ * USAGE: Use `InterruptTimer_vect` inside the ISR.
+ *    ISR(InterruptTimer_vect)
+ *    {
+ *        ...
+ *    }
  */
 
 #include "interruptTimer.hpp"
@@ -24,12 +28,7 @@
 #define F_CPU 8000000UL
 #endif
 
-ISR(TIMER1_COMPA_vect)
-{
-    InterruptTimer::whenFinished();
-}
-
-void InterruptTimer::initialize(const double delayS, const Mode &mode)
+void InterruptTimer::initialize(const Mode &mode, const double delayS)
 {
     // Force Output Compare for A (p.131)
     io::clear(&TCCR1C, FOC1A);

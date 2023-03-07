@@ -25,7 +25,7 @@
 
 volatile bool isGreen = false;
 
-void InterruptTimer::whenFinished()
+ISR(InterruptTimer_vect)
 {
     ::isGreen = !::isGreen;
 }
@@ -36,7 +36,7 @@ int main()
 
     Communication::initialize();
 
-    InterruptTimer::initialize(1, InterruptTimer::Mode::CLEAR_ON_COMPARE);
+    InterruptTimer::initialize(InterruptTimer::Mode::CLEAR_ON_COMPARE, 1);
     InterruptTimer::start();
 
     interrupts::startCatching();
@@ -46,11 +46,14 @@ int main()
     while (true) {
         led.setColor(::isGreen ? Led::Color::GREEN : Led::Color::RED);
 
+        Wheels::setDirection(::isGreen ? Wheels::Direction::FORWARD
+                                       : Wheels::Direction::BACKWARD);
+
         for (double i = 0; i <= 1; i += 0.25) {
             Wheels::setSpeed(i, Wheels::Side::LEFT);
             Wheels::setSpeed(1 - i, Wheels::Side::RIGHT);
             Communication::send(i * 100);
-            _delay_ms(2000);
+            _delay_ms(250);
         }
 
         Wheels::turnOff();

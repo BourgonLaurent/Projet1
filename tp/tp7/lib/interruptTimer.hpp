@@ -1,8 +1,6 @@
 /**
  * Interrupt a program with a timer.
  *
- * WARNING: InterruptTimer::whenFinished() must be declared.
- *
  * Team #4546
  * \author Catalina Andrea Araya Figueroa
  * \author Mehdi Benouhoud
@@ -13,12 +11,23 @@
  *
  * Hardware Identification
  * TIMER: Timer 1.
+ *
+ * USAGE: Use `InterruptTimer_vect` inside the ISR.
+ *    ISR(InterruptTimer_vect)
+ *    {
+ *        ...
+ *    }
  */
 
 #ifndef INTERRUPTTIMER_H
 #define INTERRUPTTIMER_H
 
+#include <avr/interrupt.h>
 #include <avr/io.h>
+
+#include <lib/interrupts.hpp>
+
+#define InterruptTimer_vect TIMER1_COMPA_vect
 
 class InterruptTimer
 {
@@ -31,13 +40,11 @@ public:
     static void setMode(const Mode &mode);
     static void setSeconds(const double delayS);
 
-    static void initialize(const double delayS, const Mode &mode);
+    static void initialize(const Mode &mode, const double delayS);
 
     static void reset();
     static void start();
     static void stop();
-
-    static void whenFinished(); // needs to be declared
 
 private:
     enum class PrescaleMode
