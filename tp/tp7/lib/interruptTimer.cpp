@@ -20,6 +20,10 @@
 #include <lib/interrupts.hpp>
 #include <lib/io.hpp>
 
+#ifndef F_CPU
+#define F_CPU 8000000UL
+#endif
+
 ISR(TIMER1_COMPA_vect)
 {
     InterruptTimer::whenFinished();

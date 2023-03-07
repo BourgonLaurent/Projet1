@@ -16,12 +16,7 @@
  * \date February 2, 2023
  */
 
-#define F_CPU 8000000UL
-
 #include "wheels.hpp"
-
-#include <avr/io.h>
-#include <util/delay.h>
 
 #include <lib/io.hpp>
 

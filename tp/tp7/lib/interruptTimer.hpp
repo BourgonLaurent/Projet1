@@ -18,8 +18,6 @@
 #ifndef INTERRUPTTIMER_H
 #define INTERRUPTTIMER_H
 
-#define F_CPU 8000000UL
-
 #include <avr/io.h>
 
 class InterruptTimer

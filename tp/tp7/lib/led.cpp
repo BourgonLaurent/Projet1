@@ -56,5 +56,6 @@ void Led::setAmberForMs(const uint16_t durationMs)
         setColor(Color::RED);
         _delay_us(AMBER_DELAY_US);
     }
+
     setColor(Color::OFF);
 }

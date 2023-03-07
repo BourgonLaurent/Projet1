@@ -40,7 +40,7 @@ AnalogReader::~AnalogReader()
 
 // Faire une conversion et aller retourner le resultat sur 16 bits
 // dont seulement les 10 de poids faibles sont significatifs.
-uint8_t AnalogReader::lecture(io::PinPosition pinPosition)
+uint8_t AnalogReader::read(io::PinPosition pinPosition)
 {
     uint16_t adcVal;
 

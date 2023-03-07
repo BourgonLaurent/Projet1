@@ -28,7 +28,7 @@ public:
     AnalogReader();
     ~AnalogReader();
 
-    uint8_t lecture(io::PinPosition pinPosition);
+    uint8_t read(io::PinPosition pinPosition);
 };
 
 #endif
