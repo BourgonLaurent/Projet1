@@ -43,12 +43,12 @@ void Communication::initialize()
     io::clear(&UCSR0C, UPM00);
 }
 
-void Communication::send(const uint16_t number)
+void Communication::send(const uint16_t data)
 {
     static constexpr uint8_t nMaxCharacters = 6;
 
     char str[nMaxCharacters];
-    snprintf(str, sizeof(str), "%u", number);
+    snprintf(str, sizeof(str), "%u", data);
     send(str);
 }
 
