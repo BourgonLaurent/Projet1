@@ -23,7 +23,7 @@ void Communication::initialize()
     UBRR0H = 0;
     UBRR0L = 0xCF;
 
-    // Allow reception and transmission through UART0
+    // Allow reception and transmission through USART0
     // (p.186-187) USART Control and Status Register 0 B
     io::setActive(&UCSR0B, RXEN0);
     io::setActive(&UCSR0B, TXEN0);
