@@ -1,4 +1,4 @@
-# Common variables & rules to the project
+# Common variables & rules to the project.
 #
 # Team #4546
 # 	Catalina Andrea Araya Figueroa
@@ -6,20 +6,20 @@
 # 	Laurent Bourgon
 # 	Ihsane Majdoubi
 #
+# March 1, 2023
+#
+# Rules:
+# 	`make clean`: remove compilation artifacts
+#
 # Requirements:
 # 	`make clean`: set ARTIFACTS
 #		ex. ARTIFACTS=$(OBJECTS) $(OBJECTS:.o=.d)
-#	`make install`: set HEXTRG
-#		ex. HEXTRG=$(HEXROMTRG) $(PROJECTNAME).ee.hex
-#
-# March 1, 2023
 
 ##### CONFIG #####
 
 # Microcontroller
 MCU=atmega324pa
-F_CPU=8000000
-
+F_CPU=8000000UL
 
 ####### Compiler #######
 CC=avr-gcc
@@ -32,7 +32,7 @@ OPTLEVEL=s
 # C
 CFLAGS=-I. -I/usr/include/simavr \
 	-MMD $(INC) -g \
-	-mmcu=$(MCU) -DF_CPU=$(F_CPU)UL \
+	-mmcu=$(MCU) -DF_CPU=$(F_CPU) \
 	-O$(OPTLEVEL) \
 	-std=$(CCVERSION) \
 	-fpack-struct -fshort-enums \
@@ -42,25 +42,13 @@ CFLAGS=-I. -I/usr/include/simavr \
 # C++
 CXXFLAGS=-fno-exceptions
 
-# Linker
-LDFLAGS=-Wl,-Map,$(TRG).map -mmcu=$(MCU)
-
-# Archiver
-ARCHIVER=avr-ar
-ARCHIVERFLAGS=-crs
-
-# Commands
-OBJCOPY=avr-objcopy
-AVRDUDE=avrdude
+# Other commands
 REMOVE=rm -f
-
-HEXFORMAT=ihex
-
-AVRDUDE_PROGRAMMERID=usbasp
 
 ##### RULES #####
 
 # make clean: delete compilation files
+.PHONY: clean
 clean:
 	$(REMOVE) $(ARTIFACTS)
 
@@ -73,11 +61,3 @@ clean:
 
 # Include dependencies
 -include *.d
-
-%.hex: %.elf
-	$(OBJCOPY) -j .text -j .data \
-		-O $(HEXFORMAT) $< $@
-
-install: $(HEXROMTRG)
-	$(AVRDUDE) -c $(AVRDUDE_PROGRAMMERID)   \
-	-p $(MCU) -P -e -U flash:w:$(HEXROMTRG)

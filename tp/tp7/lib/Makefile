@@ -1,4 +1,4 @@
-# Build library
+# Build library.
 #
 # Team #4546
 # 	Catalina Andrea Araya Figueroa
@@ -8,8 +8,10 @@
 #
 # March 1, 2023
 #
-# all (default): build the .a of the library
-# clean: remove all compilation files
+# Rules:
+# 	make all (default): build the library
+# 	make clean: remove compilation artifacts
+
 
 ##### CONFIG #####
 
@@ -26,6 +28,9 @@ OBJECTS=$(SOURCES:.cpp=.o)
 
 ARTIFACTS=$(LIB) $(OBJECTS) $(OBJECTS:.o=.d)
 
+# Archiver
+ARCHIVER=avr-ar
+ARCHIVERFLAGS=-crs
 
 ##### RULES #####
 

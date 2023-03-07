@@ -1,0 +1,71 @@
+# Common variables & rules to compile & install C/C++ for AVR.
+#
+# Team #4546
+# 	Catalina Andrea Araya Figueroa
+# 	Mehdi Benouhoud
+# 	Laurent Bourgon
+# 	Ihsane Majdoubi
+#
+# March 1, 2023
+#
+# Rules:
+# 	`make all` (default): build the project
+# 	`make install`: build & flash the project
+# 	`make clean`: remove compilation artifacts
+#
+# Requirements:
+#	`make all`: set PROJECTNAME, PRJSRC (optional: INC, LIBS)
+#		ex. PROJECTNAME=TP1_pb1
+#			PRJSRC=main.cpp led.cpp
+#			INC=-I../
+#			LIBS=-llib -L../lib_dir
+
+####### Target #######
+
+TRG=$(PROJECTNAME).elf
+HEXROMTRG=$(PROJECTNAME).hex
+HEXTRG=$(HEXROMTRG) $(PROJECTNAME).ee.hex
+
+AVRDUDE=avrdude
+AVRDUDE_PROGRAMMERID=usbasp
+HEXFORMAT=ihex
+OBJCOPY=avr-objcopy
+
+####### Objects #######
+
+# C
+CFILES=$(filter %.c, $(PRJSRC))
+# C++
+CPPFILES=$(filter %.cpp, $(PRJSRC))
+
+# All Objects
+OBJDEPS=$(CFILES:.c=.o) $(CPPFILES:.cpp=.o)
+
+# will be removed when `make clean` is run
+# (delimiter: space)
+ARTIFACTS=$(TRG) $(TRG).map $(OBJDEPS) $(HEXTRG) $(OBJDEPS:.o=.d)
+
+# Linker
+LDFLAGS=-Wl,-Map,$(TRG).map -mmcu=$(MCU)
+
+##### RULES #####
+
+.PHONY: all
+all: $(TRG) $(HEXROMTRG)
+
+# Include common variables and rules
+include $(dir $(lastword $(MAKEFILE_LIST)))Makefile.common
+
+# Rebuild objects if library is modified
+$(TRG): $(OBJDEPS)
+	$(CC) $(LDFLAGS) -o $(TRG) $(OBJDEPS) \
+	-lm $(LIBS)
+
+%.hex: %.elf
+	$(OBJCOPY) -j .text -j .data \
+		-O $(HEXFORMAT) $< $@
+
+.PHONY: install
+install: $(HEXROMTRG)
+	$(AVRDUDE) -c $(AVRDUDE_PROGRAMMERID)   \
+	-p $(MCU) -P -e -U flash:w:$(HEXROMTRG)

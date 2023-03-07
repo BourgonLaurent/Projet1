@@ -16,7 +16,8 @@
     "files.associations": {
         "iostream": "cpp",
         "iomanip": "cpp",
-        "Makefile.common": "makefile"
+        "Makefile.common": "makefile",
+        "Makefile.exec.common": "makefile"
     },
     // LaTeX Workshop
     "latex-workshop.view.pdf.viewer": "tab",
