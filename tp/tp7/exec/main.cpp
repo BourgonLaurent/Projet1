@@ -21,15 +21,13 @@
 #include <lib/interruptTimer.hpp>
 #include <lib/interrupts.hpp>
 #include <lib/led.hpp>
+#include <lib/wheels.hpp>
 
 volatile bool isGreen = false;
 
 void InterruptTimer::whenFinished()
 {
     ::isGreen = !::isGreen;
-    Communication::send("Status: ");
-    Communication::send(::isGreen);
-    Communication::send("\n");
 }
 
 int main()
@@ -43,9 +41,19 @@ int main()
 
     interrupts::startCatching();
 
+    Wheels::initialize();
+
     while (true) {
         led.setColor(::isGreen ? Led::Color::GREEN : Led::Color::RED);
-    }
 
+        for (double i = 0; i <= 1; i += 0.25) {
+            Wheels::setSpeed(i, Wheels::Side::LEFT);
+            Wheels::setSpeed(1 - i, Wheels::Side::RIGHT);
+            Communication::send(i * 100);
+            _delay_ms(2000);
+        }
+
+        Wheels::turnOff();
+    }
     return 0;
 }
