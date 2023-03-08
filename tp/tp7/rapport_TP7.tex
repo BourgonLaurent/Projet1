@@ -66,6 +66,67 @@ diode en ambrée. Nous devont passer une durée (en milisecondes) en paramètre.
 effet, puisque la diode doit alterner rapidement entre le rouge et le vert, il
 est impossible d'effectuer cette opération indéfiniement.
 % TODO Peut-être mieux expliquer pourquoi on peut pas faire ça?
+
+
+
+
+\subsubsection{Wheels}
+Le robot possède deux roues qui sont utilisées pour son déplacement. Les roues peuvent être
+contrôlée pour changer leur vitesse grâce à un signal PWM et pour changer leur direction (avancer
+ou reculer) selon le signal mis dans le pin de direction. En effet, chaque roue est contrôlée avec
+deux pin. La roue droite par les pin PD5 et PD7, alors que la roue gauche par les pin PD4 et PD6.
+Les pin PD6 et PD7 sont les pin de sortie des signaux PWM, et les pin PD4 et PD5 sont les pin de
+direction. La classe n'est pas doté d'un constructeur, puisque les roues utiliserons toujours le timer 2
+pour le signal PWM. Cependant, plusieurs méthodes permettent de modifier la vitesse des moteurs
+et leur direction. La classe est doté deux attributs de type enum class, soit Side (RIGHT, LEFT
+ou BOTH) et Direction (FORWARD, BACKWARD). Les méthodes prennent en paramettre cet attribut afin
+d'indiquer quelle roue nous voulons contrôlée.
+\\ \\
+La méthode \mintinline{cpp}{configureOutputPins(const Side &side)} permet d'initialiser les pins de sortie et les registres
+de pour le PWM pour chaque roues, car elles n'utilisent pas les mêmes. C'est une méthode privé qui est appelée
+dans la méthode initialize. De cette manière on ne configure pas deux fois les registres en commun entre les deux roues
+lorsque side = BOTH.
+\\ \\
+La méthode privée \mintinline{cpp}{setDirectionOfPin(const Direction &direction, const io::PinPosition pin)} permet de donner le bon
+signal au pin de direction de la roue pour que le moteur roule dans la direction choisie dans le paramètre direction (\mintinline{cpp}{Direction::FORWARD}
+pour avancer et \mintinline{cpp}{Direction::BACKWARD} pour reculer). Le deuxième paramètre pin représente le pin de direction de la roue choise, PD4 pour
+la roue gauche et PD5 pour la roue droite.
+\\ \\
+La méthode \mintinline{cpp}{setDirection(const Direction &direction, const Side &side)} permet de donner une direction \mintinline{cpp}{Direction::FORWARD}
+\mintinline{cpp}{Direction::BACKWARD} à la roue spécifiée dans le paramètre side. Le side par défault est BOTH. Pour ce faire,
+elle appelle la méthode privée \mintinline{cpp}{setDirectionOfPin(const Direction &direction, const io::PinPosition pin)}. Cette méthode
+permet de donner une direction, alors que la méthode \mintinline{cpp}{setDirection(const Direction &direction, const Side &side)} permet
+de choisir à quelle roue on veut donner une direction. Par exemple, \mintinline{cpp}{setDirection(Direction::BACKWARD, Side::RIGHT)} pour
+faire reculer la roue droite ou encore \mintinline{cpp}{setDirection(Direction::FORWARD)} pour faire avancer les deux roues.
+\\ \\
+La méthode \mintinline{cpp}{setSpeed(const double speed, const Side &side)} permet donner une vitesse à la roue spécifiée dans le
+paramètre side. Le side par défault est BOTH. La vitesse choisie est spécifiée dans le paramètre speed. Ce paramètre est un nombre
+entre 0 et 1. En effet, la vitesse spécifiée est le pourcentage de la puissance du moteur des roues. Par exemple, 0.5 pour avoir une
+vitesse de 50% \mintinline{cpp}{setSpeed(0.5, Side::RIGHT)} ou encore \mintinline{cpp}{setSpeed(1)} pour faire rouler les deux roues
+à la vitesse maximale.
+\\ \\
+La méthode \mintinline{cpp}{intialize(const Side &side)} permet d'initialiser les registres pour PWM phase correct avec
+le prescaler de 1024 et les pin de sortie pour chaque roue en appelant la méthode privée /mintinline{cpp}{configureOutputPins(const Side &side)}
+Le paramètre side permet de choisir quelle roue est à initialiser. \mintinline{cpp}{Side::LEFT}, \mintinline{cpp}{Side::RIGHT} ou \mintinline{cpp}{Side::BOTH}
+qui est le paramètre par défault. La direction Direction::FORWARD et une vitesse de 0 sont mise pour l'itialisation grâce aux méthodes
+\mintinline{cpp}{setSpeed(const double speed, const Side &side)} et \mintinline{cpp}{setDirection(const Direction &direction, const Side &side)}.
+\\ \\
+La méthode \mintinline{cpp}{turnOff(const Side &side = Side::BOTH)} permet d'arrêter le moteur de la roue spécifier dans le
+paramètre side. Le side par défault est BOTH. Cette méthode appelle la méthode \mintinline{cpp}{setSpeed(const double speed, const Side &side)}.
+En effet, en remettant la vitesse à zéro on arrête le moteur. Soit, \mintinline{cpp}{setSpeed(0), Side::LEFT} pour arrêter la roue gauche.
+
+
+
+
+
+
+
+
+
+
+
+
+
 \newpage
 \section{Modifications apportées au \textit{Makefile} de départ}
 % Est-ce que je mets Makefile en « verb » ?

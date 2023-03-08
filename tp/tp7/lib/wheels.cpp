@@ -4,8 +4,8 @@
  * Hardware Identification
  * WARNING: The Data Direction Register will be set automatically.
  * TIMER: Timer 0.
- * OUTPUT: H-bridge, connected left  to PB4 (enable) and PB5 (direction)
- *                   connected right to PB3 (enable) and PB2 (direction)
+ * OUTPUT: H-bridge, connected left  to PD6 (enable) and PD4 (direction)
+ *                   connected right to PD7 (enable) and PD5 (direction)
  *
  * Team #4546
  * \author Catalina Andrea Araya Figueroa
@@ -13,52 +13,79 @@
  * \author Laurent Bourgon
  * \author Ihsane Majdoubi
  *
- * \date February 2, 2023
+ * \date March 14, 2023
  */
+
+#define F_CPU 8000000UL
 
 #include "wheels.hpp"
 
+#include <avr/io.h>
+#include <util/delay.h>
+
 #include <lib/io.hpp>
 
-io::DataDirectionRegister Wheels::dataDirectionRegister_ = &DDRB;
-io::Port Wheels::port_ = &PORTB;
-io::PinPosition Wheels::leftEnable_ = PB4;
-io::PinPosition Wheels::leftDirection_ = PB5;
-io::PinPosition Wheels::rightEnable_ = PB3;
-io::PinPosition Wheels::rightDirection_ = PB2;
+void Wheels::setOutput(const Side &side)
+{
+    switch (side) {
+        case Side::LEFT :
+            // (p.152) Clear OC2B on Compare Match when upcounting.
+            //         Set OC2B on Compare Match when downcounting.
+            io::clear(&TCCR2A, COM2B0);
+            io::setActive(&TCCR2A, COM2B1);
+
+            io::setOutput(&DDRD, PD6); // OC2B
+            io::setOutput(&DDRD, PD4); // Direction
+            break;
+
+        case Side::RIGHT :
+            // (p.152) Clear OC2A on Compare Match when upcounting.
+            //         Set OC2A on Compare Match when downcounting.
+            io::clear(&TCCR2A, COM2A0);
+            io::setActive(&TCCR2A, COM2A1);
+
+            io::setOutput(&DDRD, PD7); // OC2A
+            io::setOutput(&DDRD, PD5); // Direction
+            break;
+
+        case Side::BOTH :
+            setOutput(Side::LEFT);
+            setOutput(Side::RIGHT);
+            break;
+    }
+}
 
 void Wheels::initialize(const Side &side)
 {
-    // (p.103) PWM, Phase Correct
-    io::setActive(&TCCR0A, WGM00);
-    io::clear(&TCCR0A, WGM01);
-    io::clear(&TCCR0B, WGM02);
+    // PWM PHASE CORRECT timer 2 p. 153
+    io::setActive(&TCCR2A, WGM20);
+    io::clear(&TCCR2A, WGM21);
+    io::setActive(&TCCR2B, WGM22);
 
-    // (p.105) Prescaler of 1024
-    io::setActive(&TCCR0B, CS00);
-    io::clear(&TCCR0B, CS01);
-    io::setActive(&TCCR0B, CS02);
+    // prescaler 1024 timer 0 p. 154
+    io::setActive(&TCCR2B, CS20);
+    io::clear(&TCCR2B, CS21);
+    io::setActive(&TCCR2B, CS22);
 
-    // (p.104) Force Output Compare A/B
-    io::clear(&TCCR0B, FOC0B);
-    io::clear(&TCCR0B, FOC0A);
-
-    configureOutputPins(side);
-    setDirection(Direction::FORWARD, side);
+    setOutput(side);
+    // setDirection(Direction::FORWARD, side);
     setSpeed(0.0, side);
+
+    // io::clear(&TCCR2B, FOC2B);
+    // io::clear(&TCCR2B, FOC2A);
+    // TCNT2 = 0;
 }
 
 void Wheels::setDirection(const Direction &direction, const Side &side)
 {
     switch (side) {
         case Side::LEFT :
-            setDirectionOfPin(direction, leftDirection_);
+            setDirectionOfPin(direction, PD6);
             break;
 
         case Side::RIGHT :
-            setDirectionOfPin(direction, rightDirection_);
+            setDirectionOfPin(direction, PD7);
             break;
-
         case Side::BOTH :
             setDirection(direction, Side::LEFT);
             setDirection(direction, Side::RIGHT);
@@ -69,13 +96,13 @@ void Wheels::setSpeed(const double speed, const Side &side)
 {
     switch (side) {
         case Side::LEFT :
-            // (p.132) Output Compare Register 1 B
-            OCR0B = speed * TOP_VALUE;
+            // (p.152) Output Compare Register 1 B
+            OCR2B = speed * TOP_VALUE;
             break;
 
         case Side::RIGHT :
-            // (p.132) Output Compare Register 1 A
-            OCR0A = speed * TOP_VALUE;
+            // (p.152) Output Compare Register 1 A
+            OCR2A = speed * TOP_VALUE;
             break;
 
         case Side::BOTH :
@@ -84,51 +111,20 @@ void Wheels::setSpeed(const double speed, const Side &side)
     }
 }
 
-void Wheels::turnOff(const Side &side)
-{
-    setSpeed(0.0, side);
-}
-
-void Wheels::setDirectionOfPin(const Direction &direction,
-                               const io::PinPosition pin)
+void Wheels::setDirectionOfPin(const Direction &direction, const uint8_t pin)
 {
     switch (direction) {
         case Direction::FORWARD :
-            io::clear(port_, pin);
+            io::clear(&PORTD, pin);
             break;
 
         case Direction::BACKWARD :
-            io::setActive(port_, pin);
+            io::setActive(&PORTD, pin);
             break;
     }
 }
 
-void Wheels::configureOutputPins(const Side &side)
+void Wheels::turnOff(const Side &side)
 {
-    switch (side) {
-        case Side::LEFT :
-            // (p.103) Clear OC0B on Compare Match when upcounting.
-            //         Set OC0B on Compare Match when downcounting.
-            io::clear(&TCCR0A, COM0B0);
-            io::setActive(&TCCR0A, COM0B1);
-
-            io::setOutput(&DDRB, leftEnable_);
-            io::setOutput(&DDRB, leftDirection_);
-            break;
-
-        case Side::RIGHT :
-            // (p.103) Clear OC0A on Compare Match when upcounting.
-            //         Set OC0A on Compare Match when downcounting.
-            io::clear(&TCCR0A, COM0A0);
-            io::setActive(&TCCR0A, COM0A1);
-
-            io::setOutput(&DDRB, rightEnable_);
-            io::setOutput(&DDRB, rightDirection_);
-            break;
-
-        case Side::BOTH :
-            configureOutputPins(Side::LEFT);
-            configureOutputPins(Side::RIGHT);
-            break;
-    }
+    setSpeed(0.0, side);
 }
