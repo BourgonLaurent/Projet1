@@ -4,7 +4,7 @@
  * Code modified from can (2006, Matthew Khouzam & Jerome Collin)
  *
  * Hardware Identification
- * WARNING: The pin read needs to be on PORTA.
+ * WARNING: A read pin needs to be on PORTA and set as input.
  *
  * Team #4546
  * \author Catalina Andrea Araya Figueroa
