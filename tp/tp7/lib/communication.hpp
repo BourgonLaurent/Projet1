@@ -1,6 +1,9 @@
 /**
  * Send data with RS232.
  *
+ * Hardware Identification
+ * USART: D0 & D1.
+ *
  * Team #4546
  * \author Catalina Andrea Araya Figueroa
  * \author Mehdi Benouhoud

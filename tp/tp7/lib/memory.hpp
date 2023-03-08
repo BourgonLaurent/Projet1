@@ -4,6 +4,8 @@
  * LIMITATIONS: Memory::readMessage is using a shared buffer.
  *              Copy or use the value read before reading another one.
  *
+ * Hardware Identification
+ * EEPROM: C0 & C1.
  *
  * Team #4546
  * \author Catalina Andrea Araya Figueroa
