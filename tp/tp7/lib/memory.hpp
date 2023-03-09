@@ -7,8 +7,6 @@
  * Hardware Identification
  * EEPROM: C0 & C1.
  *
- * INPUT: jumper on MemEN
- * 
  * Team #4546
  * \author Catalina Andrea Araya Figueroa
  * \author Mehdi Benouhoud
@@ -36,10 +34,10 @@ public:
     void clearBuffer();
 
 private:
-    static constexpr uint8_t READ_WRITE_DELAY_MS = 5;
-    static constexpr uint8_t MAXIMUM_MESSAGE_SIZE = 127;
+    static constexpr uint8_t WRITE_DELAY_MS = 5;
+    static constexpr uint8_t N_MAX_CHARACTERS = 127;
 
-    char readMessageBuffer_[MAXIMUM_MESSAGE_SIZE];
+    char readMessageBuffer_[N_MAX_CHARACTERS];
 };
 
 #endif
