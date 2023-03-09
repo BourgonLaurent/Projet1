@@ -33,7 +33,7 @@
 |            | `PD1`             | Yes   | [Communication](communication.hpp)                              |
 |            | `PD2`             | Yes   | [InterruptButton](interruptButton.hpp)                          |
 |            | `PD3`             |       |                                                                 |
-|            | `PD4`             |       |                                                                 |
-|            | `PD5`             |       |                                                                 |
-|            | `PD6`             |       |                                                                 |
-|            | `PD7`             |       |                                                                 |
+|            | `PD4`             |       | [Wheels](wheels.hpp)                                            |
+|            | `PD5`             |       | [Wheels](wheels.hpp)                                            |
+|            | `PD6`             |       | [Wheels](wheels.hpp)                                            |
+|            | `PD7`             |       | [Wheels](wheels.cpp)                                            |

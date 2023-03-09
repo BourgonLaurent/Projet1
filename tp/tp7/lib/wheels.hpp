@@ -4,8 +4,8 @@
  * Hardware Identification
  * WARNING: The Data Direction Register will be set automatically.
  * TIMER: Timer 0.
- * OUTPUT: H-bridge, connected left  to PB4 (enable) and PB5 (direction)
- *                   connected right to PB3 (enable) and PB2 (direction)
+ * OUTPUT: H-bridge, connected left  to PD6 (enable) and PD4 (direction)
+ *                   connected right to PD7 (enable) and PD5 (direction)
  *
  * Team #4546
  * \author Catalina Andrea Araya Figueroa

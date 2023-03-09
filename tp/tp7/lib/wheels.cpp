@@ -37,7 +37,7 @@ void Wheels::initialize(const Side &side)
     // (p.154) Prescaler of 1024
     io::setActive(&TCCR2B, CS20);
     io::setActive(&TCCR2B, CS21);
-    io::setActive(&TCCR0B, CS22);
+    io::setActive(&TCCR2B, CS22);
 
     // (p.154) Force Output Compare A/B
     io::clear(&TCCR2B, FOC2B);
@@ -119,8 +119,8 @@ void Wheels::configureOutputPins(const Side &side)
         case Side::RIGHT :
             // (p.153) Clear OC2A on Compare Match when upcounting.
             //         Set OC2A on Compare Match when downcounting.
-            io::clear(&TCCR2A, COM0A0);
-            io::setActive(&TCCR2A, COM0A1);
+            io::clear(&TCCR2A, COM2A0);
+            io::setActive(&TCCR2A, COM2A1);
 
             io::setOutput(dataDirectionRegister_, rightEnable_);
             io::setOutput(dataDirectionRegister_, rightDirection_);
