@@ -3,6 +3,8 @@
  *
  * Hardware Identification
  * USART: D0 & D1.
+ * 
+ * INPUT: jumper on DbgEN
  *
  * Team #4546
  * \author Catalina Andrea Araya Figueroa

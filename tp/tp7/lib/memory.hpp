@@ -7,6 +7,8 @@
  * Hardware Identification
  * EEPROM: C0 & C1.
  *
+ * INPUT: jumper on MemEN
+ * 
  * Team #4546
  * \author Catalina Andrea Araya Figueroa
  * \author Mehdi Benouhoud
