@@ -4,8 +4,8 @@
  * Hardware Identification
  * WARNING: The Data Direction Register will be set automatically.
  * TIMER: Timer 0.
- * OUTPUT: H-bridge, connected left  to PB4 (enable) and PB5 (direction)
- *                   connected right to PB3 (enable) and PB2 (direction)
+ * OUTPUT: H-bridge, connected left  to PD6 (enable) and PD4 (direction)
+ *                   connected right to PD7 (enable) and PD5 (direction)
  *
  * Team #4546
  * \author Catalina Andrea Araya Figueroa
@@ -20,28 +20,28 @@
 
 #include <lib/io.hpp>
 
-io::DataDirectionRegister Wheels::dataDirectionRegister_ = &DDRB;
-io::Port Wheels::port_ = &PORTB;
-io::PinPosition Wheels::leftEnable_ = PB4;
-io::PinPosition Wheels::leftDirection_ = PB5;
-io::PinPosition Wheels::rightEnable_ = PB3;
-io::PinPosition Wheels::rightDirection_ = PB2;
+io::DataDirectionRegister Wheels::dataDirectionRegister_ = &DDRD;
+io::Port Wheels::port_ = &PORTD;
+io::PinPosition Wheels::leftEnable_ = PD6;
+io::PinPosition Wheels::leftDirection_ = PD4;
+io::PinPosition Wheels::rightEnable_ = PD7;
+io::PinPosition Wheels::rightDirection_ = PD5;
 
 void Wheels::initialize(const Side &side)
 {
-    // (p.103) PWM, Phase Correct
-    io::setActive(&TCCR0A, WGM00);
-    io::clear(&TCCR0A, WGM01);
-    io::clear(&TCCR0B, WGM02);
+    // (p.153) PWM, Phase Correct
+    io::setActive(&TCCR2A, WGM20);
+    io::clear(&TCCR2A, WGM21);
+    io::clear(&TCCR2B, WGM22);
 
-    // (p.105) Prescaler of 1024
-    io::setActive(&TCCR0B, CS00);
-    io::clear(&TCCR0B, CS01);
-    io::setActive(&TCCR0B, CS02);
+    // (p.154) Prescaler of 1024
+    io::setActive(&TCCR2B, CS20);
+    io::setActive(&TCCR2B, CS21);
+    io::setActive(&TCCR0B, CS22);
 
-    // (p.104) Force Output Compare A/B
-    io::clear(&TCCR0B, FOC0B);
-    io::clear(&TCCR0B, FOC0A);
+    // (p.154) Force Output Compare A/B
+    io::clear(&TCCR2B, FOC2B);
+    io::clear(&TCCR2B, FOC2A);
 
     configureOutputPins(side);
     setDirection(Direction::FORWARD, side);
@@ -69,13 +69,13 @@ void Wheels::setSpeed(const double speed, const Side &side)
 {
     switch (side) {
         case Side::LEFT :
-            // (p.132) Output Compare Register 1 B
-            OCR0B = speed * TOP_VALUE;
+            // (p.155) Output Compare Register 2 B
+            OCR2B = speed * TOP_VALUE;
             break;
 
         case Side::RIGHT :
-            // (p.132) Output Compare Register 1 A
-            OCR0A = speed * TOP_VALUE;
+            // (p.155) Output Compare Register 2 A
+            OCR2A = speed * TOP_VALUE;
             break;
 
         case Side::BOTH :
@@ -107,23 +107,23 @@ void Wheels::configureOutputPins(const Side &side)
 {
     switch (side) {
         case Side::LEFT :
-            // (p.103) Clear OC0B on Compare Match when upcounting.
-            //         Set OC0B on Compare Match when downcounting.
-            io::clear(&TCCR0A, COM0B0);
-            io::setActive(&TCCR0A, COM0B1);
+            // (p.153) Clear OC2B on Compare Match when upcounting.
+            //         Set OC2B on Compare Match when downcounting.
+            io::clear(&TCCR2A, COM2B0);
+            io::setActive(&TCCR2A, COM2B1);
 
-            io::setOutput(&DDRB, leftEnable_);
-            io::setOutput(&DDRB, leftDirection_);
+            io::setOutput(dataDirectionRegister_, leftEnable_);
+            io::setOutput(dataDirectionRegister_, leftDirection_);
             break;
 
         case Side::RIGHT :
-            // (p.103) Clear OC0A on Compare Match when upcounting.
-            //         Set OC0A on Compare Match when downcounting.
-            io::clear(&TCCR0A, COM0A0);
-            io::setActive(&TCCR0A, COM0A1);
+            // (p.153) Clear OC2A on Compare Match when upcounting.
+            //         Set OC2A on Compare Match when downcounting.
+            io::clear(&TCCR2A, COM0A0);
+            io::setActive(&TCCR2A, COM0A1);
 
-            io::setOutput(&DDRB, rightEnable_);
-            io::setOutput(&DDRB, rightDirection_);
+            io::setOutput(dataDirectionRegister_, rightEnable_);
+            io::setOutput(dataDirectionRegister_, rightDirection_);
             break;
 
         case Side::BOTH :

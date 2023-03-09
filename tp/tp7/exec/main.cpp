@@ -55,8 +55,7 @@ int main()
             Communication::send(i * 100);
             _delay_ms(250);
         }
-
-        Wheels::turnOff();
     }
+
     return 0;
 }

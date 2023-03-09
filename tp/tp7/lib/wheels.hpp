@@ -47,7 +47,7 @@ public:
     static void turnOff(const Side &side = Side::BOTH);
 
 private:
-    static constexpr uint8_t TOP_VALUE = 0xFF; // p. 103
+    static constexpr uint8_t TOP_VALUE = 0xFF; // p. 153
 
     static io::DataDirectionRegister dataDirectionRegister_;
     static io::Port port_;
