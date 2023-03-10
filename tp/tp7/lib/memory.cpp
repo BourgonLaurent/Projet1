@@ -32,7 +32,7 @@ const uint8_t Memory::read(const uint16_t address) const
 void Memory::write(const uint16_t address, const uint8_t data)
 {
     ecriture(address, data);
-    _delay_ms(READ_WRITE_DELAY_MS);
+    _delay_ms(WRITE_DELAY_MS);
 }
 
 const char* Memory::readMessage(const uint16_t startAddress,
@@ -48,10 +48,10 @@ void Memory::writeMessage(const uint16_t startAddress, const char* message)
     const uint8_t messageSize = strlen(message) + 1;
 
     ecriture(startAddress, (uint8_t*)message, messageSize);
-    _delay_ms(READ_WRITE_DELAY_MS);
+    _delay_ms(WRITE_DELAY_MS);
 }
 
 void Memory::clearBuffer()
 {
-    memset(readMessageBuffer_, 0, MAXIMUM_MESSAGE_SIZE);
+    memset(readMessageBuffer_, 0, N_MAX_CHARACTERS);
 }
