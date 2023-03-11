@@ -11,6 +11,7 @@
 # Rules:
 # 	`make all` (default): build the project
 # 	`make install`: build & flash the project
+#	`make debug`: build with DEBUG flag & flash the project
 # 	`make clean`: remove compilation artifacts
 #
 # Requirements:
@@ -69,3 +70,6 @@ $(TRG): $(OBJDEPS)
 install: $(HEXROMTRG)
 	$(AVRDUDE) -c $(AVRDUDE_PROGRAMMERID)   \
 	-p $(MCU) -P -e -U flash:w:$(HEXROMTRG)
+
+# make debug: build with DEBUG flag and then install it
+debug: install

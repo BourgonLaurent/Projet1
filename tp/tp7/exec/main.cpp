@@ -18,6 +18,7 @@
 #include <util/delay.h>
 
 #include <lib/communication.hpp>
+#include <lib/debug.hpp>
 #include <lib/interruptTimer.hpp>
 #include <lib/interrupts.hpp>
 #include <lib/led.hpp>
@@ -32,9 +33,9 @@ ISR(InterruptTimer_vect)
 
 int main()
 {
-    Led led(&DDRB, &PORTB, PB0, PB1);
+    debug::initialize();
 
-    Communication::initialize();
+    Led led(&DDRB, &PORTB, PB0, PB1);
 
     InterruptTimer::initialize(InterruptTimer::Mode::CLEAR_ON_COMPARE, 1);
     InterruptTimer::start();
@@ -52,7 +53,7 @@ int main()
         for (double i = 0; i <= 1; i += 0.25) {
             Wheels::setSpeed(i, Wheels::Side::LEFT);
             Wheels::setSpeed(1 - i, Wheels::Side::RIGHT);
-            Communication::send(i * 100);
+            debug::send("Speed of left motor", i * 100);
             _delay_ms(250);
         }
     }

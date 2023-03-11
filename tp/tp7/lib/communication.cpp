@@ -51,7 +51,7 @@ void Communication::send(const uint16_t data)
     static constexpr uint8_t nMaxCharacters = 6;
 
     char str[nMaxCharacters];
-    snprintf(str, sizeof(str), "%u", data);
+    snprintf(str, nMaxCharacters, "%u", data);
     send(str);
 }
 

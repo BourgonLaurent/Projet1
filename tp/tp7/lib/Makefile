@@ -44,3 +44,6 @@ include ../../../Makefile.common
 
 $(LIB): $(OBJECTS)
 	$(ARCHIVER) $(ARCHIVERFLAGS) $(LIB) $(OBJECTS)
+
+# make debug: build the library with DEBUG flag
+debug: all
