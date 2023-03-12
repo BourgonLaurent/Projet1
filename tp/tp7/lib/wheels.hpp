@@ -14,6 +14,12 @@
  * \author Ihsane Majdoubi
  *
  * \date February 2, 2023
+ *
+ * USAGE:
+ * Wheels::initialize(Side::RIGHT);
+ * Wheels::setDirection(Direction::BACKWARD, Side::RIGHT);
+ * Wheels::setSpeed(0.6, Side::RIGHT);
+ * turnOff(Side::RIGHT)
  */
 
 #ifndef Wheel_H
@@ -43,7 +49,7 @@ public:
 
     static void setDirection(const Direction &direction,
                              const Side &side = Side::BOTH);
-    static void setSpeed(const double speed, const Side &side = Side::BOTH);
+    static void setSpeed(const uint8_t speed, const Side &side = Side::BOTH);
     static void turnOff(const Side &side = Side::BOTH);
 
 private:

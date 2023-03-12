@@ -45,7 +45,7 @@ void Wheels::initialize(const Side &side)
 
     configureOutputPins(side);
     setDirection(Direction::FORWARD, side);
-    setSpeed(0.0, side);
+    setSpeed(0, side);
 }
 
 void Wheels::setDirection(const Direction &direction, const Side &side)
@@ -65,17 +65,17 @@ void Wheels::setDirection(const Direction &direction, const Side &side)
     }
 }
 
-void Wheels::setSpeed(const double speed, const Side &side)
+void Wheels::setSpeed(const uint8_t speed, const Side &side)
 {
     switch (side) {
         case Side::LEFT :
             // (p.155) Output Compare Register 2 B
-            OCR2B = speed * TOP_VALUE;
+            OCR2B = (speed * TOP_VALUE) / 100;
             break;
 
         case Side::RIGHT :
             // (p.155) Output Compare Register 2 A
-            OCR2A = speed * TOP_VALUE;
+            OCR2A = (speed * TOP_VALUE) / 100;
             break;
 
         case Side::BOTH :
@@ -86,7 +86,7 @@ void Wheels::setSpeed(const double speed, const Side &side)
 
 void Wheels::turnOff(const Side &side)
 {
-    setSpeed(0.0, side);
+    setSpeed(0, side);
 }
 
 void Wheels::setDirectionOfPin(const Direction &direction,

@@ -66,10 +66,6 @@ diode en ambrée. Nous devont passer une durée (en milisecondes) en paramètre.
 effet, puisque la diode doit alterner rapidement entre le rouge et le vert, il
 est impossible d'effectuer cette opération indéfiniement.
 % TODO Peut-être mieux expliquer pourquoi on peut pas faire ça?
-
-
-
-
 \subsubsection{Wheels}
 Le robot possède deux roues qui sont utilisées pour son déplacement. Les roues peuvent être
 contrôlée pour changer leur vitesse grâce à un signal PWM et pour changer leur direction (avancer
@@ -114,19 +110,6 @@ qui est le paramètre par défault. La direction Direction::FORWARD et une vites
 La méthode \mintinline{cpp}{turnOff(const Side &side = Side::BOTH)} permet d'arrêter le moteur de la roue spécifier dans le
 paramètre side. Le side par défault est BOTH. Cette méthode appelle la méthode \mintinline{cpp}{setSpeed(const double speed, const Side &side)}.
 En effet, en remettant la vitesse à zéro on arrête le moteur. Soit, \mintinline{cpp}{setSpeed(0), Side::LEFT} pour arrêter la roue gauche.
-
-
-
-
-
-
-
-
-
-
-
-
-
 \newpage
 \section{Modifications apportées au \textit{Makefile} de départ}
 % Est-ce que je mets Makefile en « verb » ?

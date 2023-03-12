@@ -13,6 +13,8 @@
  * \author Ihsane Majdoubi
  *
  * \date March 2, 2023
+ * USAGE:
+ * AnalogReader::read(PINA0);
  */
 
 #ifndef ANALOG_READER_H
