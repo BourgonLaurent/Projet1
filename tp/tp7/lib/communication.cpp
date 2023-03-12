@@ -1,5 +1,5 @@
 /**
- * Receive and send data with RS232.
+ * Send data with RS232.
  *
  * Hardware Identification
  * USART: D0 & D1.
@@ -11,6 +11,12 @@
  * \author Ihsane Majdoubi
  *
  * \date March 1, 2023
+ * 
+ * USAGE: see the message sent with the command `serieViaUSB -l`
+ *      Communication::initialize();
+ *      Communication::send("Lib1900\n"); 
+ *      Communication::send(1000);
+ * 
  */
 
 #include "communication.hpp"
