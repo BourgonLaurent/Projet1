@@ -14,6 +14,12 @@
  * \author Ihsane Majdoubi
  *
  * \date March 1, 2023
+ * 
+ * USAGE: example of writing a message and reading it
+ *      const char* MESSAGE = "Example of the class Memory\n";
+ *      const uint8_t MESSAGE_SIZE = strlen(MESSAGE);
+ *      Memory::writeMessage(0x0000, MESSAGE);
+ *      const char* messageRead = Memory::readMessage(0X0000, MESSAGE_SIZE);
  */
 
 #ifndef MEMORY_H
