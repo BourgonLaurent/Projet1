@@ -6,10 +6,10 @@
  *  - Red: send value of photoresistance every 5 seconds.
  *
  * Team #4546
- * \author Catalina Andrea Araya Figueroa
- * \author Mehdi Benouhoud
- * \author Laurent Bourgon
- * \author Ihsane Majdoubi
+ *  \author Catalina Andrea Araya Figueroa
+ *  \author Mehdi Benouhoud
+ *  \author Laurent Bourgon
+ *  \author Ihsane Majdoubi
  *
  * \date March 1, 2023
  *
@@ -76,7 +76,7 @@ namespace constants {
     } // namespace wheels
 
     namespace lights {
-        constexpr io::PinPosition PHOTORESISTANCE_LOCATION = PA0;
+        constexpr io::Position PHOTORESISTANCE_LOCATION = PA0;
 
         constexpr uint16_t MESSAGE_START_ADDRESS = 0x0000;
         constexpr const char* MESSAGE = "The photoresistance returns %d\n";
