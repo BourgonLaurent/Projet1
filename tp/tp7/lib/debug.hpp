@@ -24,11 +24,10 @@ namespace debug {
     static inline void send(const char* label, const uint16_t data)
     {
 #ifdef DEBUG
-        uint8_t nMaxCharacters = 100;
-        char formattedMessage[nMaxCharacters];
-        snprintf(formattedMessage, nMaxCharacters, "%s: %u\n", label, data);
-
-        send(formattedMessage);
+        send(label);
+        send(": ");
+        send(data);
+        send("\n");
 #endif
     }
 
