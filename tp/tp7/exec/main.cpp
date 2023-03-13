@@ -91,7 +91,7 @@ ISR(InterruptButton_vect)
 {
     InterruptButton::waitForDebounce();
 
-    ::isButtonPressed = !::isButtonPressed;
+    ::isButtonPressed = true;
     debug::send("Button is pressed.\n");
 
     InterruptButton::clear();
@@ -179,7 +179,6 @@ int main()
 
     InterruptButton::initialize(InterruptButton::Mode::RISING);
     InterruptTimer::initialize(InterruptTimer::Mode::CLEAR_ON_COMPARE, 0);
-    interrupts::startCatching();
 
     ::memory.writeMessage(constants::lights::MESSAGE_START_ADDRESS,
                           constants::lights::MESSAGE);
@@ -187,8 +186,11 @@ int main()
     Program program = Program::WHEELS;
 
     while (true) {
-        debug::send("Program", (uint8_t)program);
+        InterruptButton::clear();
+        ::isButtonPressed = false;
+        interrupts::startCatching();
 
+        debug::send("Program", (uint8_t)program);
         switch (program) {
             case Program::WHEELS :
                 led.setColor(Led::Color::GREEN);
@@ -203,8 +205,8 @@ int main()
                 break;
         }
 
+        interrupts::stopCatching();
         led.setAmberForMs(constants::TIMEOUT_MS);
-        ::isButtonPressed = false;
     }
 
     return 0;
