@@ -73,6 +73,7 @@ namespace constants {
     namespace wheels {
         constexpr uint8_t INCREMENT_EACH_MS = 2;
         constexpr uint8_t N_INCRMENTS = 4;
+        constexpr uint8_t PERCENT_TO_UINT = 100;
     } // namespace wheels
 
     namespace lights {
@@ -127,10 +128,13 @@ void runWheels()
         Wheels::setDirection(isWheelsForward ? Wheels::Direction::FORWARD
                                              : Wheels::Direction::BACKWARD);
 
-        uint8_t leftWheelSpeed =
-            (::counter * 100) / constants::wheels::N_INCRMENTS;
+        const uint8_t leftWheelSpeed =
+            (::counter * constants::wheels::PERCENT_TO_UINT)
+            / constants::wheels::N_INCRMENTS;
+
         Wheels::setSpeed(leftWheelSpeed, Wheels::Side::LEFT);
-        Wheels::setSpeed(1 - leftWheelSpeed, Wheels::Side::RIGHT);
+        Wheels::setSpeed(constants::wheels::PERCENT_TO_UINT - leftWheelSpeed,
+                         Wheels::Side::RIGHT);
     }
 }
 
