@@ -22,29 +22,31 @@ namespace io {
     using Pin = Register;
     using Position = uint8_t;
 
-    static inline bool get(Register pin, const Position bit)
+    static inline bool get(Register pin, const Position position)
     {
-        return *pin & _BV(bit);
+        return *pin & _BV(position);
     }
 
-    static inline void setActive(Register port, const Position bit)
+    static inline void setActive(Register port, const Position position)
     {
-        *port |= _BV(bit);
+        *port |= _BV(position);
     }
 
-    static inline void clear(Register port, const Position bit)
+    static inline void clear(Register port, const Position position)
     {
-        *port &= ~_BV(bit);
+        *port &= ~_BV(position);
     }
 
-    static inline void setInput(DataDirectionRegister port, const Position bit)
+    static inline void setInput(DataDirectionRegister port,
+                                const Position position)
     {
-        clear(port, bit);
+        clear(port, position);
     }
 
-    static inline void setOutput(DataDirectionRegister port, const Position bit)
+    static inline void setOutput(DataDirectionRegister port,
+                                 const Position position)
     {
-        setActive(port, bit);
+        setActive(port, position);
     }
 } // namespace io
 
