@@ -2,14 +2,19 @@
  * Control of a bicolor LED.
  *
  * Hardware Identification:
- * WARNING: The Data Direction Register will be set automatically.
- * OUTPUT: Bicolor LED connected plus to `plus` and minus to `minus`.
+ *  WARNING: The Data Direction Register will be set automatically.
+ *  OUTPUT: Bicolor LED connected plus to `plus` and minus to `minus`.
+ *
+ * USAGE:
+ *  Led led = Led(&DDRA, &PORTA, PA0, PA1);
+ *  led.setColor(Led::Color::RED);
+ *  led.setAmberForMs(10);
  *
  * Team #4546
- * \author Catalina Andrea Araya Figueroa
- * \author Mehdi Benouhoud
- * \author Laurent Bourgon
- * \author Ihsane Majdoubi
+ *  \author Catalina Andrea Araya Figueroa
+ *  \author Mehdi Benouhoud
+ *  \author Laurent Bourgon
+ *  \author Ihsane Majdoubi
  *
  * \date January 19, 2023
  */

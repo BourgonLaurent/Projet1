@@ -5,21 +5,22 @@
  *              Copy or use the value read before reading another one.
  *
  * Hardware Identification
- * EEPROM: C0 & C1.
+ *  EEPROM: C0 & C1.
+ *
+ * USAGE: example of writing a message and reading it.
+ *
+ *  const char* message = "C'est quoi le STEP ?\n";
+ *  const uint8_t messageSize = strlen(message);
+ *  Memory::writeMessage(0x0000, message);
+ *  const char* messageRead = Memory::readMessage(0x0000, messageSize);
  *
  * Team #4546
- * \author Catalina Andrea Araya Figueroa
- * \author Mehdi Benouhoud
- * \author Laurent Bourgon
- * \author Ihsane Majdoubi
+ *  \author Catalina Andrea Araya Figueroa
+ *  \author Mehdi Benouhoud
+ *  \author Laurent Bourgon
+ *  \author Ihsane Majdoubi
  *
  * \date March 1, 2023
- * 
- * USAGE: example of writing a message and reading it
- *      const char* MESSAGE = "Example of the class Memory\n";
- *      const uint8_t MESSAGE_SIZE = strlen(MESSAGE);
- *      Memory::writeMessage(0x0000, MESSAGE);
- *      const char* messageRead = Memory::readMessage(0X0000, MESSAGE_SIZE);
  */
 
 #ifndef MEMORY_H

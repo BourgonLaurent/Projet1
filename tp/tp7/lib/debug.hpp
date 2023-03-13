@@ -1,3 +1,24 @@
+/**
+ * Send data with RS232 when DEBUG is defined.
+ *
+ * Hardware Identification
+ *  USART: D0 & D1. (from Communication)
+ *
+ * USAGE:
+ *  debug::initialize();
+ *  debug::send("lib1900\n");
+ *  debug::send(1000);
+ *  debug::send("Motor speed", speed);
+ *
+ * Team #4546
+ *  \author Catalina Andrea Araya Figueroa
+ *  \author Mehdi Benouhoud
+ *  \author Laurent Bourgon
+ *  \author Ihsane Majdoubi
+ *
+ * \date March 10, 2023
+ */
+
 #ifndef DEBUG_H
 #define DEBUG_H
 

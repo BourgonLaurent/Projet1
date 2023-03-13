@@ -2,16 +2,8 @@
  * Interrupt the main program with a push button.
  *
  * Hardware Identification:
- * /!\ The Data Direction Register (DDRD) will be set automatically.
- * INPUT: Push button connected to D2.
- *
- * Team #4546
- * \author Catalina-Andrea Araya-Figueroa
- * \author Mehdi Benouhoud
- * \author Laurent Bourgon
- * \author Ihsane Majdoubi
- *
- * \date February 2, 2023
+ *  WARNING: The Data Direction Register (DDRD) will be set automatically.
+ *  INPUT: Push button connected to D2.
  *
  * USAGE: Use `InterruptButton_vect` inside the ISR.
  *        For the debounce, call the appropriate functions
@@ -23,6 +15,14 @@
  *        ...
  *        InterruptButton::clear();
  *    }
+ *
+ * Team #4546
+ *  \author Catalina-Andrea Araya-Figueroa
+ *  \author Mehdi Benouhoud
+ *  \author Laurent Bourgon
+ *  \author Ihsane Majdoubi
+ *
+ * \date February 2, 2023
  */
 
 #ifndef INTERRUPTBUTTON_H

@@ -1,11 +1,16 @@
 /**
  * Bit manipulation.
  *
+ * USAGE:
+ *  io::setOutput(&DDRD, PD2);
+ *  io::setActive(&PORTA, PA0);
+ *  const bool isButtonPressed = io::get(&DDRD, PD2);
+ *
  * Team #4546
- * \author Catalina Andrea Araya Figueroa
- * \author Mehdi Benouhoud
- * \author Laurent Bourgon
- * \author Ihsane Majdoubi
+ *  \author Catalina Andrea Araya Figueroa
+ *  \author Mehdi Benouhoud
+ *  \author Laurent Bourgon
+ *  \author Ihsane Majdoubi
  *
  * \date January 19, 2023
  */

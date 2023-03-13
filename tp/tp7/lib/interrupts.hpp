@@ -1,11 +1,17 @@
 /**
- * Interrupts manipulation.
+ * Control the activation of interrupt routines (ISR).
+ *
+ * USAGE:
+ *  interrupts::startCatching();
+ *  InterruptTimer::start();
+ *  ...
+ *  interrupts::stopCatching();
  *
  * Team #4546
- * \author Catalina Andrea Araya Figueroa
- * \author Mehdi Benouhoud
- * \author Laurent Bourgon
- * \author Ihsane Majdoubi
+ *  \author Catalina Andrea Araya Figueroa
+ *  \author Mehdi Benouhoud
+ *  \author Laurent Bourgon
+ *  \author Ihsane Majdoubi
  *
  * \date February 2, 2023
  */

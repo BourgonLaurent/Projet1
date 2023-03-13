@@ -1,22 +1,22 @@
 /**
- * Interrupt a program with a timer.
- *
- * Team #4546
- * \author Catalina Andrea Araya Figueroa
- * \author Mehdi Benouhoud
- * \author Laurent Bourgon
- * \author Ihsane Majdoubi
- *
- * \date February 2, 2023
+ * Interrupt program with a timer.
  *
  * Hardware Identification
- * TIMER: Timer 1.
+ *  TIMER: Timer 1.
  *
  * USAGE: Use `InterruptTimer_vect` inside the ISR.
  *    ISR(InterruptTimer_vect)
  *    {
  *        ...
  *    }
+ *
+ * Team #4546
+ *  \author Catalina Andrea Araya Figueroa
+ *  \author Mehdi Benouhoud
+ *  \author Laurent Bourgon
+ *  \author Ihsane Majdoubi
+ *
+ * \date February 2, 2023
  */
 
 #include "interruptTimer.hpp"

@@ -4,17 +4,20 @@
  * Code modified from can (2006, Matthew Khouzam & Jerome Collin)
  *
  * Hardware Identification
- * WARNING: A read pin needs to be on PORTA and set as input.
+ *  WARNING: A read pin needs to be on PORTA and set as input.
+ *
+ * USAGE:
+ *  io::setInput(PA0);
+ *  AnalogReader reader;
+ *  uint8_t value = reader.read(PA0);
  *
  * Team #4546
- * \author Catalina Andrea Araya Figueroa
- * \author Mehdi Benouhoud
- * \author Laurent Bourgon
- * \author Ihsane Majdoubi
+ *  \author Catalina Andrea Araya Figueroa
+ *  \author Mehdi Benouhoud
+ *  \author Laurent Bourgon
+ *  \author Ihsane Majdoubi
  *
  * \date March 2, 2023
- * USAGE:
- * AnalogReader::read(PINA0);
  */
 
 #ifndef ANALOG_READER_H

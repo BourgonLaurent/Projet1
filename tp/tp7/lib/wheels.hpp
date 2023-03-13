@@ -2,24 +2,25 @@
  * Control left and right wheels using hardware PWM.
  *
  * Hardware Identification
- * WARNING: The Data Direction Register will be set automatically.
- * TIMER: Timer 0.
- * OUTPUT: H-bridge, connected left  to PD6 (enable) and PD4 (direction)
- *                   connected right to PD7 (enable) and PD5 (direction)
- *
- * Team #4546
- * \author Catalina Andrea Araya Figueroa
- * \author Mehdi Benouhoud
- * \author Laurent Bourgon
- * \author Ihsane Majdoubi
- *
- * \date February 2, 2023
+ *  WARNING: The Data Direction Register will be set automatically.
+ *  TIMER: Timer 0.
+ *  OUTPUT: H-bridge, connected left  to PD6 (enable) and PD4 (direction)
+ *                    connected right to PD7 (enable) and PD5 (direction)
  *
  * USAGE:
- * Wheels::initialize(Side::RIGHT);
- * Wheels::setDirection(Direction::BACKWARD, Side::RIGHT);
- * Wheels::setSpeed(0.6, Side::RIGHT);
- * turnOff(Side::RIGHT)
+ *  Wheels::initialize();
+ *  Wheels::setDirection(Direction::BACKWARD, Side::RIGHT);
+ *  Wheels::setSpeed(0.2, Side::LEFT);
+ *  Wheels::setSpeed(0.6, Side::RIGHT);
+ *  turnOff(Side::RIGHT)
+ *
+ * Team #4546
+ *  \author Catalina Andrea Araya Figueroa
+ *  \author Mehdi Benouhoud
+ *  \author Laurent Bourgon
+ *  \author Ihsane Majdoubi
+ *
+ * \date February 2, 2023
  */
 
 #ifndef Wheel_H
