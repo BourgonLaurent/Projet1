@@ -2,26 +2,25 @@
  * Send data with RS232.
  *
  * Hardware Identification
- * USART: D0 & D1.
+ *  USART: D0 & D1.
+ *
+ * USAGE:
+ *  Communication::initialize();
+ *  Communication::send("lib1900\n");
+ *  Communication::send(1000);
  *
  * Team #4546
- * \author Catalina Andrea Araya Figueroa
- * \author Mehdi Benouhoud
- * \author Laurent Bourgon
- * \author Ihsane Majdoubi
+ *  \author Catalina Andrea Araya Figueroa
+ *  \author Mehdi Benouhoud
+ *  \author Laurent Bourgon
+ *  \author Ihsane Majdoubi
  *
  * \date March 1, 2023
- * 
- * USAGE: see the message sent with the command `serieViaUSB -l`
- *      Communication::initialize();
- *      Communication::send("Lib1900\n"); 
- *      Communication::send(1000);
- * 
  */
 
 #include "communication.hpp"
 
-#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include <lib/io.hpp>
@@ -52,15 +51,6 @@ void Communication::initialize()
     io::clear(&UCSR0C, UPM00);
 }
 
-void Communication::send(const uint16_t data)
-{
-    static constexpr uint8_t nMaxCharacters = 6;
-
-    char str[nMaxCharacters];
-    snprintf(str, nMaxCharacters, "%u", data);
-    send(str);
-}
-
 void Communication::send(const char* data)
 {
     uint8_t dataLength = strlen(data);
@@ -68,6 +58,18 @@ void Communication::send(const char* data)
     for (uint8_t i = 0; i < dataLength; i++) {
         Communication::sendCharacter(data[i]);
     }
+}
+
+void Communication::send(const uint16_t data)
+{
+    // An uint16_t with base 10 fits on 5 characters
+    // and has 1 null terminating character
+    static constexpr uint8_t base = 10;
+    static constexpr uint8_t nMaxCharacters = 5 + 1;
+
+    char dataString[nMaxCharacters];
+    utoa(data, dataString, base);
+    send(dataString);
 }
 
 void Communication::sendCharacter(const uint8_t data)

@@ -2,21 +2,20 @@
  * Send data with RS232.
  *
  * Hardware Identification
- * USART: D0 & D1.
+ *  USART: D0 & D1.
+ *
+ * USAGE:
+ *  Communication::initialize();
+ *  Communication::send("lib1900\n");
+ *  Communication::send(1000);
  *
  * Team #4546
- * \author Catalina Andrea Araya Figueroa
- * \author Mehdi Benouhoud
- * \author Laurent Bourgon
- * \author Ihsane Majdoubi
+ *  \author Catalina Andrea Araya Figueroa
+ *  \author Mehdi Benouhoud
+ *  \author Laurent Bourgon
+ *  \author Ihsane Majdoubi
  *
  * \date March 1, 2023
- * 
- * USAGE: see the message sent with the command `serieViaUSB -l`
- *      Communication::initialize();
- *      Communication::send("Lib1900\n"); 
- *      Communication::send(1000);
- * 
  */
 
 #ifndef COMMUNICATION_H
@@ -28,8 +27,8 @@ class Communication
 {
 public:
     static void initialize();
-    static void send(const uint16_t data);
     static void send(const char* data);
+    static void send(const uint16_t data);
 
 private:
     static void sendCharacter(const uint8_t data);
