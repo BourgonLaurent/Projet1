@@ -34,7 +34,7 @@ ARCHIVERFLAGS=-crs
 
 ##### RULES #####
 
-.PHONY: all clean
+.PHONY: all
 
 # make all (default): build library
 all: $(LIB)
