@@ -21,7 +21,7 @@
 #include <lib/io.hpp>
 
 Led::Led(io::DataDirectionRegister dataDirectionRegister, io::Port port,
-         const io::PinPosition plus, const io::PinPosition minus)
+         const io::Position plus, const io::Position minus)
     : port_(port), plus_(plus), minus_(minus)
 {
     io::setOutput(dataDirectionRegister, plus_);

@@ -22,10 +22,10 @@
 
 io::DataDirectionRegister Wheels::dataDirectionRegister_ = &DDRD;
 io::Port Wheels::port_ = &PORTD;
-io::PinPosition Wheels::leftEnable_ = PD6;
-io::PinPosition Wheels::leftDirection_ = PD4;
-io::PinPosition Wheels::rightEnable_ = PD7;
-io::PinPosition Wheels::rightDirection_ = PD5;
+io::Position Wheels::leftEnable_ = PD6;
+io::Position Wheels::leftDirection_ = PD4;
+io::Position Wheels::rightEnable_ = PD7;
+io::Position Wheels::rightDirection_ = PD5;
 
 void Wheels::initialize(const Side &side)
 {
@@ -90,7 +90,7 @@ void Wheels::turnOff(const Side &side)
 }
 
 void Wheels::setDirectionOfPin(const Direction &direction,
-                               const io::PinPosition pin)
+                               const io::Position pin)
 {
     switch (direction) {
         case Direction::FORWARD :

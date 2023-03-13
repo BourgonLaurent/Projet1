@@ -57,13 +57,13 @@ private:
 
     static io::DataDirectionRegister dataDirectionRegister_;
     static io::Port port_;
-    static io::PinPosition leftEnable_;
-    static io::PinPosition leftDirection_;
-    static io::PinPosition rightEnable_;
-    static io::PinPosition rightDirection_;
+    static io::Position leftEnable_;
+    static io::Position leftDirection_;
+    static io::Position rightEnable_;
+    static io::Position rightDirection_;
 
     static void setDirectionOfPin(const Direction &direction,
-                                  const io::PinPosition pin);
+                                  const io::Position pin);
     static void configureOutputPins(const Side &side);
 };
 

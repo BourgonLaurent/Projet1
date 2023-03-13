@@ -40,7 +40,7 @@ AnalogReader::~AnalogReader()
 
 // Faire une conversion et aller retourner le resultat sur 16 bits
 // dont seulement les 10 de poids faibles sont significatifs.
-uint8_t AnalogReader::read(io::PinPosition pinPosition)
+uint8_t AnalogReader::read(io::Position position)
 {
     uint16_t adcVal;
 
@@ -50,7 +50,7 @@ uint8_t AnalogReader::read(io::PinPosition pinPosition)
         ~((1 << MUX4) | (1 << MUX3) | (1 << MUX2) | (1 << MUX1) | (1 << MUX0));
 
     // selectionner l'entree voulue
-    ADMUX |= ((pinPosition & 0x07) << MUX0);
+    ADMUX |= ((position & 0x07) << MUX0);
 
     // demarrer la conversion
     ADCSRA |= (1 << ADSC);

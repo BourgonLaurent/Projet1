@@ -36,7 +36,7 @@
 
 void InterruptButton::initialize(const Mode &mode)
 {
-    io::setInput(dataDirection_, pin_);
+    io::setInput(dataDirection_, position_);
 
     setMode(mode);
     start();
@@ -88,4 +88,4 @@ void InterruptButton::waitForDebounce()
 }
 
 io::DataDirectionRegister InterruptButton::dataDirection_ = &DDRD;
-io::PinPosition InterruptButton::pin_ = PD2;
+io::Position InterruptButton::position_ = PD2;

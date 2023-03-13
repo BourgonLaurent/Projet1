@@ -30,7 +30,7 @@ public:
     AnalogReader();
     ~AnalogReader();
 
-    uint8_t read(io::PinPosition pinPosition);
+    uint8_t read(io::Position position);
 };
 
 #endif

@@ -57,7 +57,7 @@ public:
 private:
     static constexpr uint8_t DEBOUNCE_DELAY_MS = 30;
     static io::DataDirectionRegister dataDirection_;
-    static io::PinPosition pin_;
+    static io::Position position_;
 };
 
 #endif

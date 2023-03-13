@@ -20,31 +20,29 @@ namespace io {
     using DataDirectionRegister = Register;
     using Port = Register;
     using Pin = Register;
-    using PinPosition = uint8_t;
+    using Position = uint8_t;
 
-    static inline bool get(Register pin, const PinPosition bit)
+    static inline bool get(Register pin, const Position bit)
     {
         return *pin & _BV(bit);
     }
 
-    static inline void setActive(Register port, const PinPosition bit)
+    static inline void setActive(Register port, const Position bit)
     {
         *port |= _BV(bit);
     }
 
-    static inline void clear(Register port, const PinPosition bit)
+    static inline void clear(Register port, const Position bit)
     {
         *port &= ~_BV(bit);
     }
 
-    static inline void setInput(DataDirectionRegister port,
-                                const PinPosition bit)
+    static inline void setInput(DataDirectionRegister port, const Position bit)
     {
         clear(port, bit);
     }
 
-    static inline void setOutput(DataDirectionRegister port,
-                                 const PinPosition bit)
+    static inline void setOutput(DataDirectionRegister port, const Position bit)
     {
         setActive(port, bit);
     }

@@ -23,7 +23,7 @@ class Led
 {
 public:
     Led(io::DataDirectionRegister dataDirectionRegister, io::Port port,
-        const io::PinPosition plus, const io::PinPosition minus);
+        const io::Position plus, const io::Position minus);
 
     enum class Color
     {
@@ -39,8 +39,8 @@ private:
     constexpr static uint16_t AMBER_DELAY_US = 500;
 
     io::Port port_;
-    const io::PinPosition plus_;
-    const io::PinPosition minus_;
+    const io::Position plus_;
+    const io::Position minus_;
 };
 
 #endif
