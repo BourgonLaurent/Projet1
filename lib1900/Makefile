@@ -40,7 +40,7 @@ ARCHIVERFLAGS=-crs
 all: $(LIB)
 
 # Include common variables and rules
-include ../../../Makefile.common
+include ../Makefile.common
 
 $(LIB): $(OBJECTS)
 	$(ARCHIVER) $(ARCHIVERFLAGS) $(LIB) $(OBJECTS)
