@@ -25,7 +25,7 @@
 
 #include "wheels.hpp"
 
-#include <lib/io.hpp>
+#include <lib1900/io.hpp>
 
 io::DataDirectionRegister Wheels::dataDirectionRegister_ = &DDRD;
 io::Port Wheels::port_ = &PORTD;

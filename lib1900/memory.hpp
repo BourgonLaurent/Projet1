@@ -26,7 +26,7 @@
 #ifndef MEMORY_H
 #define MEMORY_H
 
-#include <lib/_memoire_24.hpp>
+#include <lib1900/_memoire_24.hpp>
 
 class Memory : private Memoire24CXXX
 {
