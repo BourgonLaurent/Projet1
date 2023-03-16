@@ -25,6 +25,8 @@
 
 #include "wheels.hpp"
 
+#include <util/delay.h>
+
 #include <lib1900/io.hpp>
 
 io::DataDirectionRegister Wheels::dataDirectionRegister_ = &DDRD;
@@ -138,4 +140,33 @@ void Wheels::configureOutputPins(const Side &side)
             configureOutputPins(Side::RIGHT);
             break;
     }
+}
+
+void Wheels::turn(const Side &side)
+{
+    uint16_t lastSpeedRight = OCR2A;
+    uint16_t lastSpeedLeft = OCR2B;
+    Wheels::turnOff();
+    _delay_ms(500);
+    switch (side) {
+
+        case Side::RIGHT :
+            Wheels::setSpeed(100, Side::LEFT);
+            _delay_ms(DELAY_TURN_MS_LEFT);
+
+            break;
+
+        case Side::LEFT :
+            Wheels::setSpeed(100, Side::RIGHT);
+            _delay_ms(DELAY_TURN_MS_RIGHT);
+
+            break;
+
+        case Side::BOTH :
+            break;
+    }
+    Wheels::turnOff();
+    _delay_ms(500);
+    OCR2A = lastSpeedRight;
+    OCR2B = lastSpeedLeft;
 }

@@ -39,7 +39,6 @@ public:
         RIGHT,
         BOTH
     };
-
     enum class Direction
     {
         FORWARD,
@@ -52,9 +51,12 @@ public:
                              const Side &side = Side::BOTH);
     static void setSpeed(const uint8_t speed, const Side &side = Side::BOTH);
     static void turnOff(const Side &side = Side::BOTH);
+    static void turn(const Side &side);
 
 private:
     static constexpr uint8_t TOP_VALUE = 0xFF; // p. 153
+    static constexpr uint16_t DELAY_TURN_MS_LEFT = 965;
+    static constexpr uint16_t DELAY_TURN_MS_RIGHT = 850;
 
     static io::DataDirectionRegister dataDirectionRegister_;
     static io::Port port_;
