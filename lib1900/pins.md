@@ -13,8 +13,8 @@
 |            |                |       |                                                                 |
 | `B`        | `PB0`          |       |                                                                 |
 |            | `PB1`          |       |                                                                 |
-|            | `PB2`          |       |                                                                 |
-|            | `PB3`          |       |                                                                 |
+|            | `PB2`          | Yes   | [Sound](sound.hpp)                                              |
+|            | `PB3`          | Yes   | [Sound](sound.hpp)                                              |
 |            | `PB4`          | *     | used by ATmega8 when flashing, try to avoid as much as possible |
 |            | `PB5`          | *     | used by ATmega8 when flashing, try to avoid as much as possible |
 |            | `PB6`          | *     | used by ATmega8 when flashing, try to avoid as much as possible |
