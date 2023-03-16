@@ -27,6 +27,9 @@ class Communication
 {
 public:
     static void initialize();
+
+    static uint8_t receive();
+
     static void send(const char* data);
     static void send(const uint16_t data);
 

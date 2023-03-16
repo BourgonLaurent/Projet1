@@ -51,6 +51,15 @@ void Communication::initialize()
     io::clear(&UCSR0C, UPM00);
 }
 
+uint8_t Communication::receive()
+{
+    /* Wait for data to be received */
+    while (!(UCSR0A & (1 << RXC0))) {}
+
+    /* Get and return received data from buffer */
+    return UDR0;
+}
+
 void Communication::send(const char* data)
 {
     uint8_t dataLength = strlen(data);
