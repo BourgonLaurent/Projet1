@@ -9,9 +9,11 @@
  *
  * USAGE:
  *  Wheels::initialize();
- *  Wheels::setDirection(Direction::BACKWARD, Side::RIGHT);
- *  Wheels::setSpeed(0.2, Side::LEFT);
- *  Wheels::setSpeed(0.6, Side::RIGHT);
+ *  Wheels::setDirection(Direction::BACKWARD, Wheels::Side::RIGHT);
+ *  Wheels::setSpeed(0.2, Wheels::Side::LEFT);
+ *  Wheels::setSpeed(0.6, Wheels::Side::RIGHT);
+ *  Wheels::invertDirection(Side::LEFT);
+ *  Wheels::turn(Side::LEFT);
  *  turnOff(Side::RIGHT)
  *
  * Team #4546
@@ -27,6 +29,7 @@
 
 #include <util/delay.h>
 
+#include <lib1900/debug.hpp>
 #include <lib1900/io.hpp>
 
 io::DataDirectionRegister Wheels::dataDirectionRegister_ = &DDRD;
@@ -142,31 +145,39 @@ void Wheels::configureOutputPins(const Side &side)
     }
 }
 
-void Wheels::turn(const Side &side)
+void Wheels::invertDirection(const Side &side)
 {
-    uint16_t lastSpeedRight = OCR2A;
-    uint16_t lastSpeedLeft = OCR2B;
-    Wheels::turnOff();
-    _delay_ms(500);
     switch (side) {
+        case Side::LEFT :
+            io::invert(port_, leftDirection_);
+            break;
 
         case Side::RIGHT :
-            Wheels::setSpeed(100, Side::LEFT);
-            _delay_ms(DELAY_TURN_MS_LEFT);
-
+            io::invert(port_, rightDirection_);
             break;
 
-        case Side::LEFT :
-            Wheels::setSpeed(100, Side::RIGHT);
-            _delay_ms(DELAY_TURN_MS_RIGHT);
-
-            break;
-
-        case Side::BOTH :
-            break;
+        default :
+            invertDirection(Side::LEFT);
+            invertDirection(Side::RIGHT);
     }
-    Wheels::turnOff();
-    _delay_ms(500);
-    OCR2A = lastSpeedRight;
-    OCR2B = lastSpeedLeft;
+}
+
+void Wheels::turn(const Side &side)
+{
+    uint16_t savedLeftSpeed = OCR2B;
+    uint16_t savedRightSpeed = OCR2A;
+
+    turnOff();
+    invertDirection(side);
+    _delay_ms(TURN_TIMEOUT_MS);
+
+    setSpeed(100);
+    _delay_ms(TURN_DURATION_MS);
+
+    turnOff();
+    _delay_ms(TURN_TIMEOUT_MS);
+    invertDirection(side);
+
+    OCR2B = savedLeftSpeed;
+    OCR2A = savedRightSpeed;
 }

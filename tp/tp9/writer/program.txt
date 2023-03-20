@@ -1,19 +1,27 @@
-// commentaire
-% commentaire
-# commentaire
-
-DBT ;
-FIN;
-ATT 8  ;
-DAL 1 	;  // ceci est aussi un commentaire
+SGO 80;
+DBT;
+MAV 110;
+DAL 1;
+ATT 120;
+TRD;
 DET 1;
-SGO 90 ;
-SAR ;     # un commentaire tout aussi bon
+MRE 110;
+DAL 2;
+ATT 120;
+TRG;
 MAR;
-
-MAV  67;
-mre 9;
-TRD ;
-trg 	;
-DBC 34;   % la derniere forme de commentaire
+DET 1;
+DBC 2;
+SGO 69;
+ATT 40;
+SAR;
+SGO 80;
+ATT 40;
+SAR;
 FBC;
+MAV 255;
+ATT 60;
+MAR;
+FIN;
+SGO 55;
+DET 1;

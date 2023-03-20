@@ -7,9 +7,9 @@
  *  Green: Written
  *
  * USAGE: Use serieViaUSB.
- *  progmem -v -o program.bc program.txt
+ *  progmem -v -o program.bin program.txt
  *  <make sure LED is red and robot is connected>
- *  serieViaUSB -d -e -f program.bc
+ *  serieViaUSB -d -e -f program.bin
  *
  * Team #4546
  *  \author Catalina Andrea Araya Figueroa

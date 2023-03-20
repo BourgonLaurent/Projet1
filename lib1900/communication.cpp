@@ -8,6 +8,7 @@
  *  Communication::initialize();
  *  Communication::send("lib1900\n");
  *  Communication::send(1000);
+ *  const uint8_t value = Communication::receive();
  *
  * Team #4546
  *  \author Catalina Andrea Araya Figueroa
@@ -53,10 +54,10 @@ void Communication::initialize()
 
 uint8_t Communication::receive()
 {
-    /* Wait for data to be received */
-    while (!(UCSR0A & (1 << RXC0))) {}
+    // Wait for data to be received
+    while (!(UCSR0A & _BV(RXC0))) {}
 
-    /* Get and return received data from buffer */
+    // Get and return received data from buffer
     return UDR0;
 }
 

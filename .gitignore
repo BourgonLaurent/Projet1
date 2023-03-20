@@ -1,6 +1,6 @@
 # INF1900
 # TP9 - bytecode
-*.bc
+*.bin
 
 # Prerequisites
 *.d

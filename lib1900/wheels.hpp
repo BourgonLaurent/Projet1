@@ -9,9 +9,11 @@
  *
  * USAGE:
  *  Wheels::initialize();
- *  Wheels::setDirection(Direction::BACKWARD, Side::RIGHT);
- *  Wheels::setSpeed(0.2, Side::LEFT);
- *  Wheels::setSpeed(0.6, Side::RIGHT);
+ *  Wheels::setDirection(Direction::BACKWARD, Wheels::Side::RIGHT);
+ *  Wheels::setSpeed(0.2, Wheels::Side::LEFT);
+ *  Wheels::setSpeed(0.6, Wheels::Side::RIGHT);
+ *  Wheels::invertDirection(Side::LEFT);
+ *  Wheels::turn(Side::LEFT);
  *  turnOff(Side::RIGHT)
  *
  * Team #4546
@@ -49,14 +51,16 @@ public:
 
     static void setDirection(const Direction &direction,
                              const Side &side = Side::BOTH);
+    static void turn(const Side &side);
+    static void invertDirection(const Side &side);
+
     static void setSpeed(const uint8_t speed, const Side &side = Side::BOTH);
     static void turnOff(const Side &side = Side::BOTH);
-    static void turn(const Side &side);
 
 private:
     static constexpr uint8_t TOP_VALUE = 0xFF; // p. 153
-    static constexpr uint16_t DELAY_TURN_MS_LEFT = 965;
-    static constexpr uint16_t DELAY_TURN_MS_RIGHT = 850;
+    static constexpr uint16_t TURN_DURATION_MS = 750;
+    static constexpr uint16_t TURN_TIMEOUT_MS = 250;
 
     static io::DataDirectionRegister dataDirectionRegister_;
     static io::Port port_;

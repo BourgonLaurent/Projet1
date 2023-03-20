@@ -8,6 +8,7 @@
  *  Communication::initialize();
  *  Communication::send("lib1900\n");
  *  Communication::send(1000);
+ *  const uint8_t value = Communication::receive();
  *
  * Team #4546
  *  \author Catalina Andrea Araya Figueroa

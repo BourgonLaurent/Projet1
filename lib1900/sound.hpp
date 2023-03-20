@@ -1,17 +1,20 @@
 /**
- *  Emit MIDI sounds using piezoelectric buzzer and hardware PWM
+ * Emit MIDI notes using piezoelectric buzzer and hardware PWM.
+ *
+ * LIMITATIONS: Supports only notes from 45 to 81.
  *
  * Hardware Identification
- *  WARNING: Data direction register will be set automatically. Change the pins
- *  and timer directly in the class if needed.
+ *  WARNING: Data Direction Register will be set automatically.
  *  TIMER: Timer 0 (OC0A)
- *  OUTPUT: PB2 and PB3, for the minus and plus buzzer pins respectively
+ *  OUTPUT: Buzzer, connected plus to PB3 and minus to PB2.
  *
  * USAGE:
  *  Sound::intialize();
  *  Sound::playNote(45);
  *  _delay_ms(500);
  *  Sound::stop();
+ *  _delay_ms(500);
+ *  Sound::start();
  *
  * Team #4546
  *  \author Catalina Andrea Araya Figueroa
@@ -21,21 +24,28 @@
  *
  * \date March 14th, 2023
  */
+
 #ifndef SOUND_H
 #define SOUND_H
-#include "io.hpp"
+
 #include <avr/io.h>
+
+#include <lib1900/io.hpp>
 
 class Sound
 {
 public:
     static void initialize();
-    static void playNote(uint8_t midiNote);
+
     static void start();
     static void stop();
 
+    static void playNote(uint8_t midiNote);
+
 private:
     static constexpr uint16_t PRESCALER_VALUE = 256;
+    static constexpr uint8_t MINIMUM_NOTE = 45;
+    static constexpr uint8_t MAXIMUM_NOTE = 81;
 
     static uint16_t getFrequency(uint8_t midiNote);
 
@@ -43,4 +53,5 @@ private:
     static io::Position buzzerMinusPosition_;
     static io::Position buzzerPlusPosition_;
 };
+
 #endif

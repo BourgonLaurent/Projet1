@@ -1,19 +1,20 @@
 /**
  * Emit MIDI notes using piezoelectric buzzer and hardware PWM.
  *
- * Max MIDI note: 81
- * Min MIDI note: 45
+ * LIMITATIONS: Supports only notes from 45 to 81.
  *
  * Hardware Identification
  *  WARNING: Data Direction Register will be set automatically.
  *  TIMER: Timer 0 (OC0A)
- *  OUTPUT: Buzzer connected minus to PB2 and plus to PB3
+ *  OUTPUT: Buzzer, connected plus to PB3 and minus to PB2.
  *
  * USAGE:
  *  Sound::intialize();
  *  Sound::playNote(45);
  *  _delay_ms(500);
  *  Sound::stop();
+ *  _delay_ms(500);
+ *  Sound::start();
  *
  * Team #4546
  *  \author Catalina Andrea Araya Figueroa
@@ -28,8 +29,6 @@
 
 #include <math.h>
 
-#include <lib1900/debug.hpp>
-
 #ifndef F_CPU
 #define F_CPU 8000000UL
 #endif
@@ -42,7 +41,6 @@ io::Position Sound::buzzerPlusPosition_ = PB3;
 
 void Sound::initialize()
 {
-    debug::send("ini");
     io::setOutput(dataDirectionRegister_, buzzerPlusPosition_);
     io::setOutput(dataDirectionRegister_, buzzerMinusPosition_);
 
@@ -61,6 +59,10 @@ void Sound::initialize()
 
 void Sound::playNote(uint8_t midiNote)
 {
+    if (midiNote < MINIMUM_NOTE || midiNote > MAXIMUM_NOTE) {
+        return;
+    }
+
     uint16_t frequency = getFrequency(midiNote);
 
     // (p.96) Get OCR0A value from frequency
@@ -74,7 +76,6 @@ void Sound::start()
     // (p.101) Clear OC0A on set to toggle
     io::setActive(&TCCR0A, COM0A0);
     io::clear(&TCCR0A, COM0A1);
-    debug::send("endini");
 }
 
 void Sound::stop()

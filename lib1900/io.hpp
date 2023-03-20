@@ -42,6 +42,11 @@ namespace io {
         *port &= ~_BV(position);
     }
 
+    static inline void invert(Register port, const Position position)
+    {
+        *port ^= _BV(position);
+    }
+
     static inline void setInput(DataDirectionRegister port,
                                 const Position position)
     {
