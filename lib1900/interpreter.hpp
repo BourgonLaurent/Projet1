@@ -1,7 +1,10 @@
 /**
  * Run a program in memory.
  *
+ * Will block for 2.5s and turn LED amber when initialized.
+ *
  * Hardware Identification
+ * WARNING: Data direction registers will be set automatically.
  * OUTPUT:
  *  - LED, connected plus to B0, and minus to B1.
  *  - Buzzer, connected plus to B3 and minus to B2.

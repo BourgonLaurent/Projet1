@@ -20,8 +20,6 @@
  * \date March 14, 2023
  */
 
-#include <util/delay.h>
-
 #include <lib1900/communication.hpp>
 #include <lib1900/debug.hpp>
 #include <lib1900/led.hpp>
