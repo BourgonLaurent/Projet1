@@ -1,7 +1,10 @@
 /**
  * Run a program in memory.
  *
+ * Will block for 2.5s and turn LED amber when initialized.
+ *
  * Hardware Identification
+ * WARNING: Data direction registers will be set automatically.
  * OUTPUT:
  *  - LED, connected plus to B0, and minus to B1.
  *  - Buzzer, connected plus to B3 and minus to B2.
@@ -33,6 +36,8 @@
 Interpreter::Interpreter(const uint16_t startAddress)
     : currentAddress_(startAddress)
 {
+    led_.setAmberForMs(2500);
+
     const uint8_t mostSignificativeSizeBits = memory_.read(currentAddress_);
 
     currentAddress_++;
@@ -59,23 +64,23 @@ void Interpreter::run()
 void Interpreter::fetch()
 {
     currentAddress_++;
-    debug::send("---------\n");
-    debug::send("Address", currentAddress_);
     currentOpcode_ = memory_.read(currentAddress_);
-    debug::send("Opcode", currentOpcode_);
 
     currentAddress_++;
     currentOperand_ = memory_.read(currentAddress_);
+
+    debug::send("---------\n");
+    debug::send("Opcode", currentOpcode_);
     debug::send("Operand", currentOperand_);
 }
 
 void Interpreter::execute()
 {
     if (currentOpcode_ == Instruction::DBT) {
-        isRunning_ = true;
+        isStarted_ = true;
     }
 
-    if (!isRunning_) {
+    if (!isStarted_) {
         return;
     }
 
@@ -85,30 +90,23 @@ void Interpreter::execute()
             Sound::initialize();
             break;
 
-        case Instruction::ATT : {
-            constexpr uint8_t waitFactorMs = 25;
-
+        case Instruction::ATT :
             for (uint8_t i = 0; i < currentOperand_; i++) {
-                _delay_ms(waitFactorMs);
+                _delay_ms(WAIT_FACTOR_MS);
             }
             break;
-        }
 
-        case Instruction::DAL : {
-            constexpr uint8_t greenOperand = 1;
-            constexpr uint8_t redOperand = 2;
-
+        case Instruction::DAL :
             switch (currentOperand_) {
-                case greenOperand :
+                case LedOperand::GREEN :
                     led_.setColor(Led::Color::GREEN);
                     break;
 
-                case redOperand :
+                case LedOperand::RED :
                     led_.setColor(Led::Color::RED);
                     break;
             }
             break;
-        }
 
         case Instruction::DET :
             led_.setColor(Led::Color::OFF);

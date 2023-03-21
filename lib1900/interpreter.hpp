@@ -36,7 +36,9 @@ private:
     void fetch();
     void execute();
 
-    bool isRunning_ = false;
+    static constexpr uint8_t WAIT_FACTOR_MS = 25;
+
+    bool isStarted_ = false;
 
     uint16_t currentAddress_;
     uint16_t endAddress_;
@@ -67,5 +69,11 @@ private:
         DBC = 0xc0,
         FBC = 0xc1,
         FIN = 0xff
+    };
+
+    enum LedOperand : uint8_t
+    {
+        GREEN = 1,
+        RED = 2
     };
 };
