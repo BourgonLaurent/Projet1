@@ -15,11 +15,16 @@
 
 #include <avr/io.h>
 #include <lib1900/analogReader.hpp>
+#include <lib1900/communication.hpp>
+#include <lib1900/memory.hpp>
 
-
+constexpr io::Position SENSOR = PA6;
 int main()
 {
-    AnalogReader reader;
-    io::setOutput(&DDRA, PA6);
+    Communication::initialize();
+    io::setInput(&DDRA, SENSOR);
 
+    AnalogReader reader;
+    const uint8_t value = reader.read(SENSOR);
+    Communication::send(value);
 }
