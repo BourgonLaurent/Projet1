@@ -16,7 +16,6 @@
 #include <avr/io.h>
 #include <lib1900/analogReader.hpp>
 #include <lib1900/communication.hpp>
-#include <lib1900/memory.hpp>
 
 constexpr io::Position SENSOR = PA6;
 int main()
