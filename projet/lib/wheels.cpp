@@ -29,8 +29,8 @@
 
 #include <util/delay.h>
 
-#include <lib1900/debug.hpp>
-#include <lib1900/io.hpp>
+#include <lib/debug.hpp>
+#include <lib/io.hpp>
 
 io::DataDirectionRegister Wheels::dataDirectionRegister_ = &DDRD;
 io::Port Wheels::port_ = &PORTD;

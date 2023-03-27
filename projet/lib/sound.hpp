@@ -22,7 +22,7 @@
  *  \author Laurent Bourgon
  *  \author Ihsane Majdoubi
  *
- * \date March 14th, 2023
+ * \date March 14, 2023
  */
 
 #ifndef SOUND_H
@@ -30,7 +30,7 @@
 
 #include <avr/io.h>
 
-#include <lib1900/io.hpp>
+#include <lib/io.hpp>
 
 class Sound
 {

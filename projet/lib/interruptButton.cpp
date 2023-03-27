@@ -31,8 +31,8 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-#include <lib1900/interrupts.hpp>
-#include <lib1900/io.hpp>
+#include <lib/interrupts.hpp>
+#include <lib/io.hpp>
 
 void InterruptButton::initialize(const Mode &mode)
 {

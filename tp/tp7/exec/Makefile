@@ -23,7 +23,7 @@ PRJSRC=main.cpp
 INC=-I../../../
 
 # Library directory (must end with a '/')
-LIBDIR=../../../lib1900/
+LIBDIR=../../../projet/lib/
 # Library name
 LIBNAME=1900
 

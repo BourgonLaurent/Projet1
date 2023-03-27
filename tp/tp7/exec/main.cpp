@@ -46,15 +46,15 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-#include <lib1900/analogReader.hpp>
-#include <lib1900/communication.hpp>
-#include <lib1900/debug.hpp>
-#include <lib1900/interruptButton.hpp>
-#include <lib1900/interruptTimer.hpp>
-#include <lib1900/interrupts.hpp>
-#include <lib1900/led.hpp>
-#include <lib1900/memory.hpp>
-#include <lib1900/wheels.hpp>
+#include <lib/analogReader.hpp>
+#include <lib/communication.hpp>
+#include <lib/debug.hpp>
+#include <lib/interruptButton.hpp>
+#include <lib/interruptTimer.hpp>
+#include <lib/interrupts.hpp>
+#include <lib/led.hpp>
+#include <lib/memory.hpp>
+#include <lib/wheels.hpp>
 
 volatile bool isButtonPressed = false;
 volatile uint8_t counter = 0;

@@ -20,10 +20,10 @@
  * \date March 14, 2023
  */
 
-#include <lib1900/communication.hpp>
-#include <lib1900/debug.hpp>
-#include <lib1900/led.hpp>
-#include <lib1900/memory.hpp>
+#include <lib/communication.hpp>
+#include <lib/debug.hpp>
+#include <lib/led.hpp>
+#include <lib/memory.hpp>
 
 constexpr uint16_t START_ADDRESS = 0x00000000;
 

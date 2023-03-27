@@ -24,7 +24,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <lib1900/io.hpp>
+#include <lib/io.hpp>
 
 void Communication::initialize()
 {

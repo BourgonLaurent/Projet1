@@ -14,16 +14,16 @@
 # 	`make clean`: remove compilation artifacts
 
 # Project name (in one word)
-PROJECTNAME=TP9_writer
+PROJECTNAME=test_map
 
 # Source files (delimiter: space)
-PRJSRC=main.cpp
+PRJSRC=main.cpp ../../app/map/map.cpp ../../app/map/row.cpp ../../app/map/slot.cpp
 
 # Additional inclusions (ex: -I/path/to/mydir)
-INC=-I../../../
+INC=-I../../ -I../../../
 
 # Library directory (must end with a '/')
-LIBDIR=../../../projet/lib/
+LIBDIR=../../lib/
 # Library name
 LIBNAME=1900
 

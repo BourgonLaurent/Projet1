@@ -17,8 +17,8 @@
  * \date March 16, 2023
  */
 
-#include <lib1900/debug.hpp>
-#include <lib1900/interpreter.hpp>
+#include <lib/debug.hpp>
+#include <lib/interpreter.hpp>
 
 constexpr uint16_t START_ADDRESS = 0x00000000;
 
