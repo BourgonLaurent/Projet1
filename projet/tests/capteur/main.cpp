@@ -59,6 +59,4 @@ int main()
 
     irSensor.park();
     irSensor.goToObject(value);
-
-    Wheels::turnOff();
 }
