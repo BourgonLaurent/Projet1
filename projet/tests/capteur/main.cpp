@@ -25,6 +25,7 @@
 #include <util/delay.h>
 
 constexpr io::Position SENSOR = PA6;
+volatile bool gFinishedSearching = 0;
 
 ISR(InterruptTimer_vect)
 {
@@ -34,29 +35,7 @@ ISR(InterruptTimer_vect)
 
 int main()
 {
-    Communication::initialize();
-
-    InterruptTimer::initialize(InterruptTimer::Mode::NORMAL, 4.0);
     IrSensor irSensor = IrSensor(SENSOR);
-    Wheels::initialize();
-    Led led = Led(&DDRB, &PORTB, PB0, PB1);
-    Wheels::turn(Wheels::Side::RIGHT);
-    interrupts::startCatching();
-    InterruptTimer::start();
-    while (!irSensor.detect()) {
-
-        uint16_t value = irSensor.read();
-        Communication::send(value);
-        Communication::send(" ");
-        led.setColor(Led::Color::GREEN);
-    }
-    InterruptTimer::stop();
-    Wheels::stopTurn(Wheels::Side::RIGHT);
-    led.setColor(Led::Color::RED);
-    uint16_t value = irSensor.read();
-    Communication::send(value);
-    Communication::send(" !!!!!");
-
+        irSensor.find();
     irSensor.park();
-    irSensor.goToObject(value);
 }

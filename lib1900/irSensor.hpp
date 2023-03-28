@@ -32,11 +32,14 @@ public:
     void goToObject(uint8_t distanceObject);
     void park();
     void detectRange(uint8_t distance);
+    void find();
+    bool objectFound() {return objectFound_ ;};
 
 private:
     static const uint8_t N_MEASURMENTS_ = 6;
     const io::Position pin_;
     AnalogReader reader_;
+    bool objectFound_ = 0;
 };
 
 #endif

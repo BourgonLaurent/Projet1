@@ -24,6 +24,7 @@
 #include <util/delay.h>
 
 #include <lib1900/communication.hpp>
+#include <lib1900/led.hpp>
 #include <lib1900/interruptTimer.hpp>
 #include <lib1900/io.hpp>
 #include <lib1900/wheels.hpp>
@@ -79,12 +80,10 @@ void IrSensor::park()
         Wheels::setDirection(Wheels::Direction::FORWARD);
         Wheels::setSpeed(50);
         _delay_ms(500);
+        Wheels::turnOff();
+        _delay_ms(100);
         if (!detect()) {
-            Wheels::turn(Wheels::Side::RIGHT);
-            while (!detect()) {
-                continue;
-            }
-            Wheels::stopTurn(Wheels::Side::RIGHT);
+            find();
         }
     }
     Wheels::turnOff();
@@ -122,4 +121,24 @@ void IrSensor::detectRange(uint8_t distance)
     if (distance < 50 && distance > 44) {
         IrSensor::range_ = IrSensor::Range::DIAGONAL_CLOSE;
     }
+}
+
+void IrSensor::find()
+{
+    InterruptTimer::initialize(InterruptTimer::Mode::NORMAL, 4.0);
+    Wheels::initialize();
+    Led led = Led(&DDRB, &PORTB, PB0, PB1);
+
+    Wheels::turn(Wheels::Side::RIGHT);
+    interrupts::startCatching();
+    InterruptTimer::start();
+
+    while (!detect()) 
+    {
+        led.setColor(Led::Color::GREEN);
+    }
+
+    InterruptTimer::stop();
+    Wheels::stopTurn(Wheels::Side::RIGHT);
+    led.setColor(Led::Color::RED);
 }
