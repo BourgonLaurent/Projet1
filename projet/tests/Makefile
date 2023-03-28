@@ -20,7 +20,7 @@ PROJECTNAME=Test_Value_IrSensor
 PRJSRC=main.cpp
 
 # Additional inclusions (ex: -I/path/to/mydir)
-INC=-I../../../
+INC=-I../../
 
 # Library directory (must end with a '/')
 LIBDIR=../../lib1900/
@@ -30,6 +30,6 @@ LIBNAME=1900
 # Library flags
 LIBS=-l$(LIBNAME) -L$(LIBDIR)
 
-include ../../../Makefile.exec.common
+include ../../Makefile.exec.common
 
 $(OBJDEPS): $(LIBDIR)lib$(LIBNAME).a

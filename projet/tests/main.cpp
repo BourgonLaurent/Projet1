@@ -12,7 +12,6 @@
  */
 
 #include <avr/io.h>
-#include <lib1900/analogReader.hpp>
 #include <lib1900/communication.hpp>
 #include <lib1900/debug.hpp>
 #include <lib1900/interruptTimer.hpp>
