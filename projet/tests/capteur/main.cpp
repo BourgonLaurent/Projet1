@@ -36,7 +36,7 @@ int main()
 {
     Communication::initialize();
 
-    InterruptTimer::initialize(InterruptTimer::Mode::NORMAL, 1.65);
+    InterruptTimer::initialize(InterruptTimer::Mode::NORMAL, 4.0);
     IrSensor irSensor = IrSensor(SENSOR);
     Wheels::initialize();
     Led led = Led(&DDRB, &PORTB, PB0, PB1);
@@ -44,6 +44,7 @@ int main()
     interrupts::startCatching();
     InterruptTimer::start();
     while (!irSensor.detect()) {
+
         uint16_t value = irSensor.read();
         Communication::send(value);
         Communication::send(" ");
@@ -56,9 +57,8 @@ int main()
     Communication::send(value);
     Communication::send(" !!!!!");
 
-    while (!irSensor.detectDistanceToPark()) {
-        Wheels::setDirection(Wheels::Direction::FORWARD);
-        Wheels::setSpeed(50);
-    }
+    irSensor.park();
+    irSensor.goToObject(value);
+
     Wheels::turnOff();
 }
