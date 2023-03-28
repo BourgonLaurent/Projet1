@@ -35,7 +35,11 @@ ISR(InterruptTimer_vect)
 
 int main()
 {
+    Wheels::initialize();
+    InterruptTimer::initialize(InterruptTimer::Mode::NORMAL, 7.0);
     IrSensor irSensor = IrSensor(SENSOR);
-        irSensor.find();
+    Communication::initialize();
+    Wheels::initialize();
+    irSensor.find();
     irSensor.park();
 }
