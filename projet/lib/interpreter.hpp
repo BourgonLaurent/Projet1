@@ -26,8 +26,8 @@
 
 #include <avr/io.h>
 
-#include <lib1900/led.hpp>
-#include <lib1900/memory.hpp>
+#include <lib/led.hpp>
+#include <lib/memory.hpp>
 
 class Interpreter
 {

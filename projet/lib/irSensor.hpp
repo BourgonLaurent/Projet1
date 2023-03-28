@@ -13,15 +13,17 @@
  * \date March 28, 2023
  */
 
-#include "analogReader.hpp"
-#include <avr/io.h>
-#include <util/delay.h>
-#include <lib1900/io.hpp>
-#include <lib1900/led.hpp>
-#include <lib1900/wheels.hpp>
-
 #ifndef IRSENSOR_H
 #define IRSENSOR_H
+
+#include "analogReader.hpp"
+
+#include <avr/io.h>
+#include <util/delay.h>
+
+#include <lib/io.hpp>
+#include <lib/led.hpp>
+#include <lib/wheels.hpp>
 
 class IrSensor
 {
@@ -40,7 +42,6 @@ public:
         LEFT
     };
 
-
     IrSensor(io::Position pin);
 
     uint16_t read();
@@ -48,16 +49,16 @@ public:
     bool detect();
     void detectRange(uint8_t distance);
     bool detectDistanceToPark(uint8_t distance1, uint8_t distance2);
-    
+
     void park();
     void find();
-    
+
     bool objectFound();
 
 private:
-    Led led  = Led(&DDRB, &PORTB, PB0, PB1); // should be removed
+    Led led = Led(&DDRB, &PORTB, PB0, PB1); // should be removed
     static const uint8_t N_MEASURMENTS_ = 6;
-    
+
     const io::Position pin_;
     AnalogReader reader_;
     Side side_;

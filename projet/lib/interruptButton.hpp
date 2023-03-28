@@ -31,7 +31,7 @@
 #include <avr/interrupt.h>
 #include <avr/io.h>
 
-#include <lib1900/io.hpp>
+#include <lib/io.hpp>
 
 #define InterruptButton_vect INT0_vect
 

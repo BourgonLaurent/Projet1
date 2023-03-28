@@ -28,10 +28,10 @@
 
 #include <util/delay.h>
 
-#include <lib1900/debug.hpp>
-#include <lib1900/led.hpp>
-#include <lib1900/sound.hpp>
-#include <lib1900/wheels.hpp>
+#include <lib/debug.hpp>
+#include <lib/led.hpp>
+#include <lib/sound.hpp>
+#include <lib/wheels.hpp>
 
 Interpreter::Interpreter(const uint16_t startAddress)
     : currentAddress_(startAddress)

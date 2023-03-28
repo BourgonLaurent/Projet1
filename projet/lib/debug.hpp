@@ -25,7 +25,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <lib1900/communication.hpp>
+#include <lib/communication.hpp>
 
 namespace debug {
     static inline void send(const char* message)

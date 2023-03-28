@@ -25,7 +25,7 @@
 #include <avr/interrupt.h>
 #include <avr/io.h>
 
-#include <lib1900/interrupts.hpp>
+#include <lib/interrupts.hpp>
 
 #define InterruptTimer_vect TIMER1_COMPA_vect
 

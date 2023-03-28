@@ -20,10 +20,10 @@ PROJECTNAME=TP9_writer
 PRJSRC=main.cpp
 
 # Additional inclusions (ex: -I/path/to/mydir)
-INC=-I../../../
+INC=-I../../../projet/
 
 # Library directory (must end with a '/')
-LIBDIR=../../../lib1900/
+LIBDIR=../../../projet/lib/
 # Library name
 LIBNAME=1900
 

@@ -14,22 +14,22 @@
 # 	`make clean`: remove compilation artifacts
 
 # Project name (in one word)
-PROJECTNAME=TP7_exec
+PROJECTNAME=app
 
 # Source files (delimiter: space)
-PRJSRC=main.cpp
+PRJSRC=$(wildcard *.cpp) $(wildcard **/*.cpp)
 
 # Additional inclusions (ex: -I/path/to/mydir)
-INC=-I../../../projet
+INC=-I../
 
 # Library directory (must end with a '/')
-LIBDIR=../../../projet/lib/
+LIBDIR=../lib/
 # Library name
 LIBNAME=1900
 
 # Library flags
 LIBS=-l$(LIBNAME) -L$(LIBDIR)
 
-include ../../../Makefile.exec.common
+include ../../Makefile.exec.common
 
 $(OBJDEPS): $(LIBDIR)lib$(LIBNAME).a

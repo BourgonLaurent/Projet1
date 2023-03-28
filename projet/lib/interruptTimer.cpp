@@ -21,8 +21,8 @@
 
 #include "interruptTimer.hpp"
 
-#include <lib1900/interrupts.hpp>
-#include <lib1900/io.hpp>
+#include <lib/interrupts.hpp>
+#include <lib/io.hpp>
 
 #ifndef F_CPU
 #define F_CPU 8000000UL

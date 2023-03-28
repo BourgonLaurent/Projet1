@@ -22,7 +22,7 @@
  *  \author Laurent Bourgon
  *  \author Ihsane Majdoubi
  *
- * \date March 14th, 2023
+ * \date March 14, 2023
  */
 
 #include "sound.hpp"

@@ -15,8 +15,8 @@
 
 #include "irSensor.hpp"
 
-#include <lib1900/communication.hpp>
-#include <lib1900/interruptTimer.hpp>
+#include <lib/communication.hpp>
+#include <lib/interruptTimer.hpp>
 
 IrSensor::IrSensor(const io::Position pin) : pin_(pin)
 {
@@ -90,17 +90,14 @@ void IrSensor::park()
     Wheels::turnOff();
 }
 
-
 void IrSensor::find()
 {
-
 
     Wheels::turn(Wheels::Side::RIGHT);
     interrupts::startCatching();
     InterruptTimer::start();
 
-    while (!detect()) 
-    {
+    while (!detect()) {
         led.setColor(Led::Color::GREEN);
     }
 
@@ -111,5 +108,5 @@ void IrSensor::find()
 
 bool IrSensor::objectFound()
 {
-    return objectFound_ ;
+    return objectFound_;
 }

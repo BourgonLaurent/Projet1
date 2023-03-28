@@ -25,7 +25,7 @@
 
 #include <avr/io.h>
 
-#include <lib1900/io.hpp>
+#include <lib/io.hpp>
 
 class AnalogReader
 {
