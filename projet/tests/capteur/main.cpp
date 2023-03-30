@@ -30,10 +30,9 @@
 volatile bool gFinishedSearching = 0;
 Led led = Led(&DDRB, &PORTB, PB0, PB1);
 
-
 // Global variables to remove
 Button button(&DDRA, &PINA, PA1);
-Button interruptButton(&DDRD, &PIND, PD2); 
+Button interruptButton(&DDRD, &PIND, PD2);
 const io::Position SENSOR = PA6;
 
 enum class States
@@ -54,19 +53,19 @@ ISR(InterruptTimer_vect)
     Wheels::stopTurn(Wheels::Side::RIGHT);
     return;
 }
-// ISR(InterruptButton_vect)
-// {
-//     InterruptButton::waitForDebounce();
-//     if (state == States::SET_DIRECTION) {
-//         led.setColor(Led::Color::OFF);
-//         state = States::UP;
-//     }
-//     else {
-//         state = States::FIND_OBJECT;
-//     }
+ISR(InterruptButton_vect)
+{
+    InterruptButton::waitForDebounce();
+    // if (state == States::SET_DIRECTION) {
+    //     led.setColor(Led::Color::OFF);
+    //     state = States::UP;
+    // }
+    // else {
+    state = States::FIND_OBJECT;
+    // }
 
-//     InterruptButton::clear();
-// }
+    InterruptButton::clear();
+}
 
 int main()
 {
@@ -76,8 +75,7 @@ int main()
     InterruptTimer::initialize(InterruptTimer::Mode::NORMAL, 4.0);
     Communication::initialize();
     Wheels::initialize();
-    // InterruptButton::initialize(InterruptButton::Mode::ANY);
-    // interrupts::startCatching();
+    InterruptButton::initialize(InterruptButton::Mode::ANY);
     IrSensor irSensor(SENSOR);
     ObjectFinder finder(led, irSensor);
 
@@ -88,17 +86,12 @@ int main()
                 state = States::SET_DIRECTION;
                 break;
             case States::SET_DIRECTION :
-                    Communication::send("set direction");
-                while (button.isPressed()) {
+                while (button.isPressed() && !interruptButton.isPressed()) {
                     led.setAmberForMs(100);
-                    if (!button.isPressed() ) 
-                    {
-                        Communication::send("R");
+                    if (!button.isPressed()) {
                         state = States::RIGHT;
                     }
-                    else if (interruptButton.isPressed())
-                    {
-                        Communication::send("U");
+                    else if (interruptButton.isPressed()) {
                         state = States::UP;
                     }
                 }
@@ -128,6 +121,7 @@ int main()
                 _delay_ms(250);
                 break;
             case States::FOUND_NOTHING :
+                interrupts::startCatching();
                 finder.alertParked();
                 led.setColor(Led::Color::RED);
                 _delay_ms(250);
