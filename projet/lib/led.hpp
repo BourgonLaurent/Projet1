@@ -34,14 +34,15 @@ public:
     {
         OFF,
         GREEN,
-        RED
+        RED,
+        AMBER
     };
 
     void setColor(const Color &color);
     void setAmberForMs(const uint16_t durationMs);
 
 private:
-    constexpr static uint16_t AMBER_DELAY_US = 500;
+    constexpr static uint8_t AMBER_DELAY_MS = 50;
 
     io::Port port_;
     const io::Position plus_;

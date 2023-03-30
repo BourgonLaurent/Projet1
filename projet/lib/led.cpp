@@ -50,16 +50,19 @@ void Led::setColor(const Color &color)
             io::clear(port_, minus_);
             io::setActive(port_, plus_);
             break;
+        case Color::AMBER :
+            setColor(Color::GREEN);
+            _delay_ms(AMBER_DELAY_MS);
+            setColor(Color::RED);
+            _delay_ms(AMBER_DELAY_MS);
+            break;
     }
 }
 
 void Led::setAmberForMs(const uint16_t durationMs)
 {
     for (uint16_t i = 0; i < durationMs; i++) {
-        setColor(Color::GREEN);
-        _delay_us(AMBER_DELAY_US);
-        setColor(Color::RED);
-        _delay_us(AMBER_DELAY_US);
+        setColor(Color::AMBER);
     }
 
     setColor(Color::OFF);

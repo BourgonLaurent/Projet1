@@ -12,14 +12,15 @@
  */
 
 #include <avr/io.h>
-#include <lib1900/communication.hpp>
-#include <lib1900/debug.hpp>
-#include <lib1900/interruptTimer.hpp>
-#include <lib1900/interrupts.hpp>
-#include <lib1900/irSensor.hpp>
-#include <lib1900/led.hpp>
-#include <lib1900/wheels.hpp>
 #include <util/delay.h>
+
+#include <lib/communication.hpp>
+#include <lib/debug.hpp>
+#include <lib/interruptTimer.hpp>
+#include <lib/interrupts.hpp>
+#include <lib/irSensor.hpp>
+#include <lib/led.hpp>
+#include <lib/wheels.hpp>
 
 constexpr io::Position SENSOR = PA6;
 

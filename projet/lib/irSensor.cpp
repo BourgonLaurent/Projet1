@@ -44,11 +44,11 @@ uint16_t IrSensor::read()
     return sumForAverage;
 }
 
-bool IrSensor::detect()
+bool IrSensor::detect(uint8_t distance1, uint8_t distance2)
 {
     uint16_t value = read();
 
-    if (value < 130 && value > 11) {
+    if (value < distance1 && value > distance2) {
         return true;
     }
     return false;
@@ -63,47 +63,6 @@ void IrSensor::detectRange(uint8_t distance)
     if (distance < 50 && distance > 44) {
         IrSensor::range_ = IrSensor::Range::DIAGONAL_CLOSE;
     }
-}
-
-bool IrSensor::detectDistanceToPark(uint8_t distance1, uint8_t distance2)
-{
-
-    uint16_t value = read();
-
-    if (value < distance1 && value > distance2) {
-        return true;
-    }
-    return false;
-}
-
-void IrSensor::park()
-{
-    while (!detectDistanceToPark(110, 85)) {
-        Wheels::setDirection(Wheels::Direction::FORWARD);
-        Wheels::setSpeed(50);
-        _delay_ms(500);
-        Wheels::turnOff();
-        if (!detect()) {
-            find();
-        }
-    }
-    Wheels::turnOff();
-}
-
-void IrSensor::find()
-{
-
-    Wheels::turn(Wheels::Side::RIGHT);
-    interrupts::startCatching();
-    InterruptTimer::start();
-
-    while (!detect()) {
-        led.setColor(Led::Color::GREEN);
-    }
-
-    InterruptTimer::stop();
-    Wheels::stopTurn(Wheels::Side::RIGHT);
-    led.setColor(Led::Color::RED);
 }
 
 bool IrSensor::objectFound()
