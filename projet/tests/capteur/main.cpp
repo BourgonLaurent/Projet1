@@ -28,6 +28,7 @@
 #include <lib/wheels.hpp>
 
 volatile bool gFinishedSearching = 0;
+Led led = Led(&DDRB, &PORTB, PB0, PB1);
 
 Button button(&DDRA, &PINA, PA1);
 Button button2(&DDRD, &PIND, PD2);
@@ -36,7 +37,6 @@ const io::Position SENSOR = PA6;
 enum class States
 {
     SET_MODE,
-    DETECT,
     SET_DIRECTION,
     RIGHT,
     UP,
@@ -56,6 +56,7 @@ ISR(InterruptButton_vect)
 {
     InterruptButton::waitForDebounce();
     if (state == States::SET_DIRECTION) {
+        led.setColor(Led::Color::OFF);
         state = States::UP;
     }
     else {
@@ -67,7 +68,7 @@ ISR(InterruptButton_vect)
 
 int main()
 {
-    Led led = Led(&DDRB, &PORTB, PB0, PB1);
+
     Wheels::initialize();
     Sound::initialize();
     InterruptTimer::initialize(InterruptTimer::Mode::NORMAL, 4.0);
@@ -82,19 +83,19 @@ int main()
         switch (state) {
             case States::SET_MODE :
                 led.setColor(Led::Color::OFF);
-                state = States::DETECT;
-                break;
-            case States::DETECT :
-                led.setColor(Led::Color::AMBER); // problem amber is red
                 state = States::SET_DIRECTION;
                 break;
             case States::SET_DIRECTION :
-                if (!button.isPressed()) {
-                    state = States::RIGHT;
+                while (!button.isPressed() && !button2.isPressed()) {
+                    led.setAmberForMs(1);
+                    if (button.isPressed()) {
+                        state = States::RIGHT;
+                    }
                 }
+
                 break;
             case States::RIGHT :
-                led.setColor(Led::Color::GREEN); // should be red
+                led.setColor(Led::Color::RED);
                 _delay_ms(2000);
                 led.setColor(Led::Color::OFF);
                 Wheels::turn90(Wheels::Side::LEFT);
@@ -113,9 +114,7 @@ int main()
                 break;
             case States::WAIT_NEXT_DETECTION :
                 finder.alertParked();
-                led.setColor(Led::Color::AMBER);
-                _delay_ms(250);
-                led.setColor(Led::Color::OFF);
+                led.setAmberForMs(250);
                 _delay_ms(250);
                 break;
             case States::FOUND_NOTHING :
