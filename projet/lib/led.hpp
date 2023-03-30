@@ -35,7 +35,6 @@ public:
         OFF,
         GREEN,
         RED,
-        AMBER
     };
 
     void setColor(const Color &color);

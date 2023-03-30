@@ -62,7 +62,7 @@ public:
 private:
     static constexpr uint8_t TOP_VALUE = 0xFF;         // p. 153
     static constexpr uint16_t TURN_DURATION_MS = 1500; // etait 750 à100
-    static constexpr uint16_t TURN_TIMEOUT_MS = 250;
+    static constexpr uint8_t TURN_TIMEOUT_MS = 125;
 
     static io::DataDirectionRegister dataDirectionRegister_;
     static io::Port port_;
