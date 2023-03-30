@@ -20,10 +20,10 @@ PROJECTNAME=Projet_sensor
 PRJSRC=main.cpp
 
 # Additional inclusions (ex: -I/path/to/mydir)
-INC=-I../../../
+INC=-I../../
 
 # Library directory (must end with a '/')
-LIBDIR=../../../lib1900/
+LIBDIR=../../lib/
 # Library name
 LIBNAME=1900
 

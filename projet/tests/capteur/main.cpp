@@ -14,32 +14,118 @@
  */
 
 #include <avr/io.h>
-#include <lib1900/analogReader.hpp>
-#include <lib1900/communication.hpp>
-#include <lib1900/debug.hpp>
-#include <lib1900/interruptTimer.hpp>
-#include <lib1900/interrupts.hpp>
-#include <lib1900/irSensor.hpp>
-#include <lib1900/led.hpp>
-#include <lib1900/wheels.hpp>
 #include <util/delay.h>
 
-constexpr io::Position SENSOR = PA6;
+#include <lib/button.hpp>
+#include <lib/communication.hpp>
+#include <lib/debug.hpp>
+#include <lib/interruptButton.hpp>
+#include <lib/interruptTimer.hpp>
+#include <lib/interrupts.hpp>
+#include <lib/led.hpp>
+#include <lib/objectFinder.hpp>
+#include <lib/sound.hpp>
+#include <lib/wheels.hpp>
+
 volatile bool gFinishedSearching = 0;
+
+Button button(&DDRA, &PINA, PA1);
+Button button2(&DDRD, &PIND, PD2);
+const io::Position SENSOR = PA6;
+
+enum class States
+{
+    SET_MODE,
+    DETECT,
+    SET_DIRECTION,
+    RIGHT,
+    UP,
+    FIND_OBJECT,
+    WAIT_NEXT_DETECTION,
+    FOUND_NOTHING
+
+};
+volatile States state = States::SET_MODE;
 
 ISR(InterruptTimer_vect)
 {
     Wheels::stopTurn(Wheels::Side::RIGHT);
     return;
 }
+ISR(InterruptButton_vect)
+{
+    InterruptButton::waitForDebounce();
+    if (state == States::SET_DIRECTION) {
+        state = States::UP;
+    }
+    else {
+        state = States::FIND_OBJECT;
+    }
+
+    InterruptButton::clear();
+}
 
 int main()
 {
+    Led led = Led(&DDRB, &PORTB, PB0, PB1);
     Wheels::initialize();
-    InterruptTimer::initialize(InterruptTimer::Mode::NORMAL, 7.0);
-    IrSensor irSensor = IrSensor(SENSOR);
+    Sound::initialize();
+    InterruptTimer::initialize(InterruptTimer::Mode::NORMAL, 4.0);
     Communication::initialize();
     Wheels::initialize();
-    irSensor.find();
-    irSensor.park();
+    InterruptButton::initialize(InterruptButton::Mode::ANY);
+    interrupts::startCatching();
+    IrSensor irSensor(SENSOR);
+    ObjectFinder finder(led, irSensor);
+
+    while (true) {
+        switch (state) {
+            case States::SET_MODE :
+                led.setColor(Led::Color::OFF);
+                state = States::DETECT;
+                break;
+            case States::DETECT :
+                led.setColor(Led::Color::AMBER); // problem amber is red
+                state = States::SET_DIRECTION;
+                break;
+            case States::SET_DIRECTION :
+                if (!button.isPressed()) {
+                    state = States::RIGHT;
+                }
+                break;
+            case States::RIGHT :
+                led.setColor(Led::Color::GREEN); // should be red
+                _delay_ms(2000);
+                led.setColor(Led::Color::OFF);
+                Wheels::turn90(Wheels::Side::LEFT);
+                state = States::FIND_OBJECT;
+                break;
+            case States::UP :
+                led.setColor(Led::Color::GREEN);
+                _delay_ms(2000);
+                led.setColor(Led::Color::OFF);
+                state = States::FIND_OBJECT;
+                break;
+            case States::FIND_OBJECT :
+                finder.find();
+                finder.park();
+                state = States::WAIT_NEXT_DETECTION;
+                break;
+            case States::WAIT_NEXT_DETECTION :
+                finder.alertParked();
+                led.setColor(Led::Color::AMBER);
+                _delay_ms(250);
+                led.setColor(Led::Color::OFF);
+                _delay_ms(250);
+                break;
+            case States::FOUND_NOTHING :
+                finder.alertParked();
+                led.setColor(Led::Color::RED);
+                _delay_ms(250);
+                led.setColor(Led::Color::OFF);
+                _delay_ms(250);
+                state = States::SET_MODE;
+                break;
+        }
+    }
 }
