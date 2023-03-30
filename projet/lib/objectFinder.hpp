@@ -41,7 +41,7 @@ private:
     static constexpr uint8_t HIGH_NOTE = 78;
     static constexpr uint8_t LOW_NOTE = 45;
     static constexpr uint16_t DELAY_TURNOFF_MS = 500;
-    Led &led_;
-    IrSensor &irSensor_;
+    Led led_;
+    IrSensor irSensor_;
     bool objectFound_ = 0;
 };
