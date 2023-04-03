@@ -155,10 +155,13 @@ void Wheels::invertDirection(const Side &side)
         case Side::RIGHT :
             io::invert(port_, rightDirection_);
             break;
-
-        default :
-            invertDirection(Side::LEFT);
+        case Side::BOTH :
             invertDirection(Side::RIGHT);
+            invertDirection(Side::LEFT);
+
+            // default :
+            //     invertDirection(Side::LEFT);
+            //     invertDirection(Side::RIGHT);
     }
 }
 
@@ -171,7 +174,7 @@ void Wheels::turn90(const Side &side)
     invertDirection(side);
     _delay_ms(TURN_TIMEOUT_MS);
 
-    setSpeed(100);
+    setSpeed(50);
     _delay_ms(TURN_DURATION_MS);
 
     turnOff();
@@ -187,7 +190,7 @@ void Wheels::turn(const Side &side)
     turnOff();
     invertDirection(side);
     _delay_ms(TURN_TIMEOUT_MS);
-    setSpeed(40);
+    setSpeed(45);
 }
 void Wheels::stopTurn(const Side &side)
 {

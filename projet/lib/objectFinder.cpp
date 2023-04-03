@@ -30,15 +30,17 @@ void ObjectFinder::park()
     while (!irSensor_.detect(IrSensor::TEN_CM, IrSensor::FIFTEEN_CM)) {
         Wheels::setDirection(Wheels::Direction::FORWARD);
         Wheels::setSpeed(50);
-        _delay_ms(DELAY_TURNOFF_MS);
-        Wheels::turnOff();
+
         if (!irSensor_.detect()) {
-            find();
+            Wheels::turnOff();
+            _delay_ms(DELAY_TURNOFF_MS);
+            find(Wheels::Side::RIGHT);
             if (!irSensor_.detect()) {
                 find(Wheels::Side::LEFT);
             }
         }
     }
+    _delay_ms(500);
     Wheels::turnOff();
 }
 
@@ -53,7 +55,6 @@ void ObjectFinder::find(Wheels::Side side)
         led_.setColor(Led::Color::GREEN);
     }
     InterruptTimer::stop();
-    _delay_ms(DELAY_TURN_MIDDLE_OBJECT_MS);
     Wheels::stopTurn(side);
     led_.setColor(Led::Color::RED);
 }

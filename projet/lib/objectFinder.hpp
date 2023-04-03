@@ -29,7 +29,7 @@ public:
     ObjectFinder(Led &led, IrSensor &irSensor);
 
     void park();
-    void find(Wheels::Side side = Wheels::Side::RIGHT);
+    void find(Wheels::Side side);
     void alertParked();
     void alertFoundNothing();
 

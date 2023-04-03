@@ -29,8 +29,7 @@ uint16_t IrSensor::read()
     uint8_t temporaryMaximum = 0;
     for (uint8_t i = 0; i < IrSensor::N_MEASURMENTS_; i++) {
         const uint8_t value = IrSensor::reader_.read(IrSensor::pin_);
-        Communication::send(value);
-        Communication::send(" ");
+
         if (value > temporaryMaximum) {
             sumForAverage = sumForAverage + temporaryMaximum;
             temporaryMaximum = value;
@@ -41,6 +40,8 @@ uint16_t IrSensor::read()
         _delay_ms(5);
     }
     sumForAverage = sumForAverage / (IrSensor::N_MEASURMENTS_ - 1);
+    Communication::send(sumForAverage);
+    Communication::send(" ");
     return sumForAverage;
 }
 
