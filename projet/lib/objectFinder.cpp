@@ -47,6 +47,8 @@ void ObjectFinder::park()
 void ObjectFinder::find(Wheels::Side side)
 {
 
+    Wheels::setDirection(Wheels::Direction::FORWARD);
+    Wheels::setSpeed(80);
     Wheels::turn(side);
     interrupts::startCatching();
     InterruptTimer::start();
@@ -74,4 +76,73 @@ void ObjectFinder::alertFoundNothing()
 {
     Sound::playNote(LOW_NOTE);
     _delay_ms(DELAY_FOUND_NOTHING_MS);
+}
+
+void ObjectFinder::turnFind(Wheels::Side side)
+{
+    Wheels::turn90(side);
+    find(side);
+}
+
+void ObjectFinder::findTurn(Wheels::Side side)
+{
+    find(side);
+    Wheels::turn90(side);
+}
+
+void ObjectFinder::findLoop(uint8_t &i, uint8_t max, Wheels::Side side)
+{
+    while (i < max && irSensor_.objectFound() == 0) {
+        find(side);
+        i++;
+    }
+}
+
+void ObjectFinder::finder(const FinderType &finderWithPosition)
+{
+    uint8_t i = 0;
+    switch (finderWithPosition) {
+        case FinderType::TOP :
+            turnFind(Wheels::Side::RIGHT);
+            if (irSensor_.objectFound() == 1) {
+                findTurn(Wheels::Side::RIGHT);
+            }
+            break;
+
+        case FinderType::BOTTOM :
+            findTurn(Wheels::Side::RIGHT);
+            if (irSensor_.objectFound() == 1) {
+                turnFind(Wheels::Side::RIGHT);
+            }
+            break;
+
+        case FinderType::MIDDLE :
+            findLoop(i, 4, Wheels::Side::RIGHT);
+            break;
+
+        case FinderType::TOP_CORNER_LEFT :
+            turnFind(Wheels::Side::LEFT);
+            break;
+
+        case FinderType::TOP_CORNER_RIGHT :
+            turnFind(Wheels::Side::RIGHT);
+            break;
+
+        case FinderType::BOTTOM_CORMER_RIGHT :
+            find(Wheels::Side::RIGHT);
+            break;
+
+        case FinderType::BOTTOM_CORNER_LEFT :
+            find(Wheels::Side::LEFT);
+            break;
+
+        case FinderType::RIGHT :
+            i = 0;
+            findLoop(i, 2, Wheels::Side::RIGHT);
+            break;
+        case FinderType::LEFT :
+            i = 0;
+            findLoop(i, 2, Wheels::Side::LEFT);
+            break;
+    }
 }

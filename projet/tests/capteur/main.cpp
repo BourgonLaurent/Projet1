@@ -9,39 +9,52 @@
  *  \author Mehdi Benouhoud
  *  \author Laurent Bourgon
  *  \author Ihsane Majdoubi
- * 
+ *
  * Implements the following state table
- * 
- * 
+ *
+ *
  * +---------------------+-----------------+-------------+------------------+---------------------+---------------------------+
- * |     CurrentState    | InterruptButton | WhiteButton |    ObjectFound   |      NextState      |           Output          |
+ * |     CurrentState    | InterruptButton | WhiteButton |    ObjectFound   |
+ * NextState      |           Output          |
  * +---------------------+-----------------+-------------+------------------+---------------------+---------------------------+
- * |    SET_DIRECTION    |        1        |      0      |         X        |          UP         |                           |
- * +---------------------+-----------------+-------------+------------------+---------------------+                           |
- * |    SET_DIRECTION    |        0        |      1      |         X        |        RIGHT        |                           |
- * +---------------------+-----------------+-------------+------------------+---------------------+         Led AMBER         |
- * |    SET_DIRECTION    |        1        |      1      |         X        |    SET_DIRECTION    |                           |
- * +---------------------+-----------------+-------------+------------------+---------------------+                           |
- * |    SET_DIRECTION    |        0        |      0      |         X        |    SET_DIRECTION    |                           |
+ * |    SET_DIRECTION    |        1        |      0      |         X        | UP
+ * |                           |
+ * +---------------------+-----------------+-------------+------------------+---------------------+
+ * | |    SET_DIRECTION    |        0        |      1      |         X        |
+ * RIGHT        |                           |
+ * +---------------------+-----------------+-------------+------------------+---------------------+
+ * Led AMBER         | |    SET_DIRECTION    |        1        |      1      |
+ * X        |    SET_DIRECTION    |                           |
+ * +---------------------+-----------------+-------------+------------------+---------------------+
+ * | |    SET_DIRECTION    |        0        |      0      |         X        |
+ * SET_DIRECTION    |                           |
  * +---------------------+-----------------+-------------+------------------+---------------------+---------------------------+
- * |         UP          |        X        |      X      |         X        |     FIND_OBJECT     |      Led GREEN for 2s     |
+ * |         UP          |        X        |      X      |         X        |
+ * FIND_OBJECT     |      Led GREEN for 2s     |
  * +---------------------+-----------------+-------------+------------------+---------------------+---------------------------+
- * |        RIGHT        |        X        |      X      |         X        |     FIND_OBJECT     |       Led RED for 2s      |
+ * |        RIGHT        |        X        |      X      |         X        |
+ * FIND_OBJECT     |       Led RED for 2s      |
  * +---------------------+-----------------+-------------+------------------+---------------------+---------------------------+
- * |     FIND_OBJECT     |        X        |      X      |     SEARCHING    |     FIND_OBJECT     |             X             |
+ * |     FIND_OBJECT     |        X        |      X      |     SEARCHING    |
+ * FIND_OBJECT     |             X             |
  * +---------------------+-----------------+-------------+------------------+---------------------+---------------------------+
- * |     FIND_OBJECT     |        X        |      X      |   OBJECT_FOUND   | WAIT_NEXT_DETECTION | Three high-pitched sounds |
+ * |     FIND_OBJECT     |        X        |      X      |   OBJECT_FOUND   |
+ * WAIT_NEXT_DETECTION | Three high-pitched sounds |
  * +---------------------+-----------------+-------------+------------------+---------------------+---------------------------+
- * |     FIND_OBJECT     |        X        |      X      | OBJECT_NOT_FOUND |    FOUND_NOTHING    |     Low-pitched sound     |
+ * |     FIND_OBJECT     |        X        |      X      | OBJECT_NOT_FOUND |
+ * FOUND_NOTHING    |     Low-pitched sound     |
  * +---------------------+-----------------+-------------+------------------+---------------------+---------------------------+
- * | WAIT_NEXT_DETECTION |        0        |      X      |         X        | WAIT_NEXT_DETECTION |                           |
- * +---------------------+-----------------+-------------+------------------+---------------------+     Led flashes AMBER     |
- * | WAIT_NEXT_DETECTION |        1        |      X      |         X        |    SET_DIRECTION    |                           |
+ * | WAIT_NEXT_DETECTION |        0        |      X      |         X        |
+ * WAIT_NEXT_DETECTION |                           |
+ * +---------------------+-----------------+-------------+------------------+---------------------+
+ * Led flashes AMBER     | | WAIT_NEXT_DETECTION |        1        |      X | X
+ * |    SET_DIRECTION    |                           |
  * +---------------------+-----------------+-------------+------------------+---------------------+---------------------------+
- * |    FOUND_NOTHING    |        X        |      X      |         X        |    FOUND_NOTHING    |      Led flashes RED      |
+ * |    FOUND_NOTHING    |        X        |      X      |         X        |
+ * FOUND_NOTHING    |      Led flashes RED      |
  * +---------------------+-----------------+-------------+------------------+---------------------+---------------------------+
- * 
- * 
+ *
+ *
  * \date March 16, 2023
  */
 
@@ -111,6 +124,9 @@ int main()
     IrSensor irSensor(SENSOR);
     ObjectFinder finder(led, irSensor);
 
+    // finder.find(Wheels::Side::RIGHT);
+    // finder.park();
+
     while (true) {
         switch (state) {
             case States::SET_MODE :
@@ -143,7 +159,8 @@ int main()
                 state = States::FIND_OBJECT;
                 break;
             case States::FIND_OBJECT :
-                finder.find();
+                finder.find(Wheels::Side::RIGHT);
+                Communication::send("fini find");
                 finder.park();
                 state = States::WAIT_NEXT_DETECTION;
                 break;

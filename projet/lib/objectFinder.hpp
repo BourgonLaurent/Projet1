@@ -28,10 +28,28 @@ class ObjectFinder
 public:
     ObjectFinder(Led &led, IrSensor &irSensor);
 
+    enum class FinderType
+    {
+        TOP,
+        MIDDLE,
+        BOTTOM,
+        RIGHT,
+        LEFT,
+        TOP_CORNER_RIGHT,
+        TOP_CORNER_LEFT,
+        BOTTOM_CORMER_RIGHT,
+        BOTTOM_CORNER_LEFT
+    };
+
     void park();
     void find(Wheels::Side side);
     void alertParked();
     void alertFoundNothing();
+    void finder(const FinderType &finderWithPosition);
+    void determineFinderType();
+    void turnFind(Wheels::Side side);
+    void findTurn(Wheels::Side side);
+    void findLoop(uint8_t &i, uint8_t max, Wheels::Side side);
 
 private:
     const io::Position SENSOR = PA6;
@@ -43,5 +61,4 @@ private:
     static constexpr uint16_t DELAY_TURNOFF_MS = 500;
     Led led_;
     IrSensor irSensor_;
-    bool objectFound_ = 0;
 };
