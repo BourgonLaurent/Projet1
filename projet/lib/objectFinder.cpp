@@ -49,6 +49,7 @@ void ObjectFinder::find(Wheels::Side side)
 
     Wheels::setDirection(Wheels::Direction::FORWARD);
     Wheels::setSpeed(80);
+    _delay_ms(1500);
     Wheels::turn(side);
     interrupts::startCatching();
     InterruptTimer::start();
