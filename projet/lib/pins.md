@@ -13,8 +13,8 @@
 |            |                |       |                                                                 |
 | `B`        | `PB0`          |       |                                                                 |
 |            | `PB1`          |       |                                                                 |
-|            | `PB2`          | Yes   | [Sound](sound.hpp)                                              |
-|            | `PB3`          | Yes   | [Sound](sound.hpp)                                              |
+|            | `PB2`          |       |                                                                 |
+|            | `PB3`          |       |                                                                 |
 |            | `PB4`          | *     | used by ATmega8 when flashing, try to avoid as much as possible |
 |            | `PB5`          | *     | used by ATmega8 when flashing, try to avoid as much as possible |
 |            | `PB6`          | *     | used by ATmega8 when flashing, try to avoid as much as possible |
@@ -35,5 +35,5 @@
 |            | `PD3`          |       |                                                                 |
 |            | `PD4`          | Yes   | [Wheels](wheels.hpp)                                            |
 |            | `PD5`          | Yes   | [Wheels](wheels.hpp)                                            |
-|            | `PD6`          | Yes   | [Wheels](wheels.hpp)                                            |
-|            | `PD7`          | Yes   | [Wheels](wheels.cpp)                                            |
+|            | `PD6`          | Yes   | [Wheels](wheels.hpp)/[Sound](Sound.hpp)                         |
+|            | `PD7`          | Yes   | [Wheels](wheels.cpp)/[Sound](Sound.hpp)                         |
