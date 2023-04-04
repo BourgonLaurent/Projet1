@@ -17,7 +17,7 @@
 PROJECTNAME=test_map
 
 # Source files (delimiter: space)
-PRJSRC=main.cpp ../../app/map/map.cpp ../../app/map/row.cpp ../../app/map/slot.cpp
+PRJSRC=main.cpp $(wildcard ../../app/**/*.cpp) $(wildcard ../../app/**/**/*.cpp)
 
 # Additional inclusions (ex: -I/path/to/mydir)
 INC=-I../../ -I../../../

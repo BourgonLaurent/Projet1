@@ -1,11 +1,11 @@
 /**
- * Represents a row on a map.
+ * Represents a column on a map.
  *
  * USAGE:
- *  Row row;
- *  Slot row[0];
- *  uint8_t rawRow = row.get();
- *  row = rawRow;
+ *  Column column;
+ *  Slot column[0];
+ *  uint8_t rawColumn = column.get();
+ *  column = rawColumn;
  *
  * Team #4546
  *  \author Catalina Andrea Araya Figueroa
@@ -16,9 +16,19 @@
  * \date March 23, 2023
  */
 
-#include "row.hpp"
+#include "column.hpp"
 
-void Row::operator=(const uint8_t rawRow)
+Slot &Column::operator[](const uint8_t slotIndex)
+{
+    return slots_[slotIndex];
+}
+
+const Slot &Column::operator[](const uint8_t slotIndex) const
+{
+    return slots_[slotIndex];
+}
+
+void Column::operator=(const uint8_t rawRow)
 {
     for (uint8_t i = 0; i < N_SLOTS; i++) {
         if ((rawRow & (1 << i)) != 0) {
@@ -30,12 +40,7 @@ void Row::operator=(const uint8_t rawRow)
     }
 }
 
-Slot &Row::operator[](const uint8_t slotIndex)
-{
-    return slots_[slotIndex];
-}
-
-uint8_t Row::get() const
+uint8_t Column::get() const
 {
     uint8_t result = 0;
 
@@ -46,7 +51,7 @@ uint8_t Row::get() const
     return result;
 }
 
-void Row::clear()
+void Column::clear()
 {
     for (uint8_t i = 0; i < N_SLOTS; i++) {
         slots_[i].clear();
