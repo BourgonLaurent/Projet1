@@ -106,6 +106,7 @@ ISR(InterruptButton_vect)
     //     state = States::UP;
     // }
     // else {
+    Communication::send("isr ");
     state = States::FIND_OBJECT;
     // }
 
@@ -130,11 +131,13 @@ int main()
     while (true) {
         switch (state) {
             case States::SET_MODE :
+                Communication::send("setmode ");
                 led.setColor(Led::Color::OFF);
                 state = States::SET_DIRECTION;
                 break;
             case States::SET_DIRECTION :
                 while (button.isPressed() && !interruptButton.isPressed()) {
+                    Communication::send("setDirection ");
                     led.setAmberForMs(100);
                     if (!button.isPressed()) {
                         state = States::RIGHT;
@@ -146,6 +149,7 @@ int main()
 
                 break;
             case States::RIGHT :
+                Communication::send("right  ");
                 led.setColor(Led::Color::RED);
                 _delay_ms(2000);
                 led.setColor(Led::Color::OFF);
@@ -153,23 +157,27 @@ int main()
                 state = States::FIND_OBJECT;
                 break;
             case States::UP :
+                Communication::send("left ");
                 led.setColor(Led::Color::GREEN);
                 _delay_ms(2000);
                 led.setColor(Led::Color::OFF);
                 state = States::FIND_OBJECT;
                 break;
             case States::FIND_OBJECT :
+                Communication::send("find ");
                 finder.find(Wheels::Side::RIGHT);
-                Communication::send("fini find");
+                Communication::send("fini find ");
                 finder.park();
                 state = States::WAIT_NEXT_DETECTION;
                 break;
             case States::WAIT_NEXT_DETECTION :
+                Communication::send("wait ");
                 finder.alertParked();
                 led.setAmberForMs(250);
                 _delay_ms(250);
                 break;
             case States::FOUND_NOTHING :
+                Communication::send("nothing ");
                 interrupts::startCatching();
                 finder.alertParked();
                 led.setColor(Led::Color::RED);
