@@ -133,6 +133,7 @@ int main()
             case States::SET_MODE :
                 Communication::send("setmode ");
                 led.setColor(Led::Color::OFF);
+                _delay_ms(500);
                 state = States::SET_DIRECTION;
                 break;
             case States::SET_DIRECTION :
