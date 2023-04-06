@@ -47,9 +47,11 @@ void ObjectFinder::park()
 
 void ObjectFinder::find(const Wheels::Side &side, double timerLimit)
 {
+    InterruptTimer::setSeconds(timerLimit);
+
     InterruptTimer::start();
     InterruptButton::clear();
-    interrupts::startCatching();
+    // interrupts::startCatching();
 
     Wheels::turn(side);
 
@@ -79,6 +81,7 @@ void ObjectFinder::alertFoundNothing()
 {
     Sound::playNote(LOW_NOTE);
     _delay_ms(DELAY_FOUND_NOTHING_MS);
+    Sound::stop();
 }
 
 void ObjectFinder::turnFind(const Wheels::Side &side)

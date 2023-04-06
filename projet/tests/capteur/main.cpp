@@ -105,16 +105,16 @@ int main()
 
             case States::FIND_OBJECT :
                 debug::send("findObject\n");
-                interrupts::stopCatching();
 
                 led.setColor(Led::Color::OFF);
-
-                finder.find(Wheels::Side::RIGHT);
+                InterruptTimer::reset();
+                interrupts::startCatching();
+                finder.find(Wheels::Side::RIGHT, 2.0);
                 debug::send("back");
 
                 InterruptTimer::stop();
                 interrupts::stopCatching();
-                Wheels::stopTurn(Wheels::Side::RIGHT);
+                // Wheels::stopTurn(Wheels::Side::RIGHT);
 
                 if (finder.isObjectFound()) {
                     finder.park();
@@ -147,6 +147,7 @@ int main()
                 _delay_ms(250);
                 led.setColor(Led::Color::OFF);
                 _delay_ms(250);
+                return 0;
                 break;
         }
     }
