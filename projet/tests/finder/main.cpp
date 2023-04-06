@@ -56,6 +56,7 @@ int main()
     debug::initialize();
     Wheels::initialize();
     Sound::initialize();
+    Communication::initialize();
 
     InterruptButton::initialize(InterruptButton::Mode::ANY);
 
@@ -103,14 +104,15 @@ int main()
                 break;
 
             case States::FIND_OBJECT :
-                debug::send("findObject\n");
-
+                debug::send("Find object from position: \n");
+                finder.sendLastPosition();
                 led.setColor(Led::Color::OFF);
                 InterruptTimer::initialize(InterruptTimer::Mode::NORMAL, 3.0);
                 InterruptButton::clear();
                 interrupts::startCatching();
                 InterruptTimer::reset();
                 finder.finder();
+                debug::send("New position: \n");
                 finder.sendLastPosition();
                 debug::send("back");
 
@@ -118,6 +120,7 @@ int main()
                 interrupts::stopCatching();
 
                 if (finder.isObjectFound()) {
+                    debug::send("Object was found, now parking ");
                     finder.park();
                     state = States::FOUND_OBJECT;
                 }
@@ -127,7 +130,7 @@ int main()
                 break;
 
             case States::FOUND_OBJECT :
-                debug::send("parked");
+                debug::send("parked, in FOUND_OBJECT");
                 finder.alertParked();
                 state = States::WAIT_NEXT_DETECTION;
                 break;
