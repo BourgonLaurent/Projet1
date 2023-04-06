@@ -22,13 +22,17 @@
 #ifndef MAP_MANAGER_H
 #define MAP_MANAGER_H
 
+#include <app/misc/array.hpp>
 #include <app/misc/map/map.hpp>
+#include <app/misc/point.hpp>
 
 class MapManager
 {
 public:
     static void save(const Map &map);
     static Map load();
+
+    static Array<Point> exportToPoints(const Map &map);
 
 private:
     static constexpr uint16_t START_ADDRESS = 0x0000;

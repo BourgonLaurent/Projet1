@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 1152 576">
+<text x="96" y="36" fill="blue">section 02 -- équipe 4546 -- Léopard </text>
+<path  d="M100 50h925v500H100z" fill="white" stroke="black" stroke-width="1"/>
+<path d="M200 150h10v10h-10zm100 0h10v10h-10zm100 0h10v10h-10zm100 0h10v10h-10zm100 0h10v10h-10zm100 0h10v10h-10zm100 0h10v10h-10zm100 0h10v10h-10zM200 250h10v10h-10zm100 0h10v10h-10zm100 0h10v10h-10zm100 0h10v10h-10zm100 0h10v10h-10zm100 0h10v10h-10zm100 0h10v10h-10zm100 0h10v10h-10zM200 350h10v10h-10zm100 0h10v10h-10zm100 0h10v10h-10zm100 0h10v10h-10zm100 0h10v10h-10zm100 0h10v10h-10zm100 0h10v10h-10zm100 0h10v10h-10z"/>
+<path  d="M200 450h10v10h-10z"/>
+<path d="M300 450h10v10h-10zm100 0h10v10h-10zm100 0h10v10h-10zm100 0h10v10h-10zm100 0h10v10h-10zm100 0h10v10h-10zm100 0h10v10h-10z"/>
+<rect x="200" y="450" width="10" height="10" fill="red"/>

@@ -1,7 +1,6 @@
 
 
 #include <lib/debug.hpp>
-#include <lib/led.hpp>
 
 #include <app/misc/map/map.hpp>
 #include <app/misc/map/mapManager.hpp>
