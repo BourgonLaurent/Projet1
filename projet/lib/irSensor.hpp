@@ -28,7 +28,7 @@ public:
         DIAGONAL_FAR,
         DIAGONAL_CLOSE,
         STRAIGHT_ANGLE_CLOSE,
-        STARIGHT_ANGLE_FAR
+        STRAGHT_ANGLE_FAR
     };
 
     IrSensor(io::Position pin);
@@ -40,7 +40,8 @@ public:
     uint16_t read();
     bool detect(uint8_t distance1 = TEN_CM, uint8_t distance2 = EIGHTY_CM);
     void detectRange(uint8_t distance);
-    bool objectFound();
+    bool objectDetected();
+    Range range();
 
 private:
     static const uint8_t N_MEASURMENTS_ = 6;
@@ -48,5 +49,5 @@ private:
     const io::Position pin_;
     AnalogReader reader_;
     Range range_;
-    bool objectFound_ = 0;
+    bool objectDetected_ = 0;
 };

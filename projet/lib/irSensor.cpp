@@ -50,8 +50,8 @@ bool IrSensor::detect(uint8_t distance1, uint8_t distance2)
     uint16_t value = read();
 
     if (value < distance1 && value > distance2) {
+        objectDetected_ = true;
         return true;
-        objectFound_ = 1;
     }
     return false;
 }
@@ -67,7 +67,12 @@ void IrSensor::detectRange(uint8_t distance)
     }
 }
 
-bool IrSensor::objectFound()
+bool IrSensor::objectDetected()
 {
-    return objectFound_;
+    return objectDetected_;
+}
+
+IrSensor::Range IrSensor::range()
+{
+    return range_;
 }

@@ -69,6 +69,7 @@
 #include <lib/interrupts.hpp>
 #include <lib/led.hpp>
 #include <lib/objectFinder.hpp>
+#include <lib/positionManager.hpp>
 #include <lib/sound.hpp>
 #include <lib/wheels.hpp>
 
@@ -82,7 +83,6 @@ const io::Position SENSOR = PA6;
 
 enum class States
 {
-    SET_MODE,
     SET_DIRECTION,
     RIGHT,
     UP,
@@ -91,7 +91,7 @@ enum class States
     FOUND_NOTHING
 
 };
-volatile States state = States::SET_MODE;
+volatile States state = States::SET_DIRECTION;
 
 ISR(InterruptTimer_vect)
 {
@@ -101,15 +101,8 @@ ISR(InterruptTimer_vect)
 ISR(InterruptButton_vect)
 {
     InterruptButton::waitForDebounce();
-    // if (state == States::SET_DIRECTION) {
-    //     led.setColor(Led::Color::OFF);
-    //     state = States::UP;
-    // }
-    // else {
     Communication::send("isr ");
     state = States::FIND_OBJECT;
-    // }
-
     InterruptButton::clear();
 }
 
@@ -118,7 +111,7 @@ int main()
 
     Wheels::initialize();
     Sound::initialize();
-    InterruptTimer::initialize(InterruptTimer::Mode::NORMAL, 4.0);
+    // InterruptTimer::initialize(InterruptTimer::Mode::NORMAL, 4.0);
     Communication::initialize();
     Wheels::initialize();
     InterruptButton::initialize(InterruptButton::Mode::ANY);
@@ -130,12 +123,6 @@ int main()
 
     while (true) {
         switch (state) {
-            case States::SET_MODE :
-                Communication::send("setmode ");
-                led.setColor(Led::Color::OFF);
-                _delay_ms(500);
-                state = States::SET_DIRECTION;
-                break;
             case States::SET_DIRECTION :
                 while (button.isPressed() && !interruptButton.isPressed()) {
                     Communication::send("setDirection ");
@@ -147,7 +134,6 @@ int main()
                         state = States::UP;
                     }
                 }
-
                 break;
             case States::RIGHT :
                 Communication::send("right  ");
@@ -167,9 +153,13 @@ int main()
             case States::FIND_OBJECT :
                 Communication::send("find ");
                 finder.find(Wheels::Side::RIGHT);
-                Communication::send("fini find ");
-                finder.park();
-                state = States::WAIT_NEXT_DETECTION;
+                if (irSensor.objectFound() == true) {
+                    finder.park();
+                    state = States::WAIT_NEXT_DETECTION;
+                }
+                else {
+                    state = States::FOUND_NOTHING;
+                }
                 break;
             case States::WAIT_NEXT_DETECTION :
                 Communication::send("wait ");
@@ -179,13 +169,13 @@ int main()
                 break;
             case States::FOUND_NOTHING :
                 Communication::send("nothing ");
+                MapManager::save(finder.map);
                 interrupts::startCatching();
                 finder.alertParked();
                 led.setColor(Led::Color::RED);
                 _delay_ms(250);
                 led.setColor(Led::Color::OFF);
                 _delay_ms(250);
-                state = States::SET_MODE;
                 break;
         }
     }
