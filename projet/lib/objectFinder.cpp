@@ -14,7 +14,7 @@
  */
 
 #include "objectFinder.hpp"
-
+#include <app/misc/map/mapManager.hpp>
 #include <lib/interruptButton.hpp>
 #include <lib/interruptTimer.hpp>
 #include <lib/sound.hpp>
@@ -213,44 +213,46 @@ ObjectFinder::FinderType ObjectFinder::determineFinderType()
         && positionManager_.lastPosition().y == 3) {
         return FinderType::TOP_CORNER_RIGHT;
     }
-    else if (positionManager_.lastPosition().x == 7
-             && positionManager_.lastPosition().y == 0) {
+    if (positionManager_.lastPosition().x == 7
+        && positionManager_.lastPosition().y == 0) {
         return FinderType::BOTTOM_CORNER_RIGHT;
     }
-    else if (positionManager_.lastPosition().x == 0
-             && positionManager_.lastPosition().y == 3) {
+    if (positionManager_.lastPosition().x == 0
+        && positionManager_.lastPosition().y == 3) {
         return FinderType::TOP_CORNER_LEFT;
     }
-    else if (positionManager_.lastPosition().x == 0
-             && positionManager_.lastPosition().y == 0) {
+    if (positionManager_.lastPosition().x == 0
+        && positionManager_.lastPosition().y == 0) {
         return FinderType::BOTTOM_CORNER_LEFT;
     }
-    else if (positionManager_.lastPosition().x > 0
-             && positionManager_.lastPosition().x < 7
-             && positionManager_.lastPosition().y == 3) {
+    if (positionManager_.lastPosition().x > 0
+        && positionManager_.lastPosition().x < 7
+        && positionManager_.lastPosition().y == 3) {
         return FinderType::TOP_BORDER;
     }
-    else if (positionManager_.lastPosition().x > 0
-             && positionManager_.lastPosition().x < 7
-             && positionManager_.lastPosition().y == 0) {
+    if (positionManager_.lastPosition().x > 0
+        && positionManager_.lastPosition().x < 7
+        && positionManager_.lastPosition().y == 0) {
         return FinderType::BOTTOM_BORDER;
     }
-    else if (positionManager_.lastPosition().x == 0
-             && positionManager_.lastPosition().y > 0
-             && positionManager_.lastPosition().y < 3) {
+    if (positionManager_.lastPosition().x == 0
+        && positionManager_.lastPosition().y > 0
+        && positionManager_.lastPosition().y < 3) {
         return FinderType::LEFT_BORDER;
     }
-    else if (positionManager_.lastPosition().x == 7
-             && positionManager_.lastPosition().y > 0
-             && positionManager_.lastPosition().y < 3) {
+    if (positionManager_.lastPosition().x == 7
+        && positionManager_.lastPosition().y > 0
+        && positionManager_.lastPosition().y < 3) {
         return FinderType::RIGHT_BORDER;
     }
-    else {
-        return FinderType::MIDDLE;
-    }
+    return FinderType::MIDDLE;
 }
 
 bool ObjectFinder::isObjectFound()
 {
     return objectFound_;
+}
+void ObjectFinder::saveMap()
+{
+    MapManager::save(positionManager_.map);
 }

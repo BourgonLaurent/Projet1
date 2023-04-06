@@ -28,7 +28,7 @@ class ObjectFinder
 {
 public:
     ObjectFinder(Led &led, IrSensor &irSensor);
-    PositionManager positionManager_;
+
     enum class FinderType
     {
         TOP_BORDER,
@@ -47,7 +47,7 @@ public:
     void alertParked();
     void alertFoundNothing();
     void finder();
-
+    void saveMap();
     bool isObjectFound();
 
 private:
@@ -63,8 +63,6 @@ private:
     void findLoop(uint8_t &quadrant, uint8_t max, const Wheels::Side &side);
     FinderType determineFinderType();
     Led led_;
-
-    IrSensor irSensor_;
-
+    PositionManager positionManager_;
     bool objectFound_ = false;
 };

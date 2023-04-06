@@ -1,7 +1,6 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-#include <app/misc/map/mapManager.hpp>
 #include <lib/button.hpp>
 #include <lib/debug.hpp>
 #include <lib/interruptButton.hpp>
@@ -79,12 +78,25 @@ int main()
                     state = States::UP;
 
                 break;
-
+            case States::RIGHT :
+                Communication::send("right  ");
+                led.setColor(Led::Color::RED);
+                _delay_ms(2000);
+                led.setColor(Led::Color::OFF);
+                state = States::FROM_RIGH_UP;
+                break;
             case States::FROM_RIGH_UP :
                 debug::send("fromRightUp\n");
-                led.setColor(Led::Color::OFF);
                 Wheels::turn90(
                     Wheels::Side::LEFT); // replace turn90 with rotate?
+                state = States::FIND_OBJECT;
+                break;
+
+            case States::UP :
+                Communication::send("left ");
+                led.setColor(Led::Color::GREEN);
+                _delay_ms(2000);
+                led.setColor(Led::Color::OFF);
                 state = States::FIND_OBJECT;
                 break;
 
@@ -110,23 +122,6 @@ int main()
                 }
                 break;
 
-            case States::RIGHT :
-                Communication::send("right  ");
-                led.setColor(Led::Color::RED);
-                _delay_ms(2000);
-                led.setColor(Led::Color::OFF);
-                Wheels::turn90(Wheels::Side::LEFT);
-                state = States::FIND_OBJECT;
-                break;
-
-            case States::UP :
-                Communication::send("left ");
-                led.setColor(Led::Color::GREEN);
-                _delay_ms(2000);
-                led.setColor(Led::Color::OFF);
-                state = States::FIND_OBJECT;
-                break;
-
             case States::FOUND_OBJECT :
                 debug::send("parked");
                 finder.alertParked();
@@ -142,9 +137,8 @@ int main()
 
             case States::FOUND_NOTHING :
                 Communication::send("nothing ");
-                MapManager::save(finder.positionManager_.map);
+                finder.saveMap();
                 interrupts::startCatching();
-                finder.alertParked();
                 finder.alertFoundNothing();
                 led.setColor(Led::Color::RED);
                 _delay_ms(250);
