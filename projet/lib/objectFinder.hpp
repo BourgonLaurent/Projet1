@@ -27,7 +27,7 @@
 class ObjectFinder
 {
 public:
-    ObjectFinder(Led &led, IrSensor &irSensor);
+    ObjectFinder(Led &led, IrSensor &irSensor, Map &map);
 
     enum class FinderType
     {
@@ -47,7 +47,6 @@ public:
     void alertParked();
     void alertFoundNothing();
     void finder();
-    void saveMap();
     bool isObjectFound();
 
 private:

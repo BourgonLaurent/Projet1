@@ -12,18 +12,16 @@
  *
  * \date April 5, 2023
  */
-#include <app/misc/map/map.hpp>
-#include <lib/irSensor.hpp>
 
-struct Point {
-    uint8_t x = 0;
-    uint8_t y = 0;
-};
+#include <app/misc/map/map.hpp>
+#include <app/misc/point.hpp>
+
+#include <lib/irSensor.hpp>
 
 class PositionManager
 {
 public:
-    PositionManager(IrSensor &irSensor);
+    PositionManager(IrSensor &irSensor, Map &map);
 
     enum Quadrant
     {
@@ -33,13 +31,13 @@ public:
         TOP_LEFT = 4
 
     };
-    Map map;
     Point lastPosition();
     void setPositionObject(uint8_t quadrant);
     IrSensor irSensor;
 
 private:
     Point lastPosition_;
+    Map map_;
 
     void setPositionDiagonal(uint8_t difference, uint8_t quadrant);
     void setPositionStraight(uint8_t difference, uint8_t quadrant);

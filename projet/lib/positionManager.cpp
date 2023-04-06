@@ -15,7 +15,8 @@
 
 #include <lib/positionManager.hpp>
 
-PositionManager::PositionManager(IrSensor &irSensor) : irSensor(irSensor){};
+PositionManager::PositionManager(IrSensor &irSensor, Map &map)
+    : irSensor(irSensor), map_(map){};
 
 void PositionManager::setPositionDiagonal(uint8_t difference, uint8_t quadrant)
 {
@@ -73,7 +74,7 @@ void PositionManager::setPositionObject(uint8_t quadrant)
             setPositionStraight(2, quadrant);
             break;
     }
-    map[lastPosition_.x][lastPosition_.y].set();
+    map_[lastPosition_.x][lastPosition_.y].set();
 }
 Point PositionManager::lastPosition()
 {

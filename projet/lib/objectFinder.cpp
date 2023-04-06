@@ -14,13 +14,13 @@
  */
 
 #include "objectFinder.hpp"
-#include <app/misc/map/mapManager.hpp>
+
 #include <lib/interruptButton.hpp>
 #include <lib/interruptTimer.hpp>
 #include <lib/sound.hpp>
 
-ObjectFinder::ObjectFinder(Led &led, IrSensor &irSensor)
-    : led_(led), positionManager_(PositionManager(irSensor))
+ObjectFinder::ObjectFinder(Led &led, IrSensor &irSensor, Map &map)
+    : led_(led), positionManager_(PositionManager(irSensor, map))
 {
     Sound::initialize();
 };
@@ -251,8 +251,4 @@ ObjectFinder::FinderType ObjectFinder::determineFinderType()
 bool ObjectFinder::isObjectFound()
 {
     return objectFound_;
-}
-void ObjectFinder::saveMap()
-{
-    MapManager::save(positionManager_.map);
 }

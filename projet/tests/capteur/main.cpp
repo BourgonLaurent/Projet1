@@ -11,6 +11,8 @@
 #include <lib/sound.hpp>
 #include <lib/wheels.hpp>
 
+#include <app/misc/map/mapManager.hpp>
+
 const uint16_t DELAY_BEFORE_SEARCHING_MS = 2000;
 const uint8_t DELAY_LED_AMBER_MS = 20;
 const io::Position SENSOR = PA0;
@@ -62,8 +64,9 @@ int main()
     Button whiteButton(&DDRC, &PINC, PC2);
     Button interruptButton(&DDRD, &PIND, PD2);
 
+    Map map;
     IrSensor irSensor(SENSOR);
-    ObjectFinder finder(led, irSensor);
+    ObjectFinder finder(led, irSensor, map);
 
     while (true) {
         switch (state) {
@@ -137,7 +140,7 @@ int main()
 
             case States::FOUND_NOTHING :
                 Communication::send("nothing ");
-                finder.saveMap();
+                MapManager::save(map);
                 interrupts::startCatching();
                 finder.alertFoundNothing();
                 led.setColor(Led::Color::RED);
