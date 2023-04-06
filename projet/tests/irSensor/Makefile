@@ -30,6 +30,6 @@ LIBNAME=1900
 # Library flags
 LIBS=-l$(LIBNAME) -L$(LIBDIR)
 
-include ../../Makefile.exec.common
+include ../../../Makefile.exec.common
 
 $(OBJDEPS): $(LIBDIR)lib$(LIBNAME).a

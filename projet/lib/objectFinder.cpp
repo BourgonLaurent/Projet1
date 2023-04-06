@@ -14,7 +14,8 @@
  */
 
 #include "objectFinder.hpp"
-#include <lib/communication.hpp>
+
+#include <lib/interruptButton.hpp>
 #include <lib/interruptTimer.hpp>
 #include <lib/sound.hpp>
 
@@ -46,17 +47,21 @@ void ObjectFinder::park()
 
 void ObjectFinder::find(const Wheels::Side &side, double timerLimit)
 {
-    InterruptTimer::setSeconds(timerLimit);
-    Wheels::turn(side);
-    interrupts::startCatching(); // à revoir !!!!!!!!!!!!!!!
     InterruptTimer::start();
+    InterruptButton::clear();
+    interrupts::startCatching();
+
+    Wheels::turn(side);
 
     while (!positionManager_.irSensor.detect()) {
         led_.setColor(Led::Color::GREEN);
     }
+
     InterruptTimer::stop();
-    Wheels::stopTurn(side);
+    interrupts::stopCatching();
+
     led_.setColor(Led::Color::RED);
+    Wheels::stopTurn(side);
 }
 
 void ObjectFinder::alertParked()
@@ -192,6 +197,7 @@ void ObjectFinder::finder()
             }
             break;
     }
+
     if (positionManager_.irSensor.objectDetected() == true) {
         positionManager_.setPositionObject(quadrant);
         objectFound_ = true;
@@ -199,10 +205,6 @@ void ObjectFinder::finder()
     else {
         objectFound_ = false;
     }
-}
-bool ObjectFinder::objectFound()
-{
-    return objectFound_;
 }
 
 ObjectFinder::FinderType ObjectFinder::determineFinderType()
@@ -246,4 +248,9 @@ ObjectFinder::FinderType ObjectFinder::determineFinderType()
     else {
         return FinderType::MIDDLE;
     }
+}
+
+bool ObjectFinder::isObjectFound()
+{
+    return objectFound_;
 }

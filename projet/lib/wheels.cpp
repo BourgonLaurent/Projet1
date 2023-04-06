@@ -190,6 +190,7 @@ void Wheels::turn(const Side &side)
     turnOff();
     invertDirection(side);
     _delay_ms(TURN_TIMEOUT_MS);
+
     setSpeed(45);
 }
 void Wheels::stopTurn(const Side &side)

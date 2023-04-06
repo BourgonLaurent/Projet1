@@ -47,7 +47,8 @@ public:
     void alertParked();
     void alertFoundNothing();
     void finder();
-    bool objectFound();
+
+    bool isObjectFound();
 
 private:
     const io::Position SENSOR = PA6;
@@ -61,6 +62,9 @@ private:
     void findTurn(const Wheels::Side &side);
     void findLoop(uint8_t &quadrant, uint8_t max, const Wheels::Side &side);
     FinderType determineFinderType();
-    bool objectFound_;
     Led led_;
+
+    IrSensor irSensor_;
+
+    bool objectFound_ = false;
 };
