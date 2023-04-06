@@ -15,8 +15,8 @@
 
 #include "objectFinder.hpp"
 
-#include <lib/communication.hpp>
 #include <lib/interruptTimer.hpp>
+#include <lib/interruptButton.hpp>
 #include <lib/sound.hpp>
 
 ObjectFinder::ObjectFinder(Led &led, IrSensor &irSensor)
@@ -47,19 +47,21 @@ void ObjectFinder::park()
 void ObjectFinder::find(Wheels::Side side)
 {
 
-    Wheels::setDirection(Wheels::Direction::FORWARD);
-    Wheels::setSpeed(80);
-    _delay_ms(1500);
-    Wheels::turn(side);
-    interrupts::startCatching();
     InterruptTimer::start();
+    InterruptButton::clear();
+    interrupts::startCatching();
+
+    Wheels::turn(side);
 
     while (!irSensor_.detect()) {
         led_.setColor(Led::Color::GREEN);
     }
+
     InterruptTimer::stop();
-    Wheels::stopTurn(side);
+    interrupts::stopCatching();
+
     led_.setColor(Led::Color::RED);
+    Wheels::stopTurn(side);
 }
 
 void ObjectFinder::alertParked()
@@ -146,4 +148,9 @@ void ObjectFinder::finder(const FinderType &finderWithPosition)
             findLoop(i, 2, Wheels::Side::LEFT);
             break;
     }
+}
+
+bool ObjectFinder::isObjectFound()
+{
+    return objectFound_;
 }

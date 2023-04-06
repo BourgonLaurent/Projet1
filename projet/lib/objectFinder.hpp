@@ -51,6 +51,8 @@ public:
     void findTurn(Wheels::Side side);
     void findLoop(uint8_t &i, uint8_t max, Wheels::Side side);
 
+    bool isObjectFound();
+
 private:
     const io::Position SENSOR = PA6;
     static constexpr uint16_t DELAY_FOUND_NOTHING_MS = 2000;
@@ -61,4 +63,6 @@ private:
     static constexpr uint16_t DELAY_TURNOFF_MS = 500;
     Led led_;
     IrSensor irSensor_;
+
+    bool objectFound_ = false;
 };
