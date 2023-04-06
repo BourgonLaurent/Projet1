@@ -43,11 +43,12 @@ public:
     };
 
     void park();
-    void find(const Wheels::Side &side, double timerLimit = 4.0);
+    void find(const Wheels::Side &side, double timerLimit = 3.0);
     void alertParked();
     void alertFoundNothing();
     void finder();
     bool isObjectFound();
+    void sendLastPosition();
 
 private:
     const io::Position SENSOR = PA6;

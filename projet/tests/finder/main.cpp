@@ -110,7 +110,8 @@ int main()
                 InterruptButton::clear();
                 interrupts::startCatching();
                 InterruptTimer::reset();
-                finder.find(Wheels::Side::RIGHT);
+                finder.finder();
+                finder.sendLastPosition();
                 debug::send("back");
 
                 InterruptTimer::stop();

@@ -15,6 +15,7 @@
 
 #include "objectFinder.hpp"
 
+#include <lib/communication.hpp>
 #include <lib/interruptButton.hpp>
 #include <lib/interruptTimer.hpp>
 #include <lib/sound.hpp>
@@ -123,7 +124,7 @@ void ObjectFinder::finder()
                 findTurn(Wheels::Side::RIGHT);
                 quadrant = 2;
                 if (positionManager_.irSensor.objectDetected() == false) {
-                    find(Wheels::Side::RIGHT, 2.0);
+                    find(Wheels::Side::RIGHT, 1.5);
                     quadrant = 3;
                 }
             }
@@ -135,7 +136,7 @@ void ObjectFinder::finder()
 
             if (positionManager_.irSensor.objectDetected() == false) {
                 if (positionManager_.irSensor.objectDetected() == false) {
-                    find(Wheels::Side::RIGHT, 2.0);
+                    find(Wheels::Side::RIGHT, 1.5);
                     quadrant = 1;
                 }
                 turnFind(Wheels::Side::RIGHT);
@@ -151,7 +152,7 @@ void ObjectFinder::finder()
             turnFind(Wheels::Side::RIGHT);
             quadrant = 1;
             if (positionManager_.irSensor.objectDetected() == false) {
-                find(Wheels::Side::RIGHT, 2.0);
+                find(Wheels::Side::RIGHT, 1.5);
                 quadrant = 2;
             }
             break;
@@ -160,7 +161,7 @@ void ObjectFinder::finder()
             turnFind(Wheels::Side::LEFT);
             quadrant = 3;
             if (positionManager_.irSensor.objectDetected() == false) {
-                find(Wheels::Side::LEFT, 2.0);
+                find(Wheels::Side::LEFT, 1.5);
                 quadrant = 2;
             }
             break;
@@ -169,7 +170,7 @@ void ObjectFinder::finder()
             find(Wheels::Side::LEFT);
             quadrant = 3;
             if (positionManager_.irSensor.objectDetected() == false) {
-                find(Wheels::Side::LEFT, 2.0);
+                find(Wheels::Side::LEFT, 1.5);
                 quadrant = 2;
             }
             break;
@@ -178,7 +179,7 @@ void ObjectFinder::finder()
             find(Wheels::Side::RIGHT);
             quadrant = 0;
             if (positionManager_.irSensor.objectDetected() == false) {
-                find(Wheels::Side::RIGHT, 2.0);
+                find(Wheels::Side::RIGHT, 1.5);
                 quadrant = 1;
             }
             break;
@@ -187,7 +188,7 @@ void ObjectFinder::finder()
             quadrant = 3;
             findLoop(quadrant, 2, Wheels::Side::LEFT);
             if (positionManager_.irSensor.objectDetected() == false) {
-                find(Wheels::Side::LEFT, 2.0);
+                find(Wheels::Side::LEFT, 1.5);
                 quadrant = 1;
             }
             break;
@@ -195,7 +196,7 @@ void ObjectFinder::finder()
             quadrant = 0;
             findLoop(quadrant, 2, Wheels::Side::RIGHT);
             if (positionManager_.irSensor.objectDetected() == false) {
-                find(Wheels::Side::RIGHT, 2.0);
+                find(Wheels::Side::RIGHT, 1.5);
                 quadrant = 2;
             }
             break;
@@ -254,4 +255,11 @@ ObjectFinder::FinderType ObjectFinder::determineFinderType()
 bool ObjectFinder::isObjectFound()
 {
     return objectFound_;
+}
+void ObjectFinder::sendLastPosition()
+{
+    Communication::send(positionManager_.lastPosition().x);
+    Communication::send(" ");
+    Communication::send(positionManager_.lastPosition().y);
+    Communication::send("       ");
 }

@@ -70,7 +70,7 @@ void PositionManager::setPositionObject(uint8_t quadrant)
         case IrSensor::Range::STRAIGHT_ANGLE_CLOSE :
             setPositionStraight(1, quadrant);
             break;
-        case IrSensor::Range::STRAGHT_ANGLE_FAR :
+        case IrSensor::Range::STRAIGHT_ANGLE_FAR :
             setPositionStraight(2, quadrant);
             break;
     }

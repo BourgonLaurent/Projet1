@@ -28,7 +28,7 @@ public:
         DIAGONAL_FAR,
         DIAGONAL_CLOSE,
         STRAIGHT_ANGLE_CLOSE,
-        STRAGHT_ANGLE_FAR
+        STRAIGHT_ANGLE_FAR
     };
 
     IrSensor(io::Position pin);

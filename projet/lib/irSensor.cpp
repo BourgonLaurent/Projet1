@@ -58,12 +58,18 @@ bool IrSensor::detect(uint8_t distance1, uint8_t distance2)
 
 void IrSensor::detectRange(uint8_t distance)
 {
-    if (distance < 15 && distance > 12) {
+    if (distance < 25 && distance > 30) {
         IrSensor::range_ = IrSensor::Range::DIAGONAL_FAR;
     }
 
-    if (distance < 50 && distance > 44) {
+    if (distance < 50 && distance > 60) {
         IrSensor::range_ = IrSensor::Range::DIAGONAL_CLOSE;
+    }
+    if (distance < 35 && distance > 39) {
+        IrSensor::range_ = IrSensor::Range::STRAIGHT_ANGLE_FAR;
+    }
+    if (distance < 95 && distance > 100) {
+        IrSensor::range_ = IrSensor::Range::STRAIGHT_ANGLE_CLOSE;
     }
 }
 
