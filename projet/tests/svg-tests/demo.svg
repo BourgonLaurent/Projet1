@@ -1,0 +1,57 @@
+<svg width="100%" height="100%" viewBox="0 0 1100 550">
+  <style>
+    text {
+      font-family: "Arial";
+      font-size: 20px;
+      fill: blue;
+    }
+
+    #map {
+      fill: #eee;
+      stroke: black;
+    }
+
+    polygon,
+    circle {
+      stroke: black;
+      stroke-width: 0.02px;
+    }
+
+    circle {
+      fill: gray;
+    }
+  </style>
+  <g transform="translate(100)">
+    <text y="35">section 02 -- équipe 4546 -- Léopard </text>
+    <text y="530">AIRE: 420 pouces carrés</text>
+
+    <rect id="map" y="50" width="900" height="450" />
+
+    <g transform="translate(100,425) scale(100,-100)">
+      <!-- change points here -->
+      <polygon fill="forestgreen" points="1,0 0,3 7,3" />
+
+      <g id="row" y="0">
+        <rect id="square" x="0" width="0.1" height="0.1" transform="translate(-0.05,-0.05)" />
+        <use href="#square" x="1" />
+        <use href="#square" x="2" />
+        <use href="#square" x="3" />
+        <use href="#square" x="4" />
+        <use href="#square" x="5" />
+        <use href="#square" x="6" />
+        <use href="#square" x="7" />
+      </g>
+      <use href="#row" y="1" />
+      <use href="#row" y="2" />
+      <use href="#row" y="3" />
+
+      <use href="#square" fill="red" />
+
+      <!-- change points here -->
+      <circle cx="1" cy="0" r="0.15" />
+      <circle cx="2" cy="1" r="0.15" />
+      <circle cx="0" cy="3" r="0.15" />
+      <circle cx="7" cy="3" r="0.15" />
+    </g>
+  </g>
+</svg>

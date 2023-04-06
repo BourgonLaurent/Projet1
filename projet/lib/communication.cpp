@@ -82,6 +82,11 @@ void Communication::send(const uint16_t data)
     send(dataString);
 }
 
+void Communication::send(const Control control)
+{
+    sendCharacter(static_cast<char>(control));
+}
+
 void Communication::sendCharacter(const uint8_t data)
 {
     while (!(UCSR0A & _BV(UDRE0))) {}

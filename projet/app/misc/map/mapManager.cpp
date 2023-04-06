@@ -48,3 +48,18 @@ Map MapManager::load()
 
     return map;
 }
+
+Array<Point> MapManager::exportToPoints(const Map &map)
+{
+    Array<Point> points;
+
+    for (uint8_t i = 0; i < Map::N_COLUMNS; i++) {
+        for (uint8_t j = 0; j < Column::N_SLOTS; j++) {
+            if (map[i][j].get()) {
+                points.append({i, j});
+            }
+        }
+    }
+
+    return points;
+}

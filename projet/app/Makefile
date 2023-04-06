@@ -6,7 +6,7 @@
 # 	Laurent Bourgon
 # 	Ihsane Majdoubi
 #
-# March 1, 2023
+# March 23, 2023
 #
 # Rules:
 # 	`make all` (default): build the project
@@ -17,7 +17,7 @@
 PROJECTNAME=app
 
 # Source files (delimiter: space)
-PRJSRC=$(wildcard *.cpp) $(wildcard **/*.cpp)
+PRJSRC=$(wildcard *.cpp) $(wildcard **/*.cpp) $(wildcard **/**/*.cpp)
 
 # Additional inclusions (ex: -I/path/to/mydir)
 INC=-I../

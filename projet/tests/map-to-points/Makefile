@@ -6,7 +6,7 @@
 # 	Laurent Bourgon
 # 	Ihsane Majdoubi
 #
-# March 23, 2023
+# March 24, 2023
 #
 # Rules:
 # 	`make all` (default): build the project
@@ -14,7 +14,7 @@
 # 	`make clean`: remove compilation artifacts
 
 # Project name (in one word)
-PROJECTNAME=test_map
+PROJECTNAME=test_map_to_points
 
 # Source files (delimiter: space)
 PRJSRC=main.cpp $(wildcard ../../app/**/*.cpp) $(wildcard ../../app/**/**/*.cpp)
