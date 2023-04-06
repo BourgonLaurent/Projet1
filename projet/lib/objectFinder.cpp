@@ -104,6 +104,7 @@ void ObjectFinder::findLoop(uint8_t &quadrant, uint8_t max,
 
 void ObjectFinder::finder()
 {
+    objectFound_ = false;
     FinderType finderWithPosition = determineFinderType();
     uint8_t quadrant = 0;
     switch (finderWithPosition) {
@@ -194,6 +195,9 @@ void ObjectFinder::finder()
     if (positionManager_.irSensor.objectDetected() == true) {
         positionManager_.setPositionObject(quadrant);
         objectFound_ = true;
+    }
+    else {
+        objectFound_ = false;
     }
 }
 bool ObjectFinder::objectFound()

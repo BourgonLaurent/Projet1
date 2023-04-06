@@ -13,7 +13,6 @@
  * \date April 5, 2023
  */
 #include <app/misc/map/map.hpp>
-#include <app/misc/map/mapManager.hpp>
 #include <lib/irSensor.hpp>
 
 struct Point {

@@ -17,7 +17,7 @@
 PROJECTNAME=Projet_sensor
 
 # Source files (delimiter: space)
-PRJSRC=main.cpp
+PRJSRC=main.cpp $(wildcard ../../app/**/*.cpp) $(wildcard ../../app/**/**/*.cpp)
 
 # Additional inclusions (ex: -I/path/to/mydir)
 INC=-I../../

@@ -61,6 +61,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
+#include <app/misc/map/mapManager.hpp>
 #include <lib/button.hpp>
 #include <lib/communication.hpp>
 #include <lib/debug.hpp>
@@ -69,7 +70,6 @@
 #include <lib/interrupts.hpp>
 #include <lib/led.hpp>
 #include <lib/objectFinder.hpp>
-#include <lib/positionManager.hpp>
 #include <lib/sound.hpp>
 #include <lib/wheels.hpp>
 
@@ -153,9 +153,10 @@ int main()
             case States::FIND_OBJECT :
                 Communication::send("find ");
                 finder.find(Wheels::Side::RIGHT);
-                if (irSensor.objectFound() == true) {
+                if (irSensor.objectDetected() == true) {
                     finder.park();
-                    state = States::WAIT_NEXT_DETECTION;
+                    state = States::WAIT_NEXT_DETECTION; ////mettre finder à la
+                                                         /// place de find
                 }
                 else {
                     state = States::FOUND_NOTHING;
@@ -169,7 +170,7 @@ int main()
                 break;
             case States::FOUND_NOTHING :
                 Communication::send("nothing ");
-                MapManager::save(finder.map);
+                MapManager::save(finder.positionManager_.map);
                 interrupts::startCatching();
                 finder.alertParked();
                 led.setColor(Led::Color::RED);
