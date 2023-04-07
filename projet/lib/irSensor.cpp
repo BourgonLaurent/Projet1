@@ -51,6 +51,7 @@ bool IrSensor::detect(uint8_t distance1, uint8_t distance2)
 
     if (value < distance1 && value > distance2) {
         objectDetected_ = true;
+
         return true;
     }
     return false;
@@ -58,18 +59,22 @@ bool IrSensor::detect(uint8_t distance1, uint8_t distance2)
 
 void IrSensor::detectRange(uint8_t distance)
 {
-    if (distance < 25 && distance > 30) {
-        IrSensor::range_ = IrSensor::Range::DIAGONAL_FAR;
+    Communication::send("dans detectRange");
+    if (distance > 45 && distance < 60) {
+        Communication::send("detectRange --> DIAGONAL CLOSE");
+        range_ = IrSensor::Range::DIAGONAL_CLOSE;
     }
-
-    if (distance < 50 && distance > 60) {
-        IrSensor::range_ = IrSensor::Range::DIAGONAL_CLOSE;
+    else if (distance > 25 && distance < 30) {
+        Communication::send("detectRange --> DIAGONAL FAR");
+        range_ = IrSensor::Range::DIAGONAL_FAR;
     }
-    if (distance < 35 && distance > 39) {
-        IrSensor::range_ = IrSensor::Range::STRAIGHT_ANGLE_FAR;
+    else if (distance > 35 && distance < 39) {
+        Communication::send("detectRange --> straight angle far");
+        range_ = IrSensor::Range::STRAIGHT_ANGLE_FAR;
     }
-    if (distance < 95 && distance > 100) {
-        IrSensor::range_ = IrSensor::Range::STRAIGHT_ANGLE_CLOSE;
+    else if (distance > 95 && distance < 100) {
+        Communication::send("detectRange --> straight angle close");
+        range_ = IrSensor::Range::STRAIGHT_ANGLE_CLOSE;
     }
 }
 

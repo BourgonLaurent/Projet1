@@ -13,6 +13,7 @@
  * \date April 5, 2023
  */
 
+#include <lib/communication.hpp>
 #include <lib/positionManager.hpp>
 
 PositionManager::PositionManager(IrSensor &irSensor, Map &map)
@@ -21,6 +22,7 @@ PositionManager::PositionManager(IrSensor &irSensor, Map &map)
 void PositionManager::setPositionDiagonal(uint8_t difference, uint8_t quadrant)
 {
     switch (quadrant) {
+        Communication::send("dans setPositionDiagonal\n");
         case Quadrant::TOP_RIGHT :
             lastPosition_.x += difference;
             lastPosition_.y += difference;
@@ -42,6 +44,7 @@ void PositionManager::setPositionDiagonal(uint8_t difference, uint8_t quadrant)
 void PositionManager::setPositionStraight(uint8_t difference, uint8_t quadrant)
 {
     switch (quadrant) {
+        Communication::send("dans setPositionStraight\n");
         case Quadrant::TOP_RIGHT :
             lastPosition_.y += difference;
             break;
@@ -59,19 +62,29 @@ void PositionManager::setPositionStraight(uint8_t difference, uint8_t quadrant)
 
 void PositionManager::setPositionObject(uint8_t quadrant)
 {
+    Communication::send("dans detect");
+    irSensor.detectRange(irSensor.detect());
+    Communication::send("detect--> après detectRange");
     IrSensor::Range range = irSensor.range();
     switch (range) {
+        Communication::send("dans setPositionObject\n");
         case IrSensor::Range::DIAGONAL_CLOSE :
             setPositionDiagonal(1, quadrant);
+            Communication::send("dans setPositionObject--> Diagonal close\n");
             break;
         case IrSensor::Range::DIAGONAL_FAR :
             setPositionDiagonal(2, quadrant);
+            Communication::send("dans setPositionObject--> Diagonal far\n");
             break;
         case IrSensor::Range::STRAIGHT_ANGLE_CLOSE :
             setPositionStraight(1, quadrant);
+            Communication::send(
+                "dans setPositionObject--> straight angle close\n");
             break;
         case IrSensor::Range::STRAIGHT_ANGLE_FAR :
             setPositionStraight(2, quadrant);
+            Communication::send(
+                "dans setPositionObject--> straight angle far\n");
             break;
     }
     map_[lastPosition_.x][lastPosition_.y].set();

@@ -113,12 +113,13 @@ void ObjectFinder::findLoop(uint8_t &quadrant, uint8_t max,
 
 void ObjectFinder::finder()
 {
+
     objectFound_ = false;
     FinderType finderWithPosition = determineFinderType();
     uint8_t quadrant = 0;
     switch (finderWithPosition) {
         case FinderType::TOP_BORDER :
-            Communication::send("TOP_BORDER");
+            Communication::send("TOP_BORDER\n");
             turnFind(Wheels::Side::RIGHT);
             quadrant = 1;
             if (positionManager_.irSensor.objectDetected() == false) {
@@ -132,7 +133,7 @@ void ObjectFinder::finder()
             break;
 
         case FinderType::BOTTOM_BORDER :
-            Communication::send("BOTTOM_BORDER");
+            Communication::send("BOTTOM_BORDER\n");
             findTurn(Wheels::Side::RIGHT);
             quadrant = 0;
 
@@ -147,12 +148,12 @@ void ObjectFinder::finder()
             break;
 
         case FinderType::MIDDLE :
-            Communication::send("MIDDLE");
+            Communication::send("MIDDLE\n");
             findLoop(quadrant, 4, Wheels::Side::RIGHT);
             break;
 
         case FinderType::TOP_CORNER_LEFT :
-            Communication::send("TOP_CORNER_LEFT");
+            Communication::send("TOP_CORNER_LEFT\n");
             turnFind(Wheels::Side::RIGHT);
             quadrant = 1;
             if (positionManager_.irSensor.objectDetected() == false) {
@@ -162,7 +163,7 @@ void ObjectFinder::finder()
             break;
 
         case FinderType::TOP_CORNER_RIGHT :
-            Communication::send("TOP_CORNER_RIGHT");
+            Communication::send("TOP_CORNER_RIGHT\n");
             turnFind(Wheels::Side::LEFT);
             quadrant = 3;
             if (positionManager_.irSensor.objectDetected() == false) {
@@ -172,7 +173,7 @@ void ObjectFinder::finder()
             break;
 
         case FinderType::BOTTOM_CORNER_RIGHT :
-            Communication::send("BOTTOM_CORNER_RIGHT");
+            Communication::send("BOTTOM_CORNER_RIGHT\n");
             find(Wheels::Side::LEFT);
             quadrant = 3;
             if (positionManager_.irSensor.objectDetected() == false) {
@@ -182,7 +183,7 @@ void ObjectFinder::finder()
             break;
 
         case FinderType::BOTTOM_CORNER_LEFT :
-            Communication::send("BOTTOM_CORNER_LEFT");
+            Communication::send("BOTTOM_CORNER_LEFT\n");
             find(Wheels::Side::RIGHT);
             quadrant = 0;
             if (positionManager_.irSensor.objectDetected() == false) {
@@ -192,7 +193,7 @@ void ObjectFinder::finder()
             break;
 
         case FinderType::RIGHT_BORDER :
-            Communication::send("RIGHT_BORDER");
+            Communication::send("RIGHT_BORDER\n");
             quadrant = 3;
             findLoop(quadrant, 2, Wheels::Side::LEFT);
             if (positionManager_.irSensor.objectDetected() == false) {
@@ -201,7 +202,7 @@ void ObjectFinder::finder()
             }
             break;
         case FinderType::LEFT_BORDER :
-            Communication::send("LEFT_BORDER");
+            Communication::send("LEFT_BORDER\n");
             quadrant = 0;
             findLoop(quadrant, 2, Wheels::Side::RIGHT);
             if (positionManager_.irSensor.objectDetected() == false) {
@@ -213,7 +214,9 @@ void ObjectFinder::finder()
 
     if (positionManager_.irSensor.objectDetected() == true) {
         positionManager_.setPositionObject(quadrant);
+        Communication::send("quadrant :");
         Communication::send(quadrant);
+        Communication::send("   \n");
         objectFound_ = true;
     }
     else {
@@ -269,7 +272,7 @@ bool ObjectFinder::isObjectFound()
 void ObjectFinder::sendLastPosition()
 {
     Communication::send(positionManager_.lastPosition().x);
-    Communication::send(" ");
+    Communication::send(" \n");
     Communication::send(positionManager_.lastPosition().y);
-    Communication::send("       ");
+    Communication::send("       \n");
 }
