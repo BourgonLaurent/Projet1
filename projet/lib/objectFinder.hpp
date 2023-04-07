@@ -50,6 +50,8 @@ public:
     bool isObjectFound();
     void sendLastPosition();
 
+    static bool timeOut;
+
 private:
     const io::Position SENSOR = PA6;
     static constexpr uint16_t DELAY_FOUND_NOTHING_MS = 2000;
@@ -57,7 +59,7 @@ private:
     static constexpr uint8_t DELAY_TURN_MIDDLE_OBJECT_MS = 100;
     static constexpr uint8_t HIGH_NOTE = 78;
     static constexpr uint8_t LOW_NOTE = 45;
-    static constexpr uint16_t DELAY_TURNOFF_MS = 500;
+    static constexpr uint16_t DELAY_TURNOFF_MS = 250; //changed from 500
     void turnFind(const Wheels::Side &side);
     void findTurn(const Wheels::Side &side);
     void findLoop(uint8_t &quadrant, uint8_t max, const Wheels::Side &side);

@@ -33,7 +33,7 @@ public:
 
     IrSensor(io::Position pin);
 
-    static const uint8_t EIGHTY_CM = 11;
+    static const uint8_t EIGHTY_CM = 17;
     static const uint16_t TEN_CM = 130;
     static const uint8_t FIFTEEN_CM = 85;
 

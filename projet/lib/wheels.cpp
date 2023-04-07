@@ -189,7 +189,6 @@ void Wheels::turn(const Side &side)
 {
     turnOff();
     invertDirection(side);
-    debug::send("afterInvertDirection");
     _delay_ms(TURN_TIMEOUT_MS);
 
     setSpeed(45);
