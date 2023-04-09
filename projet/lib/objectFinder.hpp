@@ -43,12 +43,16 @@ public:
     };
 
     void park();
-    void find(const Wheels::Side &side, double timerLimit = 3.0);
+    void find(const Wheels::Side &side, double timerLimit = 3.0, bool updateQuadrant = true);
     void alertParked();
     void alertFoundNothing();
     void finder();
     bool isObjectFound();
     void sendLastPosition();
+    void setLastPosition()
+    {
+        positionManager_.setLastPosition();
+    };
 
     static bool timeOut;
 

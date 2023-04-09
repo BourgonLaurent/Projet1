@@ -30,10 +30,15 @@ enum class States
 
 };
 volatile States state = States::SET_DIRECTION;
+volatile bool weird = true;
 
 ISR(InterruptTimer_vect)
 {
-    ObjectFinder::timeOut = true;
+    if (weird)
+        weird = !weird;
+    else
+        ObjectFinder::timeOut = true;
+    debug::send("timerIsr\n");
 }
 
 ISR(InterruptButton_vect)
@@ -63,6 +68,8 @@ int main()
     Map map;
     IrSensor irSensor(SENSOR);
     ObjectFinder finder(led, irSensor, map);
+
+    finder.setLastPosition();
 
     while (true) {
         switch (state) {
@@ -137,7 +144,6 @@ int main()
                 Communication::send("nothing ");
                 MapManager::save(map);
                 // InterruptButton::clear();
-                interrupts::startCatching();
                 finder.alertFoundNothing();
                 while (true) {
                     led.setColor(Led::Color::RED);
