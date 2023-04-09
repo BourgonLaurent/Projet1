@@ -31,14 +31,15 @@ public:
         STRAIGHT_ANGLE_FAR
     };
 
+
     IrSensor(io::Position pin);
 
-    static const uint8_t EIGHTY_CM = 17;
+    static const uint8_t EIGHTY_CM = 11;
     static const uint16_t TEN_CM = 130;
     static const uint8_t FIFTEEN_CM = 85;
 
     uint16_t read();
-    bool detect(uint8_t distance1 = TEN_CM, uint8_t distance2 = EIGHTY_CM);
+    bool isdetected(uint8_t distance1 = TEN_CM, uint8_t distance2 = EIGHTY_CM);
     void detectRange(uint8_t distance);
     bool objectDetected();
     Range range();

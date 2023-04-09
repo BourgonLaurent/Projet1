@@ -15,7 +15,7 @@
 
 #include "irSensor.hpp"
 
-#include <lib/communication.hpp>
+#include <lib/debug.hpp>
 #include <lib/interruptTimer.hpp>
 
 IrSensor::IrSensor(const io::Position pin) : pin_(pin)
@@ -40,12 +40,12 @@ uint16_t IrSensor::read()
         _delay_ms(5);
     }
     sumForAverage = sumForAverage / (IrSensor::N_MEASURMENTS_ - 1);
-    Communication::send(sumForAverage);
-    Communication::send(" ");
+    // debug::send(sumForAverage);
+    // debug::send(" ");
     return sumForAverage;
 }
 
-bool IrSensor::detect(uint8_t distance1, uint8_t distance2)
+bool IrSensor::isdetected(uint8_t distance1, uint8_t distance2)
 {
     uint16_t value = read();
 
@@ -54,26 +54,28 @@ bool IrSensor::detect(uint8_t distance1, uint8_t distance2)
 
         return true;
     }
+    objectDetected_ =false;
     return false;
 }
 
 void IrSensor::detectRange(uint8_t distance)
 {
-    Communication::send("dans detectRange");
+    debug::send("dans detectRange\n");
+    debug::send(distance);
     if (distance > 45 && distance < 60) {
-        Communication::send("detectRange --> DIAGONAL CLOSE");
+        debug::send("\ndetectRange/DIAGONAL CLOSE\n");
         range_ = IrSensor::Range::DIAGONAL_CLOSE;
     }
     else if (distance > 25 && distance < 30) {
-        Communication::send("detectRange --> DIAGONAL FAR");
+        // debug::send("detectRange --> DIAGONAL FAR");
         range_ = IrSensor::Range::DIAGONAL_FAR;
     }
     else if (distance > 35 && distance < 39) {
-        Communication::send("detectRange --> straight angle far");
+        // debug::send("detectRange --> straight angle far");
         range_ = IrSensor::Range::STRAIGHT_ANGLE_FAR;
     }
     else if (distance > 95 && distance < 100) {
-        Communication::send("detectRange --> straight angle close");
+        // debug::send("detectRange --> straight angle close");
         range_ = IrSensor::Range::STRAIGHT_ANGLE_CLOSE;
     }
 }

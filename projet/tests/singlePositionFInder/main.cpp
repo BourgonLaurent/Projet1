@@ -3,7 +3,6 @@
 
 #include <lib/button.hpp>
 #include <lib/debug.hpp>
-#include <lib/communication.hpp>
 #include <lib/interruptButton.hpp>
 #include <lib/interruptTimer.hpp>
 #include <lib/interrupts.hpp>
@@ -34,38 +33,120 @@ volatile States state = States::SET_DIRECTION;
 
 ISR(InterruptTimer_vect)
 {
-    debug::send("timerIsr\n");
-    debug::send(TCNT1);
-    debug::send("\n");
     ObjectFinder::timeOut = true;
-    // Wheels::stopTurn(Wheels::Side::RIGHT);
-    // ISR too long ?
-    return;
+}
+
+ISR(InterruptButton_vect)
+{
+    debug::send("intIsr\n");
+    InterruptButton::waitForDebounce();
+    state = States::FIND_OBJECT;
+    InterruptButton::clear();
 }
 
 int main()
 {
     interrupts::stopCatching();
 
-    Communication::initialize();
+    debug::initialize();
     Wheels::initialize();
     Sound::initialize();
-    debug::initialize();
+    Communication::initialize();
 
-    InterruptTimer::initialize(InterruptTimer::Mode::NORMAL, 3.0);
-    
-    debug::send(TCNT1);
-    debug::send("\n");  
-
+    InterruptButton::initialize(InterruptButton::Mode::ANY);
 
     Led led = Led(&DDRB, &PORTB, PB0, PB1);
+    Button whiteButton(&DDRC, &PINC, PC2);
+    Button interruptButton(&DDRD, &PIND, PD2);
+    InterruptTimer::initialize(InterruptTimer::Mode::NORMAL, 3.0);
 
     Map map;
     IrSensor irSensor(SENSOR);
     ObjectFinder finder(led, irSensor, map);
 
-    debug::send(TCNT1);
-    debug::send("\n");
+    while (true) {
+        switch (state) {
+            case States::SET_DIRECTION :
+                led.setAmberForMs(DELAY_LED_AMBER_MS);
+                // setAmberForMs bloquantte
 
-    finder.park();
+                if (!whiteButton.isPressed())
+                    state = States::RIGHT;
+                else if (interruptButton.isPressed())
+                    state = States::UP;
+
+                break;
+
+            case States::RIGHT :
+                led.setColor(Led::Color::RED);
+                _delay_ms(2000);
+                led.setColor(Led::Color::OFF);
+                state = States::FROM_RIGH_UP;
+                break;
+
+            case States::FROM_RIGH_UP :
+                Wheels::turn90(Wheels::Side::LEFT); // replace turn90 with rotate?
+                state = States::FIND_OBJECT;
+                break;
+
+            case States::UP :
+                led.setColor(Led::Color::GREEN);
+                _delay_ms(2000);
+                led.setColor(Led::Color::OFF);
+                state = States::FIND_OBJECT;
+                break;
+
+            case States::FIND_OBJECT :
+                debug::send("Find object from position: \n");
+                finder.sendLastPosition();
+                led.setColor(Led::Color::OFF);
+                InterruptButton::clear();
+                // interrupts::startCatching();
+                // InterruptTimer::reset();
+                finder.finder();
+                debug::send("New position: \n");
+                finder.sendLastPosition();
+                debug::send("back\n");
+                // InterruptTimer::stop();
+                // interrupts::stopCatching();
+
+                if (finder.isObjectFound()) {
+                    debug::send("ObjectFound-Parking\n");
+                    finder.park();
+                    state = States::FOUND_OBJECT;
+                }
+                else {
+                    state = States::FOUND_NOTHING;
+                }
+                break;
+
+            case States::FOUND_OBJECT :
+                debug::send("parked, in FOUND_OBJECT");
+                finder.alertParked();
+                state = States::WAIT_NEXT_DETECTION;
+                break;
+
+            case States::WAIT_NEXT_DETECTION :
+                debug::send("Done\n");
+                interrupts::startCatching();
+                led.setAmberForMs(250);
+                _delay_ms(250);
+                break;
+
+            case States::FOUND_NOTHING :
+                Communication::send("nothing ");
+                MapManager::save(map);
+                // InterruptButton::clear();
+                interrupts::startCatching();
+                finder.alertFoundNothing();
+                while (true) {
+                    led.setColor(Led::Color::RED);
+                    _delay_ms(250);
+                    led.setColor(Led::Color::OFF);
+                    _delay_ms(250);
+                }
+                return 0;
+                break;
+        }
+    }
 }

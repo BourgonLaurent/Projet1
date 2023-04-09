@@ -34,9 +34,10 @@ volatile States state = States::SET_DIRECTION;
 ISR(InterruptTimer_vect)
 {
     debug::send("timerIsr\n");
-    InterruptTimer::stop();
-    interrupts::stopCatching();
-    Wheels::stopTurn(Wheels::Side::RIGHT);
+    // InterruptTimer::stop();
+    // interrupts::stopCatching();
+    // Wheels::stopTurn(Wheels::Side::RIGHT);
+    ObjectFinder::timeOut = true;
     // ISR too long ?
     return;
 }
@@ -63,6 +64,7 @@ int main()
     Led led = Led(&DDRB, &PORTB, PB0, PB1);
     Button whiteButton(&DDRC, &PINC, PC2);
     Button interruptButton(&DDRD, &PIND, PD2);
+    InterruptTimer::initialize(InterruptTimer::Mode::NORMAL, 3.0);
 
     Map map;
     IrSensor irSensor(SENSOR);
@@ -107,17 +109,16 @@ int main()
                 debug::send("Find object from position: \n");
                 finder.sendLastPosition();
                 led.setColor(Led::Color::OFF);
-                InterruptTimer::initialize(InterruptTimer::Mode::NORMAL, 3.0);
                 InterruptButton::clear();
-                interrupts::startCatching();
-                InterruptTimer::reset();
+                // interrupts::startCatching();
+                // InterruptTimer::reset();
                 finder.finder();
                 debug::send("New position: \n");
                 finder.sendLastPosition();
                 debug::send("back");
 
-                InterruptTimer::stop();
-                interrupts::stopCatching();
+                // InterruptTimer::stop();
+                // interrupts::stopCatching();
 
                 if (finder.isObjectFound()) {
                     debug::send("Object was found, now parking ");

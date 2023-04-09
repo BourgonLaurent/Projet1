@@ -62,7 +62,7 @@ private:
     static constexpr uint16_t DELAY_TURNOFF_MS = 250; //changed from 500
     void turnFind(const Wheels::Side &side);
     void findTurn(const Wheels::Side &side);
-    void findLoop(uint8_t &quadrant, uint8_t max, const Wheels::Side &side);
+    void findLoop(uint8_t max, const Wheels::Side &side);
     FinderType determineFinderType();
     Led led_;
     PositionManager positionManager_;

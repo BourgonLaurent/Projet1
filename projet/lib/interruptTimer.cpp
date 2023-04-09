@@ -43,7 +43,6 @@ void InterruptTimer::initialize(const Mode &mode, const double delayS)
 void InterruptTimer::reset()
 {
     TCNT1 = 0;
-    debug::send("toZero\n");
 }
 
 void InterruptTimer::start()
@@ -52,23 +51,18 @@ void InterruptTimer::start()
 
     // Output Compare Enable Interrupt A (p.134)
     io::setActive(&TIMSK1, OCIE1A);
-    debug::send("started\n");
 }
 
 void InterruptTimer::stop()
 {
     // Output Compare Enable Interrupt A (p.134)
     io::clear(&TIMSK1, OCIE1A);
-    debug::send("stopped\n");
 }
 
 void InterruptTimer::setSeconds(const double delayS)
 {
     setBestPrescaleMode(delayS);
-    OCR1A = delayS * getCyclesPerSeconds();
-    debug::send(OCR1A);
-    debug::send("=OCR1A\n");
-    
+    OCR1A = delayS * getCyclesPerSeconds();    
 }
 
 void InterruptTimer::setBestPrescaleMode(const double delayS)
