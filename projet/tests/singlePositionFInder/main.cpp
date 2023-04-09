@@ -30,12 +30,12 @@ enum class States
 
 };
 volatile States state = States::SET_DIRECTION;
-volatile bool weird = true;
+volatile bool first = true;
 
 ISR(InterruptTimer_vect)
 {
-    if (weird)
-        weird = !weird;
+    if (first)
+        first = !first;
     else
         ObjectFinder::timeOut = true;
     debug::send("timerIsr\n");
