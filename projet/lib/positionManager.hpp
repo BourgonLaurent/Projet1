@@ -2,7 +2,7 @@
  * Management of current position and next position.
  *
  * HARDWARE:
- * IR sensor to PA6
+ * IR sensor to PA0
  *
  * Team #4546
  *  \author Catalina Andrea Araya Figueroa
@@ -22,8 +22,6 @@
 class PositionManager
 {
 public:
-    PositionManager(IrSensor &irSensor, Map &map);
-
     enum Quadrant
     {
         TOP_RIGHT = 0,
@@ -32,19 +30,17 @@ public:
         TOP_LEFT = 3
     };
 
-    Point lastPosition();
+    PositionManager(IrSensor &irSensor, Map &map);
+
+    Point getLastPosition();
     void setNextPositionObject(uint8_t quadrant);
-    IrSensor irSensor;
 
-    void updateQuadrant(const Wheels::Side &side);
+    uint8_t getQuadrant();
+
     void resetQuadrant();
-    uint8_t getQuadrant() { return quadrant_;};
-    void setLastPosition()
-    {
-        lastPosition_.x = 7;
-        lastPosition_.y =0;
-    };
+    void updateQuadrant(const Wheels::Side &side);
 
+    IrSensor irSensor;
 private:
     Point lastPosition_;
     uint8_t quadrant_;

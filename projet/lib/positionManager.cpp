@@ -2,7 +2,7 @@
  * Management of current position and next position.
  *
  * HARDWARE:
- * IR sensor to PA6
+ * IR sensor to PA0
  *
  * Team #4546
  *  \author Catalina Andrea Araya Figueroa
@@ -18,6 +18,65 @@
 
 PositionManager::PositionManager(IrSensor &irSensor, Map &map)
     : irSensor(irSensor), map_(map){};
+
+Point PositionManager::getLastPosition()
+{
+    return lastPosition_;
+}
+
+
+void PositionManager::setNextPositionObject(uint8_t quadrant)
+{
+    IrSensor::Range range = irSensor.getRange();
+    IrSensor::Distance distance = irSensor.getDistance();
+    
+    switch(range){
+        case IrSensor::Range::DIAGONAL:
+            switch (distance)
+            {
+                case IrSensor::Distance::CLOSE:
+                    setPositionDiagonal(1, quadrant);
+                    break;
+                case IrSensor::Distance::FAR:
+                    setPositionDiagonal(2, quadrant);
+                    break;
+            }
+            break;
+        case IrSensor::Range::STRAIGHT :
+            switch (distance)
+            {
+                case IrSensor::Distance::CLOSE:
+                    setPositionStraight(1, quadrant);
+                    break;
+                case IrSensor::Distance::FAR:
+                    setPositionStraight(2, quadrant);
+                    break;
+            }
+            break;
+    }
+    map_[lastPosition_.x][lastPosition_.y].set();
+}
+
+uint8_t PositionManager::getQuadrant()
+{
+    return quadrant_;
+}
+
+
+void PositionManager::resetQuadrant()
+{
+    quadrant_ = 0;
+}
+
+void PositionManager::updateQuadrant(const Wheels::Side &side)
+{
+    if (side == Wheels::Side::RIGHT) 
+        quadrant_ = (quadrant_ == 3) ? 0 : quadrant_+1;
+
+    else 
+        quadrant_ = (quadrant_ == 0) ? 3 : quadrant_-1;
+}
+
 
 void PositionManager::setPositionDiagonal(uint8_t difference, uint8_t quadrant)
 {
@@ -56,65 +115,4 @@ void PositionManager::setPositionStraight(uint8_t difference, uint8_t quadrant)
             lastPosition_.x -= difference;
             break;
     }
-}
-
-void PositionManager::setNextPositionObject(uint8_t quadrant)
-// La prochaine position dépend du quadrant et du Range qui est déterminé à
-// chaque read de irSensor
-{
-    IrSensor::Range range = irSensor.range();
-    IrSensor::Distance distance = irSensor.getDistance();
-    
-    switch(range){
-        case IrSensor::Range::DIAGONAL:
-            switch (distance)
-            {
-                case IrSensor::Distance::CLOSE:
-                    debug::send("range/DIAGONAL_CLOSE");
-                    setPositionDiagonal(1, quadrant);
-                    break;
-                case IrSensor::Distance::FAR:
-                    setPositionDiagonal(2, quadrant);
-                    break;
-            }
-            break;
-        case IrSensor::Range::STRAIGHT :
-            switch (distance)
-            {
-                case IrSensor::Distance::CLOSE:
-                    setPositionStraight(1, quadrant);
-                    break;
-                case IrSensor::Distance::FAR:
-                    setPositionStraight(2, quadrant);
-                    break;
-            }
-            break;
-    }
-    map_[lastPosition_.x][lastPosition_.y].set();
-}
-
-Point PositionManager::lastPosition()
-{
-    return lastPosition_;
-}
-
-void PositionManager::updateQuadrant(const Wheels::Side &side)
-{
-    if (side == Wheels::Side::RIGHT) {
-        if (quadrant_ == 3)
-            quadrant_ = 0;
-        else
-            quadrant_++;
-    }
-    else {
-        if (quadrant_ == 0)
-            quadrant_ = 3;
-        else
-            quadrant_--;
-    }
-}
-
-void PositionManager::resetQuadrant()
-{
-    quadrant_ = 0;
 }

@@ -2,7 +2,7 @@
  * Control of a infrared sensor.
  *
  * HARDWARE:
- * IR sensor to PA6
+ * IR sensor to PA0
  *
  * Team #4546
  *  \author Catalina Andrea Araya Figueroa
@@ -37,24 +37,37 @@ public:
 
     IrSensor(io::Position pin);
 
-    static const uint8_t EIGHTY_CM = 11;
+    uint16_t read();
+
+    bool isForward(uint8_t distance1 = TEN_CM, uint8_t distance2 = EIGHTY_CM);
+    bool isClose();
+
+    void setDistance(uint8_t distance);
+    bool isObjectDetected();
+
+    void setRange(IrSensor::Range range);
+
+    Range getRange();
+    Distance getDistance();
+
+private:
+    static const uint8_t N_MEASURMENTS = 6;
+    static const uint8_t EIGHTY_CM = 20;
     static const uint16_t TEN_CM = 130;
     static const uint8_t FIFTEEN_CM = 85;
 
-    uint16_t read();
-    bool isdetected(uint8_t distance1 = TEN_CM, uint8_t distance2 = EIGHTY_CM);
-    void detectDistance(uint8_t distance);
-    bool objectDetected();
-    Range range();
-    Distance getDistance() {return distance_;}
-    void setRange(IrSensor::Range range) {range_ = range;}
+    static const uint8_t MIN_DIAGONAL_FAR = 85;
+    static const uint8_t EDGE_CLOSE_FAR = 85;
+    
 
-private:
-    static const uint8_t N_MEASURMENTS_ = 6;
+    static const uint8_t LIMIT_OBJECT_CLOSE = 30;
 
-    const io::Position pin_;
+
     AnalogReader reader_;
+    const io::Position pin_;
+
     Range range_;
     Distance distance_;
-    bool objectDetected_ = 0;
+
+    bool isObjectDetected_ = false;
 };

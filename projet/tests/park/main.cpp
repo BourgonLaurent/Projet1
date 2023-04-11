@@ -30,12 +30,18 @@ enum class States
 
 };
 volatile States state = States::SET_DIRECTION;
+volatile bool timeOut = false;
 
 ISR(InterruptTimer_vect)
 {
     debug::send("timerIsr\n");
-    ObjectFinder::timeOut = true;
-    return;
+    if (OCR1A < TCNT1)
+    {
+        debug::send("true\n");
+        timeOut = true;
+
+    }
+    debug::send("outIsr\n");
 }
 
 
@@ -58,7 +64,6 @@ int main()
     Map map;
     IrSensor irSensor(SENSOR);
     ObjectFinder finder(led, irSensor, map);
-
-    finder.alertFoundNothing();
+    finder.search(Wheels::Side::RIGHT, timeOut, 2.0);
 
 }

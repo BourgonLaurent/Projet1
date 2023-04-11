@@ -22,7 +22,7 @@
 #include <lib/led.hpp>
 #include <lib/wheels.hpp>
 
-constexpr io::Position SENSOR = PA6;
+constexpr io::Position SENSOR = PA0;
 
 int main()
 {

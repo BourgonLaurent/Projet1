@@ -30,20 +30,18 @@ enum class States
 
 };
 volatile States state = States::SET_DIRECTION;
-volatile bool first = true;
+volatile bool timeOut = false;
 
 ISR(InterruptTimer_vect)
 {
-    if (first)
-        first = !first;
-    else
-        ObjectFinder::timeOut = true;
-    debug::send("timerIsr\n");
+    // debug::send("timerIsr\n");
+    if (OCR1A < TCNT1)
+        timeOut = true;
 }
 
 ISR(InterruptButton_vect)
 {
-    debug::send("intIsr\n");
+    // debug::send("intIsr\n");
     InterruptButton::waitForDebounce();
     state = States::FIND_OBJECT;
     InterruptButton::clear();
@@ -68,8 +66,6 @@ int main()
     Map map;
     IrSensor irSensor(SENSOR);
     ObjectFinder finder(led, irSensor, map);
-
-    finder.setLastPosition();
 
     while (true) {
         switch (state) {
@@ -110,7 +106,7 @@ int main()
                 InterruptButton::clear();
                 // interrupts::startCatching();
                 // InterruptTimer::reset();
-                finder.finder();
+                finder.finder(timeOut);
                 debug::send("New position: \n");
                 finder.sendLastPosition();
                 debug::send("back\n");
@@ -119,7 +115,7 @@ int main()
 
                 if (finder.isObjectFound()) {
                     debug::send("ObjectFound-Parking\n");
-                    finder.park();
+                    finder.park(timeOut);
                     state = States::FOUND_OBJECT;
                 }
                 else {

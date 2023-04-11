@@ -2,7 +2,7 @@
  * Finds object.
  *
  * HARDWARE:
- * IR sensor to PA6
+ * IR sensor to PA0
  *
  * Team #4546
  *  \author Catalina Andrea Araya Figueroa
@@ -27,8 +27,6 @@
 class ObjectFinder
 {
 public:
-    ObjectFinder(Led &led, IrSensor &irSensor, Map &map);
-
     enum class FinderType
     {
         TOP_BORDER,
@@ -42,33 +40,45 @@ public:
         BOTTOM_CORNER_LEFT
     };
 
-    void park();
-    void find(const Wheels::Side &side, double timerLimit = 3.0, bool updateQuadrant = true);
+    ObjectFinder(Led &led, IrSensor &irSensor, Map &map);
+
+    void finder(volatile bool &timeOut);
+
+    void search(const Wheels::Side &side, volatile bool &timeOut,
+                double timerLimit);
+    void park(volatile bool &timeOut);
+    void find(const Wheels::Side &side, volatile bool &timeOut,
+              double timerLimit = 3.0, bool isObjectPresent = false);
+
     void alertParked();
     void alertFoundNothing();
-    void finder();
+
     bool isObjectFound();
     void sendLastPosition();
-    void setLastPosition()
-    {
-        positionManager_.setLastPosition();
-    };
 
-    static bool timeOut;
+    bool isObjectForward(volatile bool &timeOut);
 
 private:
-    const io::Position SENSOR = PA6;
+    const io::Position SENSOR = PA0;
+
     static constexpr uint16_t DELAY_FOUND_NOTHING_MS = 2000;
     static constexpr uint16_t DELAY_ALERT_PARKED_MS = 300;
     static constexpr uint8_t DELAY_TURN_MIDDLE_OBJECT_MS = 100;
+    static constexpr uint16_t DELAY_TURNOFF_MS = 250; // changed from 500
+
+    static constexpr uint8_t SPEED_VALUE_TO_PARK = 50;
+
     static constexpr uint8_t HIGH_NOTE = 78;
     static constexpr uint8_t LOW_NOTE = 45;
-    static constexpr uint16_t DELAY_TURNOFF_MS = 250; //changed from 500
-    void turnFind(const Wheels::Side &side);
-    void findTurn(const Wheels::Side &side);
-    void findLoop(uint8_t max, const Wheels::Side &side);
-    FinderType determineFinderType();
+
     Led led_;
     PositionManager positionManager_;
     bool objectFound_ = false;
+
+    FinderType determineFinderType();
+
+    void turnFind(const Wheels::Side &side, volatile bool &timeOut);
+    void findTurn(const Wheels::Side &side, volatile bool &timeOut);
+    void findLoop(uint8_t max, const Wheels::Side &side,
+                  volatile bool &timeOut);
 };

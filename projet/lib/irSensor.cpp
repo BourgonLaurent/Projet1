@@ -2,7 +2,7 @@
  * Control of a infrared sensor.
  *
  * HARDWARE:
- * IR sensor to PA6
+ * IR sensor to PA0
  *
  * Team #4546
  *  \author Catalina Andrea Araya Figueroa
@@ -27,7 +27,7 @@ uint16_t IrSensor::read()
 {
     uint16_t sumForAverage = 0;
     uint8_t temporaryMaximum = 0;
-    for (uint8_t i = 0; i < IrSensor::N_MEASURMENTS_; i++) {
+    for (uint8_t i = 0; i < IrSensor::N_MEASURMENTS; i++) {
         const uint8_t value = IrSensor::reader_.read(IrSensor::pin_);
 
         if (value > temporaryMaximum) {
@@ -39,45 +39,60 @@ uint16_t IrSensor::read()
         }
         _delay_ms(5);
     }
-    sumForAverage = sumForAverage / (IrSensor::N_MEASURMENTS_ - 1);
-    // debug::send(sumForAverage);
-    // debug::send(" ");
+    sumForAverage = sumForAverage / (IrSensor::N_MEASURMENTS - 1);
+    debug::send(sumForAverage);
+    debug::send("\n");
     return sumForAverage;
 }
 
-bool IrSensor::isdetected(uint8_t distance1, uint8_t distance2)
+bool IrSensor::isForward(uint8_t distance1, uint8_t distance2)
 {
     uint16_t value = read();
     if (value < distance1 && value > distance2) {
-        detectDistance(value);
-        objectDetected_ = true;
+        setDistance(value);
+        isObjectDetected_ = true;
 
         return true;
     }
-    objectDetected_ =false;
+    isObjectDetected_ =false;
     return false;
 }
 
-void IrSensor::detectDistance(uint8_t distance)
+bool IrSensor::isClose()
 {
-    debug::send("dans detectDistance\n");
+    return isForward(TEN_CM, FIFTEEN_CM);
+}
+
+void IrSensor::setDistance(uint8_t distance)
+{
+    debug::send("setDistance:\n");
     debug::send(distance);
-    if (distance >= 30 && distance < 90) {
+    if (distance >= 45 && distance <= 100) {
         debug::send("\nCLOSE\n");
         distance_ = IrSensor::Distance::CLOSE;
     }
-    else if (distance < 30) {
+    else if (distance < 45  && distance >= 25){
         debug::send("\nFAR\n");
         distance_ = IrSensor::Distance::FAR;
     }
 }
 
-bool IrSensor::objectDetected()
+bool IrSensor::isObjectDetected()
 {
-    return objectDetected_;
+    return isObjectDetected_;
 }
 
-IrSensor::Range IrSensor::range()
+void IrSensor::setRange(IrSensor::Range range)
+{
+    range_ = range;
+}
+
+IrSensor::Range IrSensor::getRange()
 {
     return range_;
+}
+
+IrSensor::Distance IrSensor::getDistance()
+{
+    return distance_;
 }
