@@ -34,35 +34,22 @@ void ObjectFinder::park(volatile bool &timeOut)
         Wheels::setSpeed(SPEED_VALUE_TO_PARK);
 
         if (!positionManager_.irSensor.isForward()) {
-
-            interrupts::startCatching();
-            Wheels::turnOff();
-            _delay_ms(DELAY_TURNOFF_MS);
-
-            find(Wheels::Side::RIGHT, timeOut, 1.0, true);
-            debug::send("outRight");
-
-            if (!positionManager_.irSensor.isForward()) {
-
-                Wheels::turnOff();
-                _delay_ms(DELAY_TURNOFF_MS);
-
-                find(Wheels::Side::LEFT, timeOut, 2.0, true);
-                debug::send("outLeft");
-            }
-            interrupts::stopCatching();
+            isObjectForward(timeOut);
         }
     }
+    _delay_ms(750);
     Wheels::turnOff();
 }
 
 void ObjectFinder::find(const Wheels::Side &side, volatile bool &timeOut,
                         double timerLimit, bool isObjectPresent)
 {
+    debug::send("In Find\n");
     if (!positionManager_.irSensor.isForward()) {
 
-        if (side == Wheels::Side::LEFT)
+        if (side == Wheels::Side::LEFT && isObjectPresent == false) {
             positionManager_.updateQuadrant(side);
+        }
 
         search(side, timeOut, timerLimit);
 
@@ -70,12 +57,14 @@ void ObjectFinder::find(const Wheels::Side &side, volatile bool &timeOut,
             positionManager_.irSensor.setRange(IrSensor::Range::DIAGONAL);
             debug::send("\nDIAGONAL\n");
         }
-        else if (!isObjectPresent && isObjectForward(timeOut)) {
-            positionManager_.updateQuadrant(side);
+        else if (!isObjectPresent && isObjectForward(timeOut, side)) {
+            // positionManager_.updateQuadrant(side);
             positionManager_.irSensor.setRange(IrSensor::Range::STRAIGHT);
+            debug::send("STRAIGHT\n");
         }
-        else
-            positionManager_.updateQuadrant(side);
+        // else
+        //     debug::send("dans le else de find \n");
+        // positionManager_.updateQuadrant(side);
 
         interrupts::stopCatching();
     }
@@ -88,22 +77,18 @@ void ObjectFinder::search(const Wheels::Side &side, volatile bool &timeOut,
     timeOut = false;
     InterruptButton::clear();
     InterruptTimer::start();
-
     interrupts::startCatching();
 
     Wheels::turn(side);
-    
+
     while (!positionManager_.irSensor.isForward() && !timeOut) {
         ;
     }
-    _delay_ms(50);
+    _delay_ms(500);
     positionManager_.irSensor.isForward();
-
     Wheels::stopTurn(side);
-
     InterruptTimer::stop();
     interrupts::stopCatching();
-
 }
 
 void ObjectFinder::alertParked()
@@ -134,18 +119,22 @@ void ObjectFinder::turnFind(const Wheels::Side &side, volatile bool &timeOut)
 void ObjectFinder::findTurn(const Wheels::Side &side, volatile bool &timeOut)
 {
     find(side, timeOut);
-    Wheels::turn90(side);
-    positionManager_.updateQuadrant(side);
+    if (!positionManager_.irSensor.isObjectDetected()) {
+        Wheels::turn90(side);
+        positionManager_.updateQuadrant(side);
+    }
 }
 
 void ObjectFinder::findLoop(uint8_t max, const Wheels::Side &side,
                             volatile bool &timeOut)
 {
+    debug::send("in findloop\n");
     uint8_t loopCount = 0;
-    while (!positionManager_.irSensor.isObjectDetected()
-           && loopCount < max) {
+    while (!positionManager_.irSensor.isObjectDetected() && loopCount < max) {
+        debug::send("no object detected, still in loop\n");
         loopCount++;
         find(side, timeOut);
+        _delay_ms(1500);
     }
 }
 
@@ -153,6 +142,7 @@ void ObjectFinder::finder(volatile bool &timeOut)
 {
 
     objectFound_ = false;
+    positionManager_.irSensor.setObjectDetected(false);
 
     FinderType finderWithPosition = determineFinderType();
     positionManager_.resetQuadrant();
@@ -164,11 +154,17 @@ void ObjectFinder::finder(volatile bool &timeOut)
         case FinderType::TOP_BORDER :
             // debug::send("TOP_BORDER\n");
             turnFind(Wheels::Side::RIGHT, timeOut);
+            if (!positionManager_.irSensor.isObjectDetected()) {
+                findTurn(Wheels::Side::RIGHT, timeOut);
+            }
             break;
 
         case FinderType::BOTTOM_BORDER :
             // debug::send("BOTTOM_BORDER\n");
             findTurn(Wheels::Side::RIGHT, timeOut);
+            if (!positionManager_.irSensor.isObjectDetected()) {
+                findTurn(Wheels::Side::RIGHT, timeOut);
+            }
             break;
 
         case FinderType::MIDDLE :
@@ -197,7 +193,7 @@ void ObjectFinder::finder(volatile bool &timeOut)
             break;
 
         case FinderType::RIGHT_BORDER :
-            // debug::send("RIGHT_BORDER\n");
+            debug::send("RIGHT_BORDER\n");
             findLoop(2, Wheels::Side::LEFT, timeOut);
             break;
 
@@ -207,8 +203,6 @@ void ObjectFinder::finder(volatile bool &timeOut)
 
             break;
     }
-
-    debug::send("waiting\n");
     _delay_ms(1000);
 
     if (positionManager_.irSensor.isObjectDetected()) {
@@ -276,12 +270,26 @@ void ObjectFinder::sendLastPosition()
     debug::send("\n");
 }
 
-bool ObjectFinder::isObjectForward(volatile bool &timeOut)
+bool ObjectFinder::isObjectForward(volatile bool &timeOut, Wheels::Side side)
 {
-    if (!positionManager_.irSensor.isForward())
-        search(Wheels::Side::RIGHT, timeOut, 1.5);
-    if (!positionManager_.irSensor.isForward())
-        search(Wheels::Side::LEFT, timeOut, 1.0);
+    debug::send("Mini Find \n");
+    if (side == Wheels::Side::RIGHT) {
+        if (!positionManager_.irSensor.isForward())
+            search(Wheels::Side::RIGHT, timeOut, 2.0);
+        if (!positionManager_.irSensor.isForward())
+            search(Wheels::Side::LEFT, timeOut, 2.0);
+    }
+
+    else if (side == Wheels::Side::LEFT) {
+        if (!positionManager_.irSensor.isForward())
+            search(Wheels::Side::LEFT, timeOut, 2.0);
+        if (!positionManager_.irSensor.isForward())
+            search(Wheels::Side::RIGHT, timeOut, 2.0);
+    }
 
     return positionManager_.irSensor.isObjectDetected();
+}
+void ObjectFinder::initialize()
+{
+    positionManager_.initialize();
 }

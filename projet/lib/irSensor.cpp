@@ -40,21 +40,23 @@ uint16_t IrSensor::read()
         _delay_ms(5);
     }
     sumForAverage = sumForAverage / (IrSensor::N_MEASURMENTS - 1);
-    debug::send(sumForAverage);
-    debug::send("\n");
+    // debug::send(sumForAverage);
+    // debug::send("\n");
     return sumForAverage;
 }
 
 bool IrSensor::isForward(uint8_t distance1, uint8_t distance2)
 {
+
     uint16_t value = read();
+
     if (value < distance1 && value > distance2) {
         setDistance(value);
         isObjectDetected_ = true;
 
         return true;
     }
-    isObjectDetected_ =false;
+    isObjectDetected_ = false;
     return false;
 }
 
@@ -71,7 +73,7 @@ void IrSensor::setDistance(uint8_t distance)
         debug::send("\nCLOSE\n");
         distance_ = IrSensor::Distance::CLOSE;
     }
-    else if (distance < 45  && distance >= 25){
+    else if (distance < 45 && distance >= 25) {
         debug::send("\nFAR\n");
         distance_ = IrSensor::Distance::FAR;
     }
@@ -82,6 +84,10 @@ bool IrSensor::isObjectDetected()
     return isObjectDetected_;
 }
 
+void IrSensor::setObjectDetected(bool objectDetected)
+{
+    isObjectDetected_ = objectDetected;
+}
 void IrSensor::setRange(IrSensor::Range range)
 {
     range_ = range;

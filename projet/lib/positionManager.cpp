@@ -24,31 +24,28 @@ Point PositionManager::getLastPosition()
     return lastPosition_;
 }
 
-
 void PositionManager::setNextPositionObject(uint8_t quadrant)
 {
     IrSensor::Range range = irSensor.getRange();
     IrSensor::Distance distance = irSensor.getDistance();
-    
-    switch(range){
-        case IrSensor::Range::DIAGONAL:
-            switch (distance)
-            {
-                case IrSensor::Distance::CLOSE:
+
+    switch (range) {
+        case IrSensor::Range::DIAGONAL :
+            switch (distance) {
+                case IrSensor::Distance::CLOSE :
                     setPositionDiagonal(1, quadrant);
                     break;
-                case IrSensor::Distance::FAR:
+                case IrSensor::Distance::FAR :
                     setPositionDiagonal(2, quadrant);
                     break;
             }
             break;
         case IrSensor::Range::STRAIGHT :
-            switch (distance)
-            {
-                case IrSensor::Distance::CLOSE:
+            switch (distance) {
+                case IrSensor::Distance::CLOSE :
                     setPositionStraight(1, quadrant);
                     break;
-                case IrSensor::Distance::FAR:
+                case IrSensor::Distance::FAR :
                     setPositionStraight(2, quadrant);
                     break;
             }
@@ -62,7 +59,6 @@ uint8_t PositionManager::getQuadrant()
     return quadrant_;
 }
 
-
 void PositionManager::resetQuadrant()
 {
     quadrant_ = 0;
@@ -70,13 +66,16 @@ void PositionManager::resetQuadrant()
 
 void PositionManager::updateQuadrant(const Wheels::Side &side)
 {
-    if (side == Wheels::Side::RIGHT) 
-        quadrant_ = (quadrant_ == 3) ? 0 : quadrant_+1;
+    if (side == Wheels::Side::RIGHT)
+        quadrant_ = (quadrant_ == 3) ? 0 : quadrant_ + 1;
 
-    else 
-        quadrant_ = (quadrant_ == 0) ? 3 : quadrant_-1;
+    else
+        quadrant_ = (quadrant_ == 0) ? 3 : quadrant_ - 1;
+
+    debug::send("le quadrant est maintenant : ");
+    debug::send(quadrant_);
+    debug::send("\n");
 }
-
 
 void PositionManager::setPositionDiagonal(uint8_t difference, uint8_t quadrant)
 {
@@ -115,4 +114,10 @@ void PositionManager::setPositionStraight(uint8_t difference, uint8_t quadrant)
             lastPosition_.x -= difference;
             break;
     }
+}
+
+void PositionManager::initialize()
+{
+    lastPosition_.y = 2;
+    lastPosition_.x = 7;
 }

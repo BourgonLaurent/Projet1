@@ -48,15 +48,16 @@ public:
                 double timerLimit);
     void park(volatile bool &timeOut);
     void find(const Wheels::Side &side, volatile bool &timeOut,
-              double timerLimit = 3.0, bool isObjectPresent = false);
+              double timerLimit = 3.5, bool isObjectPresent = false);
 
     void alertParked();
     void alertFoundNothing();
-
+    void initialize();
     bool isObjectFound();
     void sendLastPosition();
 
-    bool isObjectForward(volatile bool &timeOut);
+    bool isObjectForward(volatile bool &timeOut,
+                         Wheels::Side side = Wheels::Side::RIGHT);
 
 private:
     const io::Position SENSOR = PA0;
@@ -64,9 +65,9 @@ private:
     static constexpr uint16_t DELAY_FOUND_NOTHING_MS = 2000;
     static constexpr uint16_t DELAY_ALERT_PARKED_MS = 300;
     static constexpr uint8_t DELAY_TURN_MIDDLE_OBJECT_MS = 100;
-    static constexpr uint16_t DELAY_TURNOFF_MS = 250; // changed from 500
+    static constexpr uint16_t DELAY_TURNOFF_MS = 125; // changed from 500
 
-    static constexpr uint8_t SPEED_VALUE_TO_PARK = 50;
+    static constexpr uint8_t SPEED_VALUE_TO_PARK = 40;
 
     static constexpr uint8_t HIGH_NOTE = 78;
     static constexpr uint8_t LOW_NOTE = 45;

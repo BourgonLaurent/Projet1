@@ -66,7 +66,7 @@ int main()
     Map map;
     IrSensor irSensor(SENSOR);
     ObjectFinder finder(led, irSensor, map);
-
+    finder.initialize();
     while (true) {
         switch (state) {
             case States::SET_DIRECTION :
@@ -88,7 +88,8 @@ int main()
                 break;
 
             case States::FROM_RIGH_UP :
-                Wheels::turn90(Wheels::Side::LEFT); // replace turn90 with rotate?
+                Wheels::turn90(
+                    Wheels::Side::LEFT); // replace turn90 with rotate?
                 state = States::FIND_OBJECT;
                 break;
 
@@ -100,6 +101,7 @@ int main()
                 break;
 
             case States::FIND_OBJECT :
+                // finder.initialize();
                 debug::send("Find object from position: \n");
                 finder.sendLastPosition();
                 led.setColor(Led::Color::OFF);
@@ -109,12 +111,11 @@ int main()
                 finder.finder(timeOut);
                 debug::send("New position: \n");
                 finder.sendLastPosition();
-                debug::send("back\n");
                 // InterruptTimer::stop();
                 // interrupts::stopCatching();
 
                 if (finder.isObjectFound()) {
-                    debug::send("ObjectFound-Parking\n");
+                    debug::send("ObjectFound-> Now Parking\n");
                     finder.park(timeOut);
                     state = States::FOUND_OBJECT;
                 }
@@ -124,20 +125,17 @@ int main()
                 break;
 
             case States::FOUND_OBJECT :
-                debug::send("parked, in FOUND_OBJECT");
                 finder.alertParked();
                 state = States::WAIT_NEXT_DETECTION;
                 break;
 
             case States::WAIT_NEXT_DETECTION :
-                debug::send("Done\n");
                 interrupts::startCatching();
                 led.setAmberForMs(250);
                 _delay_ms(250);
                 break;
 
             case States::FOUND_NOTHING :
-                Communication::send("nothing ");
                 MapManager::save(map);
                 // InterruptButton::clear();
                 finder.alertFoundNothing();

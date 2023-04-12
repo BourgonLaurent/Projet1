@@ -46,7 +46,7 @@ public:
     bool isObjectDetected();
 
     void setRange(IrSensor::Range range);
-
+    void setObjectDetected(bool objectDetected);
     Range getRange();
     Distance getDistance();
 
@@ -58,10 +58,8 @@ private:
 
     static const uint8_t MIN_DIAGONAL_FAR = 85;
     static const uint8_t EDGE_CLOSE_FAR = 85;
-    
 
     static const uint8_t LIMIT_OBJECT_CLOSE = 30;
-
 
     AnalogReader reader_;
     const io::Position pin_;

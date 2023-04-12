@@ -34,13 +34,14 @@ public:
 
     Point getLastPosition();
     void setNextPositionObject(uint8_t quadrant);
-
+    void initialize();
     uint8_t getQuadrant();
 
     void resetQuadrant();
     void updateQuadrant(const Wheels::Side &side);
 
     IrSensor irSensor;
+
 private:
     Point lastPosition_;
     uint8_t quadrant_;
