@@ -55,7 +55,7 @@ public:
     static void turn(const Side &side);
     static void stopTurn(const Side &side);
     static void invertDirection(const Side &side);
-
+static void turnX(const Side &side);
     static void setSpeed(const uint8_t speed, const Side &side = Side::BOTH);
     static void turnOff(const Side &side = Side::BOTH);
 

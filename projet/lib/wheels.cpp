@@ -191,7 +191,18 @@ void Wheels::turn(const Side &side)
     invertDirection(side);
     _delay_ms(TURN_TIMEOUT_MS);
 
-    setSpeed(35);
+    setSpeed(35, Side::LEFT);
+    setSpeed(40, Side::RIGHT);
+}
+void Wheels::turnX(const Side &side){
+    turnOff();
+    _delay_ms(TURN_TIMEOUT_MS);
+
+    if(side==Side::RIGHT)
+        setSpeed(37, Side::LEFT);
+
+    if(side==Side::LEFT)
+        setSpeed(47, Side::RIGHT);
 }
 void Wheels::stopTurn(const Side &side)
 {
