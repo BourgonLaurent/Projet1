@@ -59,12 +59,17 @@ void ObjectFinder::find(const Wheels::Side &side, volatile bool &timeOut,
         }
         else if (!isObjectPresent && isObjectForward(timeOut, side)) {
             // positionManager_.updateQuadrant(side);
+            if (side != Wheels::Side::LEFT)
+                positionManager_.updateQuadrant(side);
             positionManager_.irSensor.setRange(IrSensor::Range::STRAIGHT);
             debug::send("STRAIGHT\n");
         }
-        // else
-        //     debug::send("dans le else de find \n");
-        // positionManager_.updateQuadrant(side);
+        else
+        {
+            debug::send("dans le else de find \n");
+            if (side != Wheels::Side::LEFT)
+                positionManager_.updateQuadrant(side);
+        }
 
         interrupts::stopCatching();
     }
@@ -84,7 +89,7 @@ void ObjectFinder::search(const Wheels::Side &side, volatile bool &timeOut,
     while (!positionManager_.irSensor.isForward() && !timeOut) {
         ;
     }
-    _delay_ms(500);
+    _delay_ms(150);
     positionManager_.irSensor.isForward();
     Wheels::stopTurn(side);
     InterruptTimer::stop();
