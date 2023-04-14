@@ -28,7 +28,7 @@ void PositionManager::setNextPositionObject(uint8_t quadrant)
 {
     IrSensor::Range range = irSensor.getRange();
     IrSensor::Distance distance = irSensor.getDistance();
-
+    debug::send("Dans SetNextPosition\n");
     switch (range) {
         case IrSensor::Range::DIAGONAL :
             switch (distance) {
@@ -51,7 +51,9 @@ void PositionManager::setNextPositionObject(uint8_t quadrant)
             }
             break;
     }
-    map_[lastPosition_.x][lastPosition_.y].set();
+    if (lastPosition_.x <= 7 && lastPosition_.y <= 3) {
+        map_[lastPosition_.x][lastPosition_.y].set();
+    }
 }
 
 uint8_t PositionManager::getQuadrant()
@@ -118,6 +120,6 @@ void PositionManager::setPositionStraight(uint8_t difference, uint8_t quadrant)
 
 void PositionManager::initialize()
 {
-    lastPosition_.y = 2;
-    lastPosition_.x = 7;
+    lastPosition_.y = 1;
+    lastPosition_.x = 1;
 }

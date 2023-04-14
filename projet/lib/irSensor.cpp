@@ -45,7 +45,7 @@ uint16_t IrSensor::read()
     return sumForAverage;
 }
 
-bool IrSensor::isForward(uint8_t distance1, uint8_t distance2)
+bool IrSensor::isInFront(uint8_t distance1, uint8_t distance2)
 {
 
     uint16_t value = read();
@@ -62,7 +62,7 @@ bool IrSensor::isForward(uint8_t distance1, uint8_t distance2)
 
 bool IrSensor::isClose()
 {
-    return isForward(TEN_CM, FIFTEEN_CM);
+    return isInFront(TEN_CM, FIFTEEN_CM);
 }
 
 void IrSensor::setDistance(uint8_t distance)
@@ -70,11 +70,11 @@ void IrSensor::setDistance(uint8_t distance)
     debug::send("setDistance:\n");
     debug::send(distance);
     if (distance >= 45 && distance <= 100) {
-        debug::send("\nCLOSE\n");
+
         distance_ = IrSensor::Distance::CLOSE;
     }
     else if (distance < 45 && distance >= 25) {
-        debug::send("\nFAR\n");
+
         distance_ = IrSensor::Distance::FAR;
     }
 }
@@ -101,4 +101,11 @@ IrSensor::Range IrSensor::getRange()
 IrSensor::Distance IrSensor::getDistance()
 {
     return distance_;
+}
+bool IrSensor::isTooClose()
+{
+    uint16_t value = read();
+    if (value >= TEN_CM)
+        return true;
+    return false;
 }

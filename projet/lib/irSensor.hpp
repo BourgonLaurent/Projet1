@@ -39,7 +39,7 @@ public:
 
     uint16_t read();
 
-    bool isForward(uint8_t distance1 = TEN_CM, uint8_t distance2 = EIGHTY_CM);
+    bool isInFront(uint8_t distance1 = TEN_CM, uint8_t distance2 = EIGHTY_CM);
     bool isClose();
 
     void setDistance(uint8_t distance);
@@ -47,6 +47,7 @@ public:
 
     void setRange(IrSensor::Range range);
     void setObjectDetected(bool objectDetected);
+    bool isTooClose();
     Range getRange();
     Distance getDistance();
 

@@ -174,7 +174,8 @@ void Wheels::turn90(const Side &side)
     invertDirection(side);
     _delay_ms(TURN_TIMEOUT_MS);
 
-    setSpeed(50);
+    setSpeed(35, Side::LEFT);
+    setSpeed(40, Side::RIGHT);
     _delay_ms(TURN_DURATION_MS);
 
     turnOff();
@@ -185,24 +186,15 @@ void Wheels::turn90(const Side &side)
     OCR2A = savedRightSpeed;
 }
 
-void Wheels::turn(const Side &side)
+void Wheels::turn(const Side &side, const uint8_t speed)
 {
+
     turnOff();
     invertDirection(side);
     _delay_ms(TURN_TIMEOUT_MS);
 
-    setSpeed(35, Side::LEFT);
-    setSpeed(40, Side::RIGHT);
-}
-void Wheels::turnX(const Side &side){
-    turnOff();
-    _delay_ms(TURN_TIMEOUT_MS);
-
-    if(side==Side::RIGHT)
-        setSpeed(37, Side::LEFT);
-
-    if(side==Side::LEFT)
-        setSpeed(47, Side::RIGHT);
+    setSpeed(speed, Side::LEFT);
+    setSpeed(speed + 5, Side::RIGHT);
 }
 void Wheels::stopTurn(const Side &side)
 {

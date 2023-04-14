@@ -45,10 +45,10 @@ public:
     void finder(volatile bool &timeOut);
 
     void search(const Wheels::Side &side, volatile bool &timeOut,
-                double timerLimit);
+                double timerLimit, uint8_t speed = speedTurn);
     void park(volatile bool &timeOut);
     void find(const Wheels::Side &side, volatile bool &timeOut,
-              double timerLimit = 3.5, bool isObjectPresent = false);
+              double timerLimit = DELAY_FIND_MS);
 
     void alertParked();
     void alertFoundNothing();
@@ -56,8 +56,11 @@ public:
     bool isObjectFound();
     void sendLastPosition();
 
-    bool isObjectForward(volatile bool &timeOut,
-                         Wheels::Side side = Wheels::Side::RIGHT);
+    bool isObjectInFront(volatile bool &timeOut,
+                         Wheels::Side side = Wheels::Side::RIGHT,
+                         double delay1 = FIRST_DELAY_IS_IN_FRONT_MS,
+                         double delay2 = SECOND_DELAY_IS_IN_FRONT_MS,
+                         uint8_t speed = speedTurn);
 
 private:
     const io::Position SENSOR = PA0;
@@ -66,9 +69,14 @@ private:
     static constexpr uint16_t DELAY_ALERT_PARKED_MS = 300;
     static constexpr uint8_t DELAY_TURN_MIDDLE_OBJECT_MS = 100;
     static constexpr uint16_t DELAY_TURNOFF_MS = 125; // changed from 500
-
+    static constexpr double SECOND_DELAY_IS_IN_FRONT_MS = 0.5; // 1.75
+    static constexpr double FIRST_DELAY_IS_IN_FRONT_MS = 1.0;
+    static constexpr double FIRST_DELAY_IN_FRONT_PARK_MS = 1.0; // 1.5
+    static constexpr double SECOND_DELAY_IN_FRONT_PARK_MS = 1.5;
+    static constexpr double DELAY_FIND_MS = 1.07;
     static constexpr uint8_t SPEED_VALUE_TO_PARK = 40;
-
+    static constexpr uint8_t speedTurn = 45;
+    static constexpr uint8_t speedPark = 35;
     static constexpr uint8_t HIGH_NOTE = 78;
     static constexpr uint8_t LOW_NOTE = 45;
 

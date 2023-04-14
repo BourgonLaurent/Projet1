@@ -61,7 +61,7 @@ int main()
     Led led = Led(&DDRB, &PORTB, PB0, PB1);
     Button whiteButton(&DDRC, &PINC, PC2);
     Button interruptButton(&DDRD, &PIND, PD2);
-    InterruptTimer::initialize(InterruptTimer::Mode::NORMAL, 3.0);
+    InterruptTimer::initialize(InterruptTimer::Mode::NORMAL, 2.0);
 
     Map map;
     IrSensor irSensor(SENSOR);

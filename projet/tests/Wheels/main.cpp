@@ -39,7 +39,6 @@ ISR(InterruptTimer_vect)
         timeOut = true;
 }
 
-
 int main()
 {
     interrupts::stopCatching();
@@ -58,15 +57,15 @@ int main()
     IrSensor irSensor(SENSOR);
     ObjectFinder finder(led, irSensor, map);
 
-    InterruptTimer::initialize(InterruptTimer::Mode::NORMAL, 3.0);
-    
-    double time =0.0;
+    InterruptTimer::initialize(InterruptTimer::Mode::NORMAL, 2.0);
+
+    double time = 0.0;
     InterruptTimer::start();
     interrupts::startCatching();
 
     debug::send("START TESTS:\n");
     debug::send("LEFT/turn90/time= ");
-    time = 3.0;
+    time = 2.0;
     debug::send(time);
     debug::send("\n\n");
     InterruptTimer::setSeconds(time);
@@ -77,10 +76,9 @@ int main()
 
     Wheels::stopTurn(Wheels::Side::LEFT);
     _delay_ms(2000);
-    timeOut=false;
+    timeOut = false;
 
-
-    time = 3.5;
+    time = 2.0;
     debug::send("START TESTS:\n");
     debug::send("RIGHT/turn90/time= ");
     debug::send(time);

@@ -52,16 +52,15 @@ public:
     static void setDirection(const Direction &direction,
                              const Side &side = Side::BOTH);
     static void turn90(const Side &side);
-    static void turn(const Side &side);
+    static void turn(const Side &side, const uint8_t speed);
     static void stopTurn(const Side &side);
     static void invertDirection(const Side &side);
-static void turnX(const Side &side);
     static void setSpeed(const uint8_t speed, const Side &side = Side::BOTH);
     static void turnOff(const Side &side = Side::BOTH);
 
 private:
     static constexpr uint8_t TOP_VALUE = 0xFF;         // p. 153
-    static constexpr uint16_t TURN_DURATION_MS = 1500; // etait 750 à100
+    static constexpr uint16_t TURN_DURATION_MS = 2700; // etait 750 à100
     static constexpr uint8_t TURN_TIMEOUT_MS = 125;
 
     static io::DataDirectionRegister dataDirectionRegister_;
