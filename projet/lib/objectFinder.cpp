@@ -92,7 +92,7 @@ void ObjectFinder::search(const Wheels::Side &side, volatile bool &timeOut,
     while (!positionManager_.irSensor.isInFront() && !timeOut) {
         ;
     }
-    _delay_ms(150);
+    _delay_ms(200);
     positionManager_.irSensor.isInFront();
     Wheels::stopTurn(side);
     InterruptTimer::stop();

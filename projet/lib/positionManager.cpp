@@ -87,14 +87,21 @@ void PositionManager::setPositionDiagonal(uint8_t difference, uint8_t quadrant)
             lastPosition_.y += difference;
             break;
         case Quadrant::BOTTOM_RIGHT :
+            if (lastPosition_.y - difference == 255)
+                difference = 1;
             lastPosition_.x += difference;
             lastPosition_.y -= difference;
             break;
         case Quadrant::BOTTOM_LEFT :
+            if (lastPosition_.y - difference == 255
+                || lastPosition_.x - difference == 255)
+                difference = 1;
             lastPosition_.x -= difference;
             lastPosition_.y -= difference;
             break;
         case Quadrant::TOP_LEFT :
+            if (lastPosition_.x - difference == 255)
+                difference = 1;
             lastPosition_.x -= difference;
             lastPosition_.y += difference;
             break;
