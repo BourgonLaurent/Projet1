@@ -116,7 +116,6 @@ int main()
 
                 if (finder.isObjectFound()) {
                     debug::send("ObjectFound-> Now Parking\n");
-                    finder.park(timeOut);
                     state = States::FOUND_OBJECT;
                 }
                 else {

@@ -58,9 +58,11 @@ public:
     static void setSpeed(const uint8_t speed, const Side &side = Side::BOTH);
     static void turnOff(const Side &side = Side::BOTH);
 
+    static Side getOtherSide(const Side& side);
+
 private:
     static constexpr uint8_t TOP_VALUE = 0xFF;         // p. 153
-    static constexpr uint16_t TURN_DURATION_MS = 2700; // etait 750 à100
+    static constexpr uint16_t TURN_DURATION_MS = 2500; // etait 750 à100
     static constexpr uint8_t TURN_TIMEOUT_MS = 125;
 
     static io::DataDirectionRegister dataDirectionRegister_;

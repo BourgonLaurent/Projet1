@@ -69,7 +69,7 @@ int main()
     debug::send(time);
     debug::send("\n\n");
     InterruptTimer::setSeconds(time);
-    Wheels::turn(Wheels::Side::LEFT);
+    Wheels::turn(Wheels::Side::LEFT, 45);
     while (!timeOut)
         ;
     interrupts::stopCatching();
@@ -86,7 +86,7 @@ int main()
     InterruptTimer::reset();
     InterruptTimer::setSeconds(time);
     interrupts::startCatching();
-    Wheels::turn(Wheels::Side::RIGHT);
+    Wheels::turn(Wheels::Side::RIGHT, 45 );
     while (!timeOut)
         ;
     Wheels::stopTurn(Wheels::Side::RIGHT);

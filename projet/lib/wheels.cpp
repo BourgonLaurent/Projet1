@@ -202,3 +202,10 @@ void Wheels::stopTurn(const Side &side)
     _delay_ms(TURN_TIMEOUT_MS);
     invertDirection(side);
 }
+
+Wheels::Side Wheels::getOtherSide(const Wheels::Side& side)
+{
+    if (side == Wheels::Side::LEFT)
+        return Wheels::Side::RIGHT;
+    return Wheels::Side::LEFT;
+}

@@ -87,20 +87,20 @@ void PositionManager::setPositionDiagonal(uint8_t difference, uint8_t quadrant)
             lastPosition_.y += difference;
             break;
         case Quadrant::BOTTOM_RIGHT :
-            if (lastPosition_.y - difference == 255)
+            if (lastPosition_.y - difference == -1)
                 difference = 1;
             lastPosition_.x += difference;
             lastPosition_.y -= difference;
             break;
         case Quadrant::BOTTOM_LEFT :
-            if (lastPosition_.y - difference == 255
-                || lastPosition_.x - difference == 255)
+            if (lastPosition_.y - difference == -1
+                || lastPosition_.x - difference == -1)
                 difference = 1;
             lastPosition_.x -= difference;
             lastPosition_.y -= difference;
             break;
         case Quadrant::TOP_LEFT :
-            if (lastPosition_.x - difference == 255)
+            if (lastPosition_.x - difference == -1)
                 difference = 1;
             lastPosition_.x -= difference;
             lastPosition_.y += difference;
@@ -117,9 +117,13 @@ void PositionManager::setPositionStraight(uint8_t difference, uint8_t quadrant)
             lastPosition_.x += difference;
             break;
         case Quadrant::BOTTOM_LEFT :
+            if (lastPosition_.y - difference == -1)
+                difference = 1;
             lastPosition_.y -= difference;
             break;
         case Quadrant::TOP_LEFT :
+            if (lastPosition_.y - difference == -1)
+                difference = 1;
             lastPosition_.x -= difference;
             break;
     }
@@ -127,6 +131,6 @@ void PositionManager::setPositionStraight(uint8_t difference, uint8_t quadrant)
 
 void PositionManager::initialize()
 {
-    lastPosition_.y = 1;
+    lastPosition_.y = 3;
     lastPosition_.x = 1;
 }

@@ -26,11 +26,15 @@ ObjectFinder::ObjectFinder(Led &led, IrSensor &irSensor, Map &map)
     Sound::initialize();
 };
 
-void ObjectFinder::park(volatile bool &timeOut)
+void ObjectFinder::park(volatile bool &timeOut ,const Wheels::Side& side)
 {
+    isObjectInFront(timeOut, Wheels::getOtherSide(side),
+                        FIRST_DELAY_IN_FRONT_PARK_MS,
+                        SECOND_DELAY_IN_FRONT_PARK_MS, speedPark);
+    
     while (!positionManager_.irSensor.isClose()) {
 
-        if (positionManager_.irSensor.isTooClose()) {
+        while (positionManager_.irSensor.isTooClose()) {
             Wheels::setDirection(Wheels::Direction::BACKWARD);
             Wheels::setSpeed(SPEED_VALUE_TO_PARK);
         }
@@ -38,7 +42,7 @@ void ObjectFinder::park(volatile bool &timeOut)
         Wheels::setSpeed(SPEED_VALUE_TO_PARK);
 
         if (!positionManager_.irSensor.isInFront()) {
-            isObjectInFront(timeOut, Wheels::Side::LEFT,
+            isObjectInFront(timeOut, Wheels::Side::RIGHT,
                             FIRST_DELAY_IN_FRONT_PARK_MS,
                             SECOND_DELAY_IN_FRONT_PARK_MS, speedPark);
         }
@@ -61,6 +65,7 @@ void ObjectFinder::find(const Wheels::Side &side, volatile bool &timeOut,
         if (positionManager_.irSensor.isObjectDetected()) {
             positionManager_.irSensor.setRange(IrSensor::Range::DIAGONAL);
             debug::send("\nDIAGONAL\n");
+            park(timeOut, side);
         }
         else if (isObjectInFront(timeOut, side)) {
             if (side != Wheels::Side::LEFT) {
@@ -68,6 +73,7 @@ void ObjectFinder::find(const Wheels::Side &side, volatile bool &timeOut,
             }
             positionManager_.irSensor.setRange(IrSensor::Range::STRAIGHT);
             debug::send("STRAIGHT\n");
+            park(timeOut, side);
         }
         else if (side != Wheels::Side::LEFT) {
             positionManager_.updateQuadrant(side);
@@ -162,17 +168,16 @@ void ObjectFinder::finder(volatile bool &timeOut)
     switch (finderWithPosition) {
         case FinderType::TOP_BORDER :
             // debug::send("TOP_BORDER\n");
-            turnFind(Wheels::Side::RIGHT, timeOut);
-            if (!positionManager_.irSensor.isObjectDetected()) {
-                findTurn(Wheels::Side::RIGHT, timeOut);
-            }
+            Wheels::turn90(Wheels::Side::RIGHT);
+            positionManager_.updateQuadrant(Wheels::Side::RIGHT);
+            findLoop(2, Wheels::Side::RIGHT, timeOut);
             break;
 
         case FinderType::BOTTOM_BORDER :
             // debug::send("BOTTOM_BORDER\n");
             findTurn(Wheels::Side::RIGHT, timeOut);
             if (!positionManager_.irSensor.isObjectDetected()) {
-                findTurn(Wheels::Side::RIGHT, timeOut);
+                turnFind(Wheels::Side::RIGHT, timeOut);
             }
             break;
 
