@@ -174,8 +174,7 @@ void Wheels::turn90(const Side &side)
     invertDirection(side);
     _delay_ms(TURN_TIMEOUT_MS);
 
-    setSpeed(35, Side::LEFT);
-    setSpeed(40, Side::RIGHT);
+    setSpeed(48);
     _delay_ms(TURN_DURATION_MS);
 
     turnOff();

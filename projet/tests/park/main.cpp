@@ -64,6 +64,6 @@ int main()
     Map map;
     IrSensor irSensor(SENSOR);
     ObjectFinder finder(led, irSensor, map);
-    finder.park(timeOut);
+    finder.park(timeOut,Wheels::Side::RIGHT);
 
 }

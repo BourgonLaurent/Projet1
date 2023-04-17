@@ -131,6 +131,6 @@ void PositionManager::setPositionStraight(uint8_t difference, uint8_t quadrant)
 
 void PositionManager::initialize()
 {
-    lastPosition_.y = 3;
-    lastPosition_.x = 1;
+    lastPosition_.x = 7;
+    lastPosition_.y = 2;
 }

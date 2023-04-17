@@ -42,7 +42,7 @@ void ObjectFinder::park(volatile bool &timeOut ,const Wheels::Side& side)
         Wheels::setSpeed(SPEED_VALUE_TO_PARK);
 
         if (!positionManager_.irSensor.isInFront()) {
-            isObjectInFront(timeOut, Wheels::Side::RIGHT,
+            isObjectInFront(timeOut, Wheels::Side::LEFT,
                             FIRST_DELAY_IN_FRONT_PARK_MS,
                             SECOND_DELAY_IN_FRONT_PARK_MS, speedPark);
         }
@@ -98,7 +98,7 @@ void ObjectFinder::search(const Wheels::Side &side, volatile bool &timeOut,
     while (!positionManager_.irSensor.isInFront() && !timeOut) {
         ;
     }
-    _delay_ms(200);
+    // _delay_ms(200);
     positionManager_.irSensor.isInFront();
     Wheels::stopTurn(side);
     InterruptTimer::stop();
@@ -126,9 +126,9 @@ void ObjectFinder::alertFoundNothing()
 void ObjectFinder::turnFind(const Wheels::Side &side, volatile bool &timeOut)
 {
     Wheels::turn90(side);
-    // if (!isObjectInFront(timeOut, side, FIRST_DELAY_IS_IN_FRONT_MS, 2.0))
-    find(side, timeOut);
     positionManager_.updateQuadrant(side);
+    if (!isObjectInFront(timeOut, side))
+        find(side, timeOut, 3.0);
     _delay_ms(1000);
 }
 
@@ -144,10 +144,8 @@ void ObjectFinder::findTurn(const Wheels::Side &side, volatile bool &timeOut)
 void ObjectFinder::findLoop(uint8_t max, const Wheels::Side &side,
                             volatile bool &timeOut)
 {
-
     uint8_t loopCount = 0;
     while (!positionManager_.irSensor.isObjectDetected() && loopCount < max) {
-
         loopCount++;
         find(side, timeOut, DELAY_FIND_MS + (loopCount * 0.1));
         _delay_ms(1500);
@@ -170,7 +168,8 @@ void ObjectFinder::finder(volatile bool &timeOut)
             // debug::send("TOP_BORDER\n");
             Wheels::turn90(Wheels::Side::RIGHT);
             positionManager_.updateQuadrant(Wheels::Side::RIGHT);
-            findLoop(2, Wheels::Side::RIGHT, timeOut);
+            if (!isObjectInFront(timeOut,Wheels::Side::RIGHT))
+                findLoop(2, Wheels::Side::RIGHT, timeOut);
             break;
 
         case FinderType::BOTTOM_BORDER :
@@ -198,6 +197,7 @@ void ObjectFinder::finder(volatile bool &timeOut)
 
         case FinderType::BOTTOM_CORNER_RIGHT :
             // debug::send("BOTTOM_CORNER_RIGHT\n");
+            isObjectInFront(timeOut, Wheels::Side::RIGHT);
             find(Wheels::Side::LEFT, timeOut);
             break;
 

@@ -53,7 +53,7 @@ public:
 
 private:
     static const uint8_t N_MEASURMENTS = 6;
-    static const uint8_t EIGHTY_CM = 20;
+    static const uint8_t EIGHTY_CM = 23;
     static const uint16_t TEN_CM = 130;
     static const uint8_t FIFTEEN_CM = 85;
 

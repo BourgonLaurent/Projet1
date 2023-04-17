@@ -65,20 +65,20 @@ int main()
 
     debug::send("START TESTS:\n");
     debug::send("LEFT/turn90/time= ");
-    time = 2.0;
+    time = 2.5;
     debug::send(time);
     debug::send("\n\n");
     InterruptTimer::setSeconds(time);
-    Wheels::turn(Wheels::Side::LEFT, 45);
+    Wheels::turn90(Wheels::Side::LEFT);
     while (!timeOut)
         ;
     interrupts::stopCatching();
 
-    Wheels::stopTurn(Wheels::Side::LEFT);
+    Wheels::turnOff();
     _delay_ms(2000);
     timeOut = false;
 
-    time = 2.0;
+    time = 2.5;
     debug::send("START TESTS:\n");
     debug::send("RIGHT/turn90/time= ");
     debug::send(time);
@@ -86,7 +86,7 @@ int main()
     InterruptTimer::reset();
     InterruptTimer::setSeconds(time);
     interrupts::startCatching();
-    Wheels::turn(Wheels::Side::RIGHT, 45 );
+    Wheels::turn90(Wheels::Side::RIGHT);
     while (!timeOut)
         ;
     Wheels::stopTurn(Wheels::Side::RIGHT);
