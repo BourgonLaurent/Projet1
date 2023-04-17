@@ -168,7 +168,7 @@ De plus, il faut lancer `serieViaUSB` en mode lecture.
 On exécute la commande suivante dans le répertoire `projet`.
 
 ```bash
-(cd lib && make debug) && (cd app && make debug) && seriaViaUSB -l
+(cd lib && make debug) && (cd app && make debug) && serieViaUSB -l
 ```
 
 Il est à noter que serieViaUSB peut parfois malfonctionner sans explications.
