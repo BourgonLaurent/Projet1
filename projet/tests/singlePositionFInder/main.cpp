@@ -65,7 +65,7 @@ int main()
 
     Map map;
     IrSensor irSensor(SENSOR);
-    ObjectFinder finder(led, irSensor, &map);
+    ObjectFinder finder(led, irSensor);
     // finder.initialize();
     while (true) {
         switch (state) {
@@ -88,8 +88,7 @@ int main()
                 break;
 
             case States::FROM_RIGH_UP :
-                Wheels::turn90(
-                    Wheels::Side::LEFT); // replace turn90 with rotate?
+                Wheels::turn90( Wheels::Side::LEFT); // replace turn90 with rotate?
                 state = States::FIND_OBJECT;
                 break;
 
@@ -125,6 +124,10 @@ int main()
 
             case States::FOUND_OBJECT :
                 finder.alertParked();
+                Point detectedPosition;
+                detectedPosition = finder.getLastPosition();
+                if (detectedPosition.x <= 7 && detectedPosition.y <= 3) 
+                    map[detectedPosition.x][detectedPosition.y].set();
                 state = States::WAIT_NEXT_DETECTION;
                 break;
 

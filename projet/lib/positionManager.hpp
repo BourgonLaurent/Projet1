@@ -33,9 +33,10 @@ public:
         TOP_LEFT = 3
     };
 
-    PositionManager(IrSensor &irSensor, Map* map);
+    PositionManager(IrSensor &irSensor);
 
     Point getLastPosition();
+    
     void setNextPositionObject(uint8_t quadrant);
     void initialize();
     uint8_t getQuadrant();
@@ -43,12 +44,13 @@ public:
     void resetQuadrant();
     void updateQuadrant(const Wheels::Side &side);
 
+    Point getNexPosition();
+
     IrSensor irSensor;
 
 private:
     Point lastPosition_;
     uint8_t quadrant_;
-    Map* map_;
 
     void setPositionDiagonal(uint8_t difference, uint8_t quadrant);
     void setPositionStraight(uint8_t difference, uint8_t quadrant);

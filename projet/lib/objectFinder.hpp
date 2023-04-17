@@ -43,7 +43,7 @@ public:
         BOTTOM_CORNER_LEFT
     };
 
-    ObjectFinder(Led &led, IrSensor &irSensor, Map* map);
+    ObjectFinder(Led &led, IrSensor &irSensor);
 
     void finder(volatile bool &timeOut);
 
@@ -65,6 +65,8 @@ public:
                          double delay2 = SECOND_DELAY_IS_IN_FRONT_MS,
                          uint8_t speed = speedTurn);
 
+    Point getLastPosition();
+
 private:
     const io::Position SENSOR = PA0;
 
@@ -85,6 +87,7 @@ private:
 
     Led led_;
     PositionManager positionManager_;
+
     bool objectFound_ = false;
 
     FinderType determineFinderType();
