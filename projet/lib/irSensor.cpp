@@ -15,7 +15,9 @@
 
 #include "irSensor.hpp"
 
+#include <lib/constants.hpp>
 #include <lib/debug.hpp>
+
 #include <lib/interruptTimer.hpp>
 
 IrSensor::IrSensor(const io::Position pin) : pin_(pin)
@@ -40,8 +42,8 @@ uint16_t IrSensor::read()
         _delay_ms(5);
     }
     sumForAverage = sumForAverage / (IrSensor::N_MEASURMENTS - 1);
-    // debug::send(sumForAverage);
-    // debug::send("\n");
+    debug::send(sumForAverage);
+    debug::send("\n");
     return sumForAverage;
 }
 
@@ -62,18 +64,20 @@ bool IrSensor::isInFront(uint8_t distance1, uint8_t distance2)
 
 bool IrSensor::isClose()
 {
-    return isInFront(TEN_CM, FIFTEEN_CM);
+    return isInFront(constants::TEN_CM, constants::FIFTEEN_CM);
 }
 
 void IrSensor::setDistance(uint8_t distance)
 {
     debug::send("setDistance:\n");
     debug::send(distance);
-    if (distance >= EDGE_CLOSE_FAR && distance <= TEN_CM) {
+    if (distance >= constants::EDGE_CLOSE_FAR
+        && distance <= constants::TEN_CM) {
 
         distance_ = IrSensor::Distance::CLOSE;
     }
-    else if (distance < EDGE_CLOSE_FAR && distance > EIGHTY_CM) {
+    else if (distance < constants::EDGE_CLOSE_FAR
+             && distance > constants::EIGHTY_CM) {
 
         distance_ = IrSensor::Distance::FAR;
     }
@@ -105,7 +109,7 @@ IrSensor::Distance IrSensor::getDistance()
 bool IrSensor::isTooClose()
 {
     uint16_t value = read();
-    if (value >= TEN_CM)
+    if (value >= constants::TEN_CM)
         return true;
     return false;
 }

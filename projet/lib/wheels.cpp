@@ -29,6 +29,7 @@
 
 #include <util/delay.h>
 
+#include <lib/constants.hpp>
 #include <lib/debug.hpp>
 #include <lib/io.hpp>
 
@@ -172,13 +173,13 @@ void Wheels::turn90(const Side &side)
 
     turnOff();
     invertDirection(side);
-    _delay_ms(TURN_TIMEOUT_MS);
+    _delay_ms(constants::TURN_TIMEOUT_MS);
 
     setSpeed(48);
-    _delay_ms(TURN_DURATION_MS);
+    _delay_ms(constants::TURN_DURATION_MS);
 
     turnOff();
-    _delay_ms(TURN_TIMEOUT_MS);
+    _delay_ms(constants::TURN_TIMEOUT_MS);
     invertDirection(side);
 
     OCR2B = savedLeftSpeed;
@@ -190,7 +191,7 @@ void Wheels::turn(const Side &side, const uint8_t speed)
 
     turnOff();
     invertDirection(side);
-    _delay_ms(TURN_TIMEOUT_MS);
+    _delay_ms(constants::TURN_TIMEOUT_MS);
 
     setSpeed(speed, Side::LEFT);
     setSpeed(speed + 5, Side::RIGHT);
@@ -198,11 +199,11 @@ void Wheels::turn(const Side &side, const uint8_t speed)
 void Wheels::stopTurn(const Side &side)
 {
     turnOff();
-    _delay_ms(TURN_TIMEOUT_MS);
+    _delay_ms(constants::TURN_TIMEOUT_MS);
     invertDirection(side);
 }
 
-Wheels::Side Wheels::getOtherSide(const Wheels::Side& side)
+Wheels::Side Wheels::getOtherSide(const Wheels::Side &side)
 {
     if (side == Wheels::Side::LEFT)
         return Wheels::Side::RIGHT;

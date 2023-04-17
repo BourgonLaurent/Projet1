@@ -90,6 +90,7 @@ int main()
             case States::FROM_RIGH_UP :
                 Wheels::turn90(
                     Wheels::Side::LEFT); // replace turn90 with rotate?
+                finder.isObjectInFront(timeOut, Wheels::Side::RIGHT);
                 state = States::FIND_OBJECT;
                 break;
 

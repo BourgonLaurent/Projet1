@@ -22,6 +22,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
+#include <lib/constants.hpp>
 #include <lib/io.hpp>
 
 #include <lib/led.hpp>
@@ -48,10 +49,10 @@ public:
     void finder(volatile bool &timeOut);
 
     void search(const Wheels::Side &side, volatile bool &timeOut,
-                double timerLimit, uint8_t speed = speedTurn);
+                double timerLimit, uint8_t speed = constants::SPEED_TURN);
     void park(volatile bool &timeOut, const Wheels::Side &side);
     void find(const Wheels::Side &side, volatile bool &timeOut,
-              double timerLimit = DELAY_FIND_MS);
+              double timerLimit = constants::DELAY_FIND_MS);
 
     void alertParked();
     void alertFoundNothing();
@@ -61,28 +62,11 @@ public:
 
     bool isObjectInFront(volatile bool &timeOut,
                          Wheels::Side side = Wheels::Side::RIGHT,
-                         double delay1 = FIRST_DELAY_IS_IN_FRONT_MS,
-                         double delay2 = SECOND_DELAY_IS_IN_FRONT_MS,
-                         uint8_t speed = speedTurn);
+                         double delay1 = constants::FIRST_DELAY_IS_IN_FRONT_MS,
+                         double delay2 = constants::SECOND_DELAY_IS_IN_FRONT_MS,
+                         uint8_t speed = constants::SPEED_TURN);
 
 private:
-    const io::Position SENSOR = PA0;
-
-    static constexpr uint16_t DELAY_FOUND_NOTHING_MS = 2000;
-    static constexpr uint16_t DELAY_ALERT_PARKED_MS = 300;
-    static constexpr uint8_t DELAY_TURN_MIDDLE_OBJECT_MS = 100;
-    static constexpr uint16_t DELAY_TURNOFF_MS = 125; // changed from 500
-    static constexpr double FIRST_DELAY_IS_IN_FRONT_MS = 0.9;
-    static constexpr double SECOND_DELAY_IS_IN_FRONT_MS = 0.7;  // 1.75
-    static constexpr double FIRST_DELAY_IN_FRONT_PARK_MS = 1.0; // 1.5
-    static constexpr double SECOND_DELAY_IN_FRONT_PARK_MS = 1.3;
-    static constexpr double DELAY_FIND_MS = 3.0;
-    static constexpr uint8_t SPEED_VALUE_TO_PARK = 45;
-    static constexpr uint8_t speedTurn = 35;
-    static constexpr uint8_t speedPark = 35;
-    static constexpr uint8_t HIGH_NOTE = 78;
-    static constexpr uint8_t LOW_NOTE = 45;
-
     Led led_;
     PositionManager positionManager_;
     bool objectFound_ = false;
