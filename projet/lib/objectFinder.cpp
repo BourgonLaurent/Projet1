@@ -22,8 +22,8 @@
 #include <lib/interruptTimer.hpp>
 #include <lib/sound.hpp>
 
-ObjectFinder::ObjectFinder(Led &led, IrSensor &irSensor, Map* map)
-    : led_(led), positionManager_(PositionManager(irSensor, map))
+ObjectFinder::ObjectFinder(Led &led, IrSensor &irSensor)
+    : led_(led), positionManager_(PositionManager(irSensor))
 {
     Sound::initialize();
 };
@@ -308,4 +308,9 @@ bool ObjectFinder::isObjectInFront(volatile bool &timeOut, Wheels::Side side,
 void ObjectFinder::initialize()
 {
     positionManager_.initialize();
+}
+
+Point ObjectFinder::getLastPosition()
+{
+    return positionManager_.getLastPosition();
 }
