@@ -138,6 +138,15 @@ int main()
                 MapManager::save(map);
                 // InterruptButton::clear();
                 finder.alertFoundNothing();
+                debug::send("\n\nMAP RESULT\n\n");
+                debug::send(map[0].get());
+                debug::send(map[1].get());
+                debug::send(map[2].get());
+                debug::send(map[3].get());
+                debug::send(map[4].get());
+                debug::send(map[5].get());
+                debug::send(map[6].get());
+                debug::send(map[7].get());
                 while (true) {
                     led.setColor(Led::Color::RED);
                     _delay_ms(250);

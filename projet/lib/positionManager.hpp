@@ -13,6 +13,9 @@
  * \date April 5, 2023
  */
 
+#ifndef POSITION_MANAGER_H
+#define POSITION_MANAGER_H
+
 #include <app/misc/map/map.hpp>
 #include <app/misc/point.hpp>
 #include <lib/wheels.hpp>
@@ -50,3 +53,5 @@ private:
     void setPositionDiagonal(uint8_t difference, uint8_t quadrant);
     void setPositionStraight(uint8_t difference, uint8_t quadrant);
 };
+
+#endif

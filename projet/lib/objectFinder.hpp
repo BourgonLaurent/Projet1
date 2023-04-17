@@ -13,6 +13,9 @@
  * \date March 28, 2023
  */
 
+#ifndef OBJECT_FINDER_H
+#define OBJECT_FINDER_H
+
 #include "lib/analogReader.hpp"
 #include <lib/positionManager.hpp>
 
@@ -46,7 +49,7 @@ public:
 
     void search(const Wheels::Side &side, volatile bool &timeOut,
                 double timerLimit, uint8_t speed = speedTurn);
-    void park(volatile bool &timeOut,const Wheels::Side& side);
+    void park(volatile bool &timeOut, const Wheels::Side &side);
     void find(const Wheels::Side &side, volatile bool &timeOut,
               double timerLimit = DELAY_FIND_MS);
 
@@ -70,7 +73,7 @@ private:
     static constexpr uint8_t DELAY_TURN_MIDDLE_OBJECT_MS = 100;
     static constexpr uint16_t DELAY_TURNOFF_MS = 125; // changed from 500
     static constexpr double FIRST_DELAY_IS_IN_FRONT_MS = 0.9;
-    static constexpr double SECOND_DELAY_IS_IN_FRONT_MS = 0.7; // 1.75
+    static constexpr double SECOND_DELAY_IS_IN_FRONT_MS = 0.7;  // 1.75
     static constexpr double FIRST_DELAY_IN_FRONT_PARK_MS = 1.0; // 1.5
     static constexpr double SECOND_DELAY_IN_FRONT_PARK_MS = 1.3;
     static constexpr double DELAY_FIND_MS = 3.0;
@@ -91,3 +94,5 @@ private:
     void findLoop(uint8_t max, const Wheels::Side &side,
                   volatile bool &timeOut);
 };
+
+#endif

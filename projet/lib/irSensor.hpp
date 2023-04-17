@@ -13,6 +13,9 @@
  * \date March 28, 2023
  */
 
+#ifndef IR_SENSOR_H
+#define IR_SENSOR_H
+
 #include "analogReader.hpp"
 
 #include <avr/io.h>
@@ -69,3 +72,5 @@ private:
 
     bool isObjectDetected_ = false;
 };
+
+#endif
