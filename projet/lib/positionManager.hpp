@@ -30,7 +30,7 @@ public:
         TOP_LEFT = 3
     };
 
-    PositionManager(IrSensor &irSensor, Map &map);
+    PositionManager(IrSensor &irSensor, Map* map);
 
     Point getLastPosition();
     void setNextPositionObject(uint8_t quadrant);
@@ -45,7 +45,7 @@ public:
 private:
     Point lastPosition_;
     uint8_t quadrant_;
-    Map map_;
+    Map* map_;
 
     void setPositionDiagonal(uint8_t difference, uint8_t quadrant);
     void setPositionStraight(uint8_t difference, uint8_t quadrant);

@@ -69,11 +69,11 @@ void IrSensor::setDistance(uint8_t distance)
 {
     debug::send("setDistance:\n");
     debug::send(distance);
-    if (distance >= 45 && distance <= 100) {
+    if (distance >= EDGE_CLOSE_FAR && distance <= TEN_CM) {
 
         distance_ = IrSensor::Distance::CLOSE;
     }
-    else if (distance < 45 && distance >= 25) {
+    else if (distance < EDGE_CLOSE_FAR && distance > EIGHTY_CM) {
 
         distance_ = IrSensor::Distance::FAR;
     }

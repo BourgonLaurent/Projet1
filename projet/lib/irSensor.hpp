@@ -53,12 +53,11 @@ public:
 
 private:
     static const uint8_t N_MEASURMENTS = 6;
-    static const uint8_t EIGHTY_CM = 23;
-    static const uint16_t TEN_CM = 130;
-    static const uint8_t FIFTEEN_CM = 85;
+    static const uint8_t EIGHTY_CM = 15;
+    static const uint16_t TEN_CM = 120;
+    static const uint8_t FIFTEEN_CM = 75;
 
-    static const uint8_t MIN_DIAGONAL_FAR = 85;
-    static const uint8_t EDGE_CLOSE_FAR = 85;
+    static const uint8_t EDGE_CLOSE_FAR = 45;
 
     static const uint8_t LIMIT_OBJECT_CLOSE = 30;
 

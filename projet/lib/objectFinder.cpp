@@ -20,7 +20,7 @@
 #include <lib/interruptTimer.hpp>
 #include <lib/sound.hpp>
 
-ObjectFinder::ObjectFinder(Led &led, IrSensor &irSensor, Map &map)
+ObjectFinder::ObjectFinder(Led &led, IrSensor &irSensor, Map* map)
     : led_(led), positionManager_(PositionManager(irSensor, map))
 {
     Sound::initialize();

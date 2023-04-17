@@ -28,10 +28,7 @@ int main()
 {
     IrSensor irSensor = IrSensor(SENSOR);
     Communication::initialize();
-    while(true)
-    {
     uint8_t value = irSensor.read();
     Communication::send(value);
     Communication::send("\n");
-    }
 }

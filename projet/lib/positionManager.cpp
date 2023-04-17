@@ -16,7 +16,7 @@
 #include <lib/debug.hpp>
 #include <lib/positionManager.hpp>
 
-PositionManager::PositionManager(IrSensor &irSensor, Map &map)
+PositionManager::PositionManager(IrSensor &irSensor, Map* map)
     : irSensor(irSensor), map_(map){};
 
 Point PositionManager::getLastPosition()
@@ -52,7 +52,7 @@ void PositionManager::setNextPositionObject(uint8_t quadrant)
             break;
     }
     if (lastPosition_.x <= 7 && lastPosition_.y <= 3) {
-        map_[lastPosition_.x][lastPosition_.y].set();
+        (*map_)[lastPosition_.x][lastPosition_.y].set();
     }
 }
 

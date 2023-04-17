@@ -40,7 +40,7 @@ public:
         BOTTOM_CORNER_LEFT
     };
 
-    ObjectFinder(Led &led, IrSensor &irSensor, Map &map);
+    ObjectFinder(Led &led, IrSensor &irSensor, Map* map);
 
     void finder(volatile bool &timeOut);
 
@@ -73,10 +73,10 @@ private:
     static constexpr double SECOND_DELAY_IS_IN_FRONT_MS = 0.7; // 1.75
     static constexpr double FIRST_DELAY_IN_FRONT_PARK_MS = 1.0; // 1.5
     static constexpr double SECOND_DELAY_IN_FRONT_PARK_MS = 1.3;
-    static constexpr double DELAY_FIND_MS = 2.2;
-    static constexpr uint8_t SPEED_VALUE_TO_PARK = 35;
-    static constexpr uint8_t speedTurn = 43;
-    static constexpr uint8_t speedPark = 45;
+    static constexpr double DELAY_FIND_MS = 3.0;
+    static constexpr uint8_t SPEED_VALUE_TO_PARK = 45;
+    static constexpr uint8_t speedTurn = 35;
+    static constexpr uint8_t speedPark = 35;
     static constexpr uint8_t HIGH_NOTE = 78;
     static constexpr uint8_t LOW_NOTE = 45;
 

@@ -65,7 +65,7 @@ int main()
 
     Map map;
     IrSensor irSensor(SENSOR);
-    ObjectFinder finder(led, irSensor, map);
+    ObjectFinder finder(led, irSensor, &map);
     // finder.initialize();
     while (true) {
         switch (state) {
