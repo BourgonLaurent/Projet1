@@ -26,26 +26,28 @@ IrSensor::IrSensor(const io::Position pin, const Calibration &calibration)
     io::setInput(&DDRA, IrSensor::pin_);
 };
 
-uint16_t IrSensor::read()
+uint8_t IrSensor::read()
 {
-    uint16_t sumForAverage = 0;
-    uint8_t temporaryMaximum = 0;
-    for (uint8_t i = 0; i < IrSensor::N_MEASURMENTS; i++) {
-        const uint8_t value = IrSensor::reader_.read(IrSensor::pin_);
+    uint16_t sum = 0;
+    uint8_t maximum = 0;
 
-        if (value > temporaryMaximum) {
-            sumForAverage = sumForAverage + temporaryMaximum;
-            temporaryMaximum = value;
+    for (uint8_t i = 0; i < N_MEASURMENTS + 1; i++) {
+        const uint8_t distance = reader_.read(pin_);
+
+        if (distance > maximum) {
+            maximum = distance;
         }
-        else {
-            sumForAverage = sumForAverage + value;
-        }
-        _delay_ms(DELAY_BETWEEN_READ_MS);
+
+        sum += distance;
+
+        _delay_ms(DELAY_BETWEEN_READS_MS);
     }
-    sumForAverage = sumForAverage / (IrSensor::N_MEASURMENTS - 1);
-    debug::send(sumForAverage);
+
+    const uint8_t average = (sum - maximum) / N_MEASURMENTS;
+
+    debug::send(sum);
     debug::send("\n");
-    return sumForAverage;
+    return sum;
 }
 
 bool IrSensor::isInFront()
@@ -83,6 +85,7 @@ void IrSensor::setObjectDetected(bool objectDetected)
 {
     isObjectDetected_ = objectDetected;
 }
+
 void IrSensor::setRange(IrSensor::Range range)
 {
     range_ = range;
@@ -100,22 +103,20 @@ IrSensor::Distance IrSensor::getDistance()
 
 bool IrSensor::isTooClose()
 {
-    uint16_t distance = read();
-    if (distance >= calibration_.tenCm)
-        return true;
-    return false;
+    uint8_t distance = read();
+
+    return distance >= calibration_.tenCm;
 }
 
-bool IrSensor::isInRange(uint8_t distance1, uint8_t distance2)
+bool IrSensor::isInRange(uint8_t minimum, uint8_t maximum)
 {
-    uint16_t value = read();
+    uint8_t distance = read();
 
-    if (value < distance1 && value > distance2) {
-        setDistance(value);
-        isObjectDetected_ = true;
+    isObjectDetected_ = distance < minimum && distance > maximum;
 
-        return true;
+    if (isObjectDetected_) {
+        setDistance(distance);
     }
-    isObjectDetected_ = false;
-    return false;
+
+    return isObjectDetected_;
 }
