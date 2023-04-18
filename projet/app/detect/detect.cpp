@@ -48,9 +48,10 @@ void Detect::setStateISR()
 }
 
 int Detect::run(Led &led, Button &whiteButton, Button &interruptButton,
-                IrSensor &irSensor, Map &map)
+                IrSensor &irSensor)
 {
     initialize();
+    Map map;
     ObjectFinder finder(led, irSensor);
     interrupts::stopCatching();
     while (true) {
@@ -104,6 +105,10 @@ int Detect::run(Led &led, Button &whiteButton, Button &interruptButton,
 
             case States::FOUND_OBJECT :
                 finder.alertParked();
+                Point detectedPosition;
+                detectedPosition = finder.getLastPosition();
+                if (detectedPosition.x <= 7 && detectedPosition.y <= 3)
+                    map[detectedPosition.x][detectedPosition.y].set();
                 state_ = States::WAIT_NEXT_DETECTION;
                 break;
 

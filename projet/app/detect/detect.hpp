@@ -45,7 +45,7 @@ public:
     static void checkTimerValue();
     static void setStateISR();
     static int run(Led &led, Button &whiteButton, Button &interruptButton,
-                   IrSensor &irSensor, Map &map);
+                   IrSensor &irSensor);
 
 private:
     static volatile States state_;

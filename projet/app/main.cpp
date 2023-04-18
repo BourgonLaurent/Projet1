@@ -71,7 +71,6 @@ int main()
     Button white(&DDRC, &PINC, PC2, Button::ActiveMode::RELEASED);
     Button interrupt(&DDRD, &PIND, PD2);
     IrSensor irSensor(constants::SENSOR);
-    Map map;
 
     bool whiteWasPressed = false;
     bool interruptWasPressed = false;
@@ -83,7 +82,7 @@ int main()
     if (interruptWasPressed) {
         debug::send("Mode: detect\n");
         _delay_ms(1000);
-        Detect::run(led, white, interrupt, irSensor, map);
+        Detect::run(led, white, interrupt, irSensor);
     }
     else if (whiteWasPressed) {
         debug::send("Mode: transmit\n");
