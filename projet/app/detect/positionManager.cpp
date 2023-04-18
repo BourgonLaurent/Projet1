@@ -66,8 +66,10 @@ void PositionManager::resetQuadrant()
 
 void PositionManager::updateQuadrant(const Wheels::Side &side)
 {
-    quadrant_ += side == Wheels::Side::RIGHT ? 1 : -1;
-    quadrant_ %= 4;
+    if (side == Wheels::Side::RIGHT)
+        quadrant_ = (quadrant_ == 3) ? 0 : quadrant_ + 1;
+    else
+        quadrant_ = (quadrant_ == 0) ? 3 : quadrant_ - 1;
 
     debug::send("le quadrant est maintenant : ");
     debug::send(quadrant_);
