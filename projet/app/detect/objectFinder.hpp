@@ -61,7 +61,7 @@ private:
 
     bool objectFound_ = false;
 
-    Cardinal getCardinal();
+    Border getCardinal();
 
     void turnFind(const Wheels::Side &side, volatile bool &timeOut);
     void findTurn(const Wheels::Side &side, volatile bool &timeOut);

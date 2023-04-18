@@ -165,7 +165,7 @@ void ObjectFinder::finder(volatile bool &timeOut)
     irSensor_->setRange(IrSensor::Range::STRAIGHT);
 
     switch (finderWithPosition) {
-        case Cardinal::NORTH :
+        case Border::TOP :
             // debug::send("TOP_BORDER\n");
             Wheels::turn90(Wheels::Side::RIGHT);
             positionManager_.updateQuadrant(Wheels::Side::RIGHT);
@@ -173,7 +173,7 @@ void ObjectFinder::finder(volatile bool &timeOut)
                 findLoop(2, Wheels::Side::RIGHT, timeOut);
             break;
 
-        case Cardinal::SOUTH :
+        case Border::BOTTOM :
             // debug::send("BOTTOM_BORDER\n");
             findTurn(Wheels::Side::RIGHT, timeOut);
             if (!irSensor_->isObjectDetected()) {
@@ -181,38 +181,38 @@ void ObjectFinder::finder(volatile bool &timeOut)
             }
             break;
 
-        case Cardinal::MIDDLE :
+        case Border::MIDDLE :
             // debug::send("MIDDLE\n");
             findLoop(4, Wheels::Side::RIGHT, timeOut);
             break;
 
-        case Cardinal::NORTH_WEST :
+        case Border::TOP_LEFT :
             // debug::send("TOP_CORNER_LEFT\n");
             turnFind(Wheels::Side::RIGHT, timeOut);
             break;
 
-        case Cardinal::NORTH_EAST :
+        case Border::TOP_RIGHT :
             // debug::send("TOP_CORNER_RIGHT\n");
             turnFind(Wheels::Side::LEFT, timeOut);
             break;
 
-        case Cardinal::SOUTH_EAST :
+        case Border::BOTTOM_RIGHT :
             // debug::send("BOTTOM_CORNER_RIGHT\n");
             if (!isObjectInFront(timeOut, Wheels::Side::RIGHT))
                 find(Wheels::Side::LEFT, timeOut);
             break;
 
-        case Cardinal::SOUTH_WEST :
+        case Border::BOTTOM_LEFT :
             // debug::send("BOTTOM_CORNER_LEFT\n");
             find(Wheels::Side::RIGHT, timeOut);
             break;
 
-        case Cardinal::EAST :
+        case Border::RIGHT :
             // debug::send("RIGHT_BORDER\n");
             findLoop(2, Wheels::Side::LEFT, timeOut);
             break;
 
-        case Cardinal::WEST :
+        case Border::LEFT :
             // debug::send("LEFT_BORDER\n");
             findLoop(2, Wheels::Side::RIGHT, timeOut);
 
@@ -230,26 +230,26 @@ void ObjectFinder::finder(volatile bool &timeOut)
     }
 }
 
-Cardinal ObjectFinder::getCardinal()
+Border ObjectFinder::getCardinal()
 {
     auto position = positionManager_.getLastPosition();
-    auto cardinal = Cardinal::MIDDLE;
+    auto cardinal = Border::MIDDLE;
 
     switch (position.x) {
         case 0 :
-            cardinal |= Cardinal::WEST;
+            cardinal |= Border::LEFT;
             break;
         case 7 :
-            cardinal |= Cardinal::EAST;
+            cardinal |= Border::RIGHT;
             break;
     }
 
     switch (position.y) {
         case 0 :
-            cardinal |= Cardinal::SOUTH;
+            cardinal |= Border::BOTTOM;
             break;
         case 3 :
-            cardinal |= Cardinal::NORTH;
+            cardinal |= Border::TOP;
             break;
     }
 

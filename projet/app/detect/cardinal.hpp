@@ -3,20 +3,28 @@
 
 #include <stdint.h>
 
-enum class Cardinal : uint8_t
+enum class Border : uint8_t
 {
     MIDDLE = 0,
-    NORTH = 0b0001,
-    SOUTH = 0b0010,
-    EAST = 0b0100,
-    WEST = 0b1000,
-    NORTH_WEST = NORTH | WEST,
-    NORTH_EAST = NORTH | EAST,
-    SOUTH_WEST = SOUTH | WEST,
-    SOUTH_EAST = SOUTH | EAST,
+    TOP = 0b0001,
+    BOTTOM = 0b0010,
+    LEFT = 0b0100,
+    RIGHT = 0b1000,
+    TOP_LEFT = TOP | LEFT,
+    TOP_RIGHT = TOP | RIGHT,
+    BOTTOM_LEFT = BOTTOM | LEFT,
+    BOTTOM_RIGHT = BOTTOM | RIGHT,
 };
 
-Cardinal operator|(Cardinal lhs, Cardinal rhs);
-Cardinal operator|=(Cardinal &lhs, Cardinal rhs);
+constexpr Border operator|(Border lhs, Border rhs)
+{
+    return static_cast<Border>(static_cast<uint8_t>(lhs)
+                               | static_cast<uint8_t>(rhs));
+}
+
+constexpr Border operator|=(Border &lhs, Border rhs)
+{
+    return lhs = lhs | rhs;
+}
 
 #endif
