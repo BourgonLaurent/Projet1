@@ -13,19 +13,22 @@
  *  \author Laurent Bourgon
  *  \author Ihsane Majdoubi
  *
- * \date April 17, 2023
+ * \date May 17, 2023
  */
-#include "app/detect/detect.hpp"
-#include <app/detect/objectFinder.hpp>
-#include <app/misc/map/map.hpp>
-#include <app/misc/map/mapManager.hpp>
+
+#include <util/delay.h>
+
 #include <lib/debug.hpp>
 #include <lib/interruptTimer.hpp>
 #include <lib/interrupts.hpp>
 #include <lib/irSensor.hpp>
 #include <lib/sound.hpp>
 #include <lib/wheels.hpp>
-#include <util/delay.h>
+
+#include <app/detect/detect.hpp>
+#include <app/detect/objectFinder.hpp>
+#include <app/misc/map/map.hpp>
+#include <app/misc/map/mapManager.hpp>
 
 volatile bool Detect::timeOut_ = false;
 volatile Detect::States Detect::state_ = States::SET_DIRECTION;
@@ -53,7 +56,7 @@ int Detect::run(Led &led, Button &whiteButton, Button &interruptButton,
 {
     initialize();
     Map map;
-    ObjectFinder finder(led, irSensor);
+    ObjectFinder finder(irSensor);
     interrupts::stopCatching();
     while (true) {
         switch (state_) {

@@ -13,7 +13,7 @@
  *  \author Laurent Bourgon
  *  \author Ihsane Majdoubi
  *
- * \date April 17, 2023
+ * \date May 17, 2023
  */
 
 #ifndef DETECT_H
@@ -51,7 +51,6 @@ private:
     static volatile States state_;
     static volatile bool timeOut_;
     static void initialize();
-
 }; // namespace detect
 
 #endif

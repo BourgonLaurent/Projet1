@@ -16,8 +16,6 @@
 #include <app/detect/positionManager.hpp>
 #include <lib/debug.hpp>
 
-PositionManager::PositionManager(IrSensor &irSensor) : irSensor(irSensor){};
-
 Point PositionManager::getLastPosition()
 {
     return lastPosition_;
@@ -126,7 +124,7 @@ void PositionManager::setPositionStraight(uint8_t difference, uint8_t quadrant)
     }
 }
 
-Point PositionManager::getNexPosition()
+Point PositionManager::getNextPosition()
 {
     return lastPosition_;
 }

@@ -32,7 +32,7 @@
 class ObjectFinder
 {
 public:
-    ObjectFinder(Led &led, IrSensor &irSensor);
+    ObjectFinder(IrSensor &irSensor);
 
     void finder(volatile bool &timeOut);
 
@@ -44,7 +44,6 @@ public:
 
     void alertParked();
     void alertFoundNothing();
-    void initialize();
     bool isObjectFound();
     void sendLastPosition();
 
@@ -57,8 +56,8 @@ public:
     Point getLastPosition();
 
 private:
-    Led led_; // FIXME: unused
     PositionManager positionManager_;
+    IrSensor* const irSensor_;
 
     bool objectFound_ = false;
 

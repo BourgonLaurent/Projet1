@@ -33,8 +33,6 @@ public:
         TOP_LEFT = 3
     };
 
-    PositionManager(IrSensor &irSensor);
-
     Point getLastPosition();
 
     void setNextPositionObject(const IrSensor::Range &range,
@@ -44,9 +42,7 @@ public:
     void resetQuadrant();
     void updateQuadrant(const Wheels::Side &side);
 
-    Point getNexPosition();
-
-    IrSensor irSensor;
+    Point getNextPosition();
 
 private:
     Point lastPosition_;
