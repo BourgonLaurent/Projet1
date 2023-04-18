@@ -13,12 +13,10 @@
  * \date March 28, 2023
  */
 
-#include "app/detect/objectFinder.hpp"
-
 #include <app/detect/constants.hpp>
-#include <lib/debug.hpp>
+#include <app/detect/objectFinder.hpp>
 
-#include <lib/interruptButton.hpp>
+#include <lib/debug.hpp>
 #include <lib/interruptTimer.hpp>
 #include <lib/sound.hpp>
 
@@ -90,7 +88,6 @@ void ObjectFinder::search(const Wheels::Side &side, volatile bool &timeOut,
 {
     InterruptTimer::setSeconds(timerLimit);
     timeOut = false;
-    InterruptButton::clear();
     InterruptTimer::start();
     interrupts::startCatching();
 
