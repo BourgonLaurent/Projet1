@@ -21,7 +21,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-#include <lib/constants.hpp>
+#include <app/detect/constants.hpp>
 #include <lib/io.hpp>
 
 class IrSensor
@@ -57,7 +57,7 @@ public:
     Distance getDistance();
 
 private:
-    static const uint8_t N_MEASURMENTS = 6;
+    static constexpr uint8_t N_MEASURMENTS = 6;
 
     AnalogReader reader_;
     const io::Position pin_;

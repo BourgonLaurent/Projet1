@@ -40,13 +40,26 @@
 #include <lib/communication.hpp>
 #include <lib/debug.hpp>
 #include <lib/flasher.hpp>
+#include <lib/interruptButton.hpp>
+#include <lib/interruptTimer.hpp>
+#include <lib/irSensor.hpp>
 #include <lib/led.hpp>
 
+#include <app/detect/constants.hpp>
+#include <app/detect/detect.hpp>
 #include <app/transmit/run.hpp>
 
-ISR(Flasher_vect)
+ISR(InterruptTimer_vect)
 {
     Flasher::handleFlash();
+    Detect::checkTimerValue();
+}
+
+ISR(InterruptButton_vect)
+{
+    InterruptButton::waitForDebounce();
+    Detect::setStateISR();
+    InterruptButton::clear();
 }
 
 int main()
@@ -57,6 +70,8 @@ int main()
     Led led = Led(&DDRB, &PORTB, PB0, PB1);
     Button white(&DDRC, &PINC, PC2, Button::ActiveMode::RELEASED);
     Button interrupt(&DDRD, &PIND, PD2);
+    IrSensor irSensor(constants::SENSOR);
+    Map map;
 
     bool whiteWasPressed = false;
     bool interruptWasPressed = false;
@@ -67,7 +82,7 @@ int main()
 
     if (interruptWasPressed) {
         debug::send("Mode: detect\n");
-        // call detect main function
+        Detect::run(led, white, interrupt, irSensor, map);
     }
     else if (whiteWasPressed) {
         debug::send("Mode: transmit\n");

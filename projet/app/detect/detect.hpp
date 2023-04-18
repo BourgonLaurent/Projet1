@@ -15,22 +15,21 @@
  *
  * \date April 17, 2023
  */
+
+#ifndef DETECT_H
+#define DETECT_H
+
 #include <avr/io.h>
-#include <util/delay.h>
 
+#include <app/misc/map/map.hpp>
 #include <lib/button.hpp>
-#include <lib/debug.hpp>
 #include <lib/interruptButton.hpp>
-#include <lib/interruptTimer.hpp>
-#include <lib/interrupts.hpp>
+#include <lib/irSensor.hpp>
 #include <lib/led.hpp>
-#include <lib/objectFinder.hpp>
-#include <lib/sound.hpp>
-#include <lib/wheels.hpp>
 
-#include <app/misc/map/mapManager.hpp>
-
-namespace detect {
+class Detect
+{
+public:
     enum class States
     {
         SET_DIRECTION,
@@ -43,18 +42,16 @@ namespace detect {
         WAIT_NEXT_DETECTION
 
     };
+    static void checkTimerValue();
+    static void setStateISR();
+    static int run(Led &led, Button &whiteButton, Button &interruptButton,
+                   IrSensor &irSensor, Map &map);
 
-    volatile States state = States::SET_DIRECTION;
-    volatile bool timeOut = false;
-    Led led = Led(&DDRB, &PORTB, PB0, PB1);
-    Button whiteButton(&DDRC, &PINC, PC2);
-    Button interruptButton(&DDRD, &PIND, PD2);
-    Map map;
-    IrSensor irSensor(constants::SENSOR);
-    ObjectFinder finder(led, irSensor, &map);
+private:
+    static volatile States state_;
+    static volatile bool timeOut_;
+    static void initialize();
 
-    void initialize();
-    void checkTimerValue();
-    int run();
+}; // namespace detect
 
-}; 
+#endif

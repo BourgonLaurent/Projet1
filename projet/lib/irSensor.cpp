@@ -15,7 +15,7 @@
 
 #include "irSensor.hpp"
 
-#include <lib/constants.hpp>
+#include <app/detect/constants.hpp>
 #include <lib/debug.hpp>
 
 #include <lib/interruptTimer.hpp>
@@ -39,7 +39,7 @@ uint16_t IrSensor::read()
         else {
             sumForAverage = sumForAverage + value;
         }
-        _delay_ms(5);
+        _delay_ms(constants::DELAY_READ_VALUE_SENSOR_MS);
     }
     sumForAverage = sumForAverage / (IrSensor::N_MEASURMENTS - 1);
     debug::send(sumForAverage);

@@ -13,9 +13,9 @@
  * \date March 28, 2023
  */
 
-#include "objectFinder.hpp"
+#include "app/detect/objectFinder.hpp"
 
-#include <lib/constants.hpp>
+#include <app/detect/constants.hpp>
 #include <lib/debug.hpp>
 
 #include <lib/interruptButton.hpp>
@@ -131,7 +131,7 @@ void ObjectFinder::turnFind(const Wheels::Side &side, volatile bool &timeOut)
     positionManager_.updateQuadrant(side);
     if (!isObjectInFront(timeOut, side))
         find(side, timeOut, 3.0); // pourquoi 3.0 secondes?????
-    _delay_ms(1000);
+    _delay_ms(constants::DELAY_AFTER_FIND_MS);
 }
 
 void ObjectFinder::findTurn(const Wheels::Side &side, volatile bool &timeOut)
@@ -150,8 +150,10 @@ void ObjectFinder::findLoop(uint8_t max, const Wheels::Side &side,
     while (!positionManager_.irSensor.isObjectDetected() && loopCount < max) {
         loopCount++;
         find(side, timeOut,
-             constants::DELAY_FIND_MS + (loopCount * 0.2)); // à tester
-        _delay_ms(1500);
+             constants::DELAY_FIND_MS
+                 + (loopCount
+                    * constants::DELAY_INCREMENT_FIND_LOOP)); // à tester
+        _delay_ms(constants::DELAY_BETWEEN_FINDS_MS);
     }
 }
 
@@ -220,7 +222,7 @@ void ObjectFinder::finder(volatile bool &timeOut)
 
             break;
     }
-    _delay_ms(1000);
+    _delay_ms(constants::DELAY_AFTER_FIND_MS);
 
     if (positionManager_.irSensor.isObjectDetected()) {
         positionManager_.setNextPositionObject(positionManager_.getQuadrant());

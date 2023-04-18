@@ -17,12 +17,12 @@
 #define OBJECT_FINDER_H
 
 #include "lib/analogReader.hpp"
-#include <lib/positionManager.hpp>
+#include <app/detect/positionManager.hpp>
 
 #include <avr/io.h>
 #include <util/delay.h>
 
-#include <lib/constants.hpp>
+#include <app/detect/constants.hpp>
 #include <lib/io.hpp>
 
 #include <lib/led.hpp>

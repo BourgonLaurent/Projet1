@@ -29,7 +29,7 @@
 
 #include <util/delay.h>
 
-#include <lib/constants.hpp>
+#include <app/detect/constants.hpp>
 #include <lib/debug.hpp>
 #include <lib/io.hpp>
 
@@ -159,10 +159,6 @@ void Wheels::invertDirection(const Side &side)
         case Side::BOTH :
             invertDirection(Side::RIGHT);
             invertDirection(Side::LEFT);
-
-            // default :
-            //     invertDirection(Side::LEFT);
-            //     invertDirection(Side::RIGHT);
     }
 }
 
@@ -175,7 +171,7 @@ void Wheels::turn90(const Side &side)
     invertDirection(side);
     _delay_ms(constants::TURN_TIMEOUT_MS);
 
-    setSpeed(48);
+    setSpeed(constants::SPEED_TURN_90);
     _delay_ms(constants::TURN_DURATION_MS);
 
     turnOff();
@@ -194,7 +190,7 @@ void Wheels::turn(const Side &side, const uint8_t speed)
     _delay_ms(constants::TURN_TIMEOUT_MS);
 
     setSpeed(speed, Side::LEFT);
-    setSpeed(speed + 5, Side::RIGHT);
+    setSpeed(speed + constants::SPEED_DIFFERENCE_BETWEEN_WHEELS, Side::RIGHT);
 }
 void Wheels::stopTurn(const Side &side)
 {

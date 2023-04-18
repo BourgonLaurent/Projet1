@@ -15,37 +15,53 @@
  *
  * \date April 17, 2023
  */
+#include "app/detect/detect.hpp"
+#include <app/detect/objectFinder.hpp>
+#include <app/misc/map/map.hpp>
+#include <app/misc/map/mapManager.hpp>
+#include <lib/debug.hpp>
+#include <lib/interruptTimer.hpp>
+#include <lib/interrupts.hpp>
+#include <lib/irSensor.hpp>
+#include <lib/sound.hpp>
+#include <lib/wheels.hpp>
+#include <util/delay.h>
 
-#include <lib/detect.hpp>
-
-void detect::initialize()
+volatile bool Detect::timeOut_ = false;
+volatile Detect::States Detect::state_ = States::SET_DIRECTION;
+void Detect::initialize()
 {
-    debug::initialize();
     Wheels::initialize();
     Sound::initialize();
-    Communication::initialize();
     InterruptButton::initialize(InterruptButton::Mode::ANY);
-    InterruptTimer::initialize(InterruptTimer::Mode::NORMAL, 2.0);
+    InterruptTimer::initialize(InterruptTimer::Mode::NORMAL,
+                               constants::DELAY_TURN_90_MS);
 }
-void detect::checkTimerValue()
+void Detect::checkTimerValue()
 {
     if (OCR1A < TCNT1)
-        detect::timeOut = true;
+        Detect::timeOut_ = true;
+}
+void Detect::setStateISR()
+{
+    Detect::state_ = Detect::States::FIND_OBJECT;
 }
 
-int detect::run()
+int Detect::run(Led &led, Button &whiteButton, Button &interruptButton,
+                IrSensor &irSensor, Map &map)
 {
     initialize();
+    ObjectFinder finder(led, irSensor);
     interrupts::stopCatching();
     while (true) {
-        switch (state) {
+        switch (state_) {
             case States::SET_DIRECTION :
                 led.setAmberForMs(constants::DELAY_LED_AMBER_MS);
 
                 if (!whiteButton.isPressed())
-                    state = States::RIGHT;
+                    state_ = States::RIGHT;
                 else if (interruptButton.isPressed())
-                    state = States::UP;
+                    state_ = States::UP;
 
                 break;
 
@@ -53,20 +69,20 @@ int detect::run()
                 led.setColor(Led::Color::RED);
                 _delay_ms(2000);
                 led.setColor(Led::Color::OFF);
-                state = States::FROM_RIGH_UP;
+                state_ = States::FROM_RIGH_UP;
                 break;
 
             case States::FROM_RIGH_UP :
                 Wheels::turn90(Wheels::Side::LEFT);
-                finder.isObjectInFront(timeOut, Wheels::Side::RIGHT);
-                state = States::FIND_OBJECT;
+                finder.isObjectInFront(timeOut_, Wheels::Side::RIGHT);
+                state_ = States::FIND_OBJECT;
                 break;
 
             case States::UP :
                 led.setColor(Led::Color::GREEN);
                 _delay_ms(2000);
                 led.setColor(Led::Color::OFF);
-                state = States::FIND_OBJECT;
+                state_ = States::FIND_OBJECT;
                 break;
 
             case States::FIND_OBJECT :
@@ -74,27 +90,28 @@ int detect::run()
                 finder.sendLastPosition();                    // à enlever
                 led.setColor(Led::Color::OFF);
                 InterruptButton::clear();
-                finder.finder(timeOut);
+                finder.finder(timeOut_);
                 debug::send("New position: \n"); // à enlever
                 finder.sendLastPosition();       // à enlever
 
                 if (finder.isObjectFound()) {
-                    state = States::FOUND_OBJECT;
+                    state_ = States::FOUND_OBJECT;
                 }
                 else {
-                    state = States::FOUND_NOTHING;
+                    state_ = States::FOUND_NOTHING;
                 }
                 break;
 
             case States::FOUND_OBJECT :
                 finder.alertParked();
-                state = States::WAIT_NEXT_DETECTION;
+                state_ = States::WAIT_NEXT_DETECTION;
                 break;
 
             case States::WAIT_NEXT_DETECTION :
                 interrupts::startCatching();
-                led.setAmberForMs(250);
-                _delay_ms(250);
+
+                led.setAmberForMs(constants::DELAY_LED_AMBER_2HZ_MS);
+                _delay_ms(constants::DELAY_LED_AMBER_2HZ_MS);
                 break;
 
             case States::FOUND_NOTHING :
@@ -102,9 +119,9 @@ int detect::run()
                 finder.alertFoundNothing();
                 while (true) {
                     led.setColor(Led::Color::RED); // fonction pour flash ??
-                    _delay_ms(250);
+                    _delay_ms(constants::DELAY_LED_AMBER_2HZ_MS);
                     led.setColor(Led::Color::OFF);
-                    _delay_ms(250);
+                    _delay_ms(constants::DELAY_LED_AMBER_2HZ_MS);
                 }
                 return 0;
                 break;

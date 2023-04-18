@@ -36,7 +36,7 @@ public:
     PositionManager(IrSensor &irSensor);
 
     Point getLastPosition();
-    
+
     void setNextPositionObject(uint8_t quadrant);
     void initialize();
     uint8_t getQuadrant();

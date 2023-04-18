@@ -13,11 +13,10 @@
  * \date April 5, 2023
  */
 
+#include <app/detect/positionManager.hpp>
 #include <lib/debug.hpp>
-#include <lib/positionManager.hpp>
 
-PositionManager::PositionManager(IrSensor &irSensor)
-    : irSensor(irSensor){};
+PositionManager::PositionManager(IrSensor &irSensor) : irSensor(irSensor){};
 
 Point PositionManager::getLastPosition()
 {
@@ -33,25 +32,30 @@ void PositionManager::setNextPositionObject(uint8_t quadrant)
         case IrSensor::Range::DIAGONAL :
             switch (distance) {
                 case IrSensor::Distance::CLOSE :
-                    setPositionDiagonal(1, quadrant);
+                    setPositionDiagonal(
+                        constants::DIFFERENCE_WITH_NEW_POSITION_CLOSE,
+                        quadrant);
                     break;
                 case IrSensor::Distance::FAR :
-                    setPositionDiagonal(2, quadrant);
+                    setPositionDiagonal(
+                        constants::DIFFERENCE_WITH_NEW_POSITION_FAR, quadrant);
                     break;
             }
             break;
         case IrSensor::Range::STRAIGHT :
             switch (distance) {
                 case IrSensor::Distance::CLOSE :
-                    setPositionStraight(1, quadrant);
+                    setPositionStraight(
+                        constants::DIFFERENCE_WITH_NEW_POSITION_CLOSE,
+                        quadrant);
                     break;
                 case IrSensor::Distance::FAR :
-                    setPositionStraight(2, quadrant);
+                    setPositionStraight(
+                        constants::DIFFERENCE_WITH_NEW_POSITION_FAR, quadrant);
                     break;
             }
             break;
     }
-
 }
 
 uint8_t PositionManager::getQuadrant()
@@ -86,20 +90,20 @@ void PositionManager::setPositionDiagonal(uint8_t difference, uint8_t quadrant)
             break;
         case Quadrant::BOTTOM_RIGHT :
             if (lastPosition_.y - difference == -1)
-                difference = 1;
+                difference = constants::DIFFERENCE_WITH_NEW_POSITION_CLOSE;
             lastPosition_.x += difference;
             lastPosition_.y -= difference;
             break;
         case Quadrant::BOTTOM_LEFT :
             if (lastPosition_.y - difference == -1
                 || lastPosition_.x - difference == -1)
-                difference = 1;
+                difference = constants::DIFFERENCE_WITH_NEW_POSITION_CLOSE;
             lastPosition_.x -= difference;
             lastPosition_.y -= difference;
             break;
         case Quadrant::TOP_LEFT :
             if (lastPosition_.x - difference == -1)
-                difference = 1;
+                difference = constants::DIFFERENCE_WITH_NEW_POSITION_CLOSE;
             lastPosition_.x -= difference;
             lastPosition_.y += difference;
             break;
@@ -116,18 +120,18 @@ void PositionManager::setPositionStraight(uint8_t difference, uint8_t quadrant)
             break;
         case Quadrant::BOTTOM_LEFT :
             if (lastPosition_.y - difference == -1)
-                difference = 1;
+                difference = constants::DIFFERENCE_WITH_NEW_POSITION_CLOSE;
             lastPosition_.y -= difference;
             break;
         case Quadrant::TOP_LEFT :
             if (lastPosition_.y - difference == -1)
-                difference = 1;
+                difference = constants::DIFFERENCE_WITH_NEW_POSITION_CLOSE;
             lastPosition_.x -= difference;
             break;
     }
 }
 
-void PositionManager::initialize()
+void PositionManager::initialize() // à enlever???
 {
     lastPosition_.x = 7;
     lastPosition_.y = 2;
