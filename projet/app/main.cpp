@@ -82,6 +82,7 @@ int main()
 
     if (interruptWasPressed) {
         debug::send("Mode: detect\n");
+        _delay_ms(1000);
         Detect::run(led, white, interrupt, irSensor, map);
     }
     else if (whiteWasPressed) {

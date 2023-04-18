@@ -32,26 +32,24 @@ void PositionManager::setNextPositionObject(uint8_t quadrant)
         case IrSensor::Range::DIAGONAL :
             switch (distance) {
                 case IrSensor::Distance::CLOSE :
-                    setPositionDiagonal(
-                        constants::DIFFERENCE_WITH_NEW_POSITION_CLOSE,
-                        quadrant);
+                    setPositionDiagonal(DIFFERENCE_WITH_NEW_POSITION_CLOSE,
+                                        quadrant);
                     break;
                 case IrSensor::Distance::FAR :
-                    setPositionDiagonal(
-                        constants::DIFFERENCE_WITH_NEW_POSITION_FAR, quadrant);
+                    setPositionDiagonal(DIFFERENCE_WITH_NEW_POSITION_FAR,
+                                        quadrant);
                     break;
             }
             break;
         case IrSensor::Range::STRAIGHT :
             switch (distance) {
                 case IrSensor::Distance::CLOSE :
-                    setPositionStraight(
-                        constants::DIFFERENCE_WITH_NEW_POSITION_CLOSE,
-                        quadrant);
+                    setPositionStraight(DIFFERENCE_WITH_NEW_POSITION_CLOSE,
+                                        quadrant);
                     break;
                 case IrSensor::Distance::FAR :
-                    setPositionStraight(
-                        constants::DIFFERENCE_WITH_NEW_POSITION_FAR, quadrant);
+                    setPositionStraight(DIFFERENCE_WITH_NEW_POSITION_FAR,
+                                        quadrant);
                     break;
             }
             break;
@@ -90,20 +88,20 @@ void PositionManager::setPositionDiagonal(uint8_t difference, uint8_t quadrant)
             break;
         case Quadrant::BOTTOM_RIGHT :
             if (lastPosition_.y - difference == -1)
-                difference = constants::DIFFERENCE_WITH_NEW_POSITION_CLOSE;
+                difference = DIFFERENCE_WITH_NEW_POSITION_CLOSE;
             lastPosition_.x += difference;
             lastPosition_.y -= difference;
             break;
         case Quadrant::BOTTOM_LEFT :
             if (lastPosition_.y - difference == -1
                 || lastPosition_.x - difference == -1)
-                difference = constants::DIFFERENCE_WITH_NEW_POSITION_CLOSE;
+                difference = DIFFERENCE_WITH_NEW_POSITION_CLOSE;
             lastPosition_.x -= difference;
             lastPosition_.y -= difference;
             break;
         case Quadrant::TOP_LEFT :
             if (lastPosition_.x - difference == -1)
-                difference = constants::DIFFERENCE_WITH_NEW_POSITION_CLOSE;
+                difference = DIFFERENCE_WITH_NEW_POSITION_CLOSE;
             lastPosition_.x -= difference;
             lastPosition_.y += difference;
             break;
@@ -120,12 +118,12 @@ void PositionManager::setPositionStraight(uint8_t difference, uint8_t quadrant)
             break;
         case Quadrant::BOTTOM_LEFT :
             if (lastPosition_.y - difference == -1)
-                difference = constants::DIFFERENCE_WITH_NEW_POSITION_CLOSE;
+                difference = DIFFERENCE_WITH_NEW_POSITION_CLOSE;
             lastPosition_.y -= difference;
             break;
         case Quadrant::TOP_LEFT :
             if (lastPosition_.y - difference == -1)
-                difference = constants::DIFFERENCE_WITH_NEW_POSITION_CLOSE;
+                difference = DIFFERENCE_WITH_NEW_POSITION_CLOSE;
             lastPosition_.x -= difference;
             break;
     }

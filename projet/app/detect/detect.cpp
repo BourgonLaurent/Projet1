@@ -58,7 +58,7 @@ int Detect::run(Led &led, Button &whiteButton, Button &interruptButton,
             case States::SET_DIRECTION :
                 led.setAmberForMs(constants::DELAY_LED_AMBER_MS);
 
-                if (!whiteButton.isPressed())
+                if (whiteButton.isPressed())
                     state_ = States::RIGHT;
                 else if (interruptButton.isPressed())
                     state_ = States::UP;

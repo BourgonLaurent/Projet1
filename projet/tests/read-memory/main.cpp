@@ -1,10 +1,10 @@
 
 
+#include <app/detect/objectFinder.hpp>
+#include <app/detect/positionManager.hpp>
 #include <lib/debug.hpp>
 #include <lib/irSensor.hpp>
 #include <lib/led.hpp>
-#include <lib/objectFinder.hpp>
-#include <lib/positionManager.hpp>
 
 #include <app/misc/map/map.hpp>
 #include <app/misc/map/mapManager.hpp>
