@@ -37,8 +37,8 @@ public:
 
     Point getLastPosition();
 
-    void setNextPositionObject(uint8_t quadrant);
-    void initialize();
+    void setNextPositionObject(const IrSensor::Range &range,
+                               const IrSensor::Distance &distance);
     uint8_t getQuadrant();
 
     void resetQuadrant();

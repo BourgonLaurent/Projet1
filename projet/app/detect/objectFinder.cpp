@@ -225,7 +225,10 @@ void ObjectFinder::finder(volatile bool &timeOut)
     _delay_ms(constants::DELAY_AFTER_FIND_MS);
 
     if (positionManager_.irSensor.isObjectDetected()) {
-        positionManager_.setNextPositionObject(positionManager_.getQuadrant());
+        IrSensor::Range range = positionManager_.irSensor.getRange();
+        IrSensor::Distance distance = positionManager_.irSensor.getDistance();
+
+        positionManager_.setNextPositionObject(range, distance);
         objectFound_ = true;
     }
     else {

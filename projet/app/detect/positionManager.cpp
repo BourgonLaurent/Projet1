@@ -23,23 +23,21 @@ Point PositionManager::getLastPosition()
     return lastPosition_;
 }
 
-void PositionManager::setNextPositionObject(uint8_t quadrant)
+void PositionManager::setNextPositionObject(const IrSensor::Range &range,
+                                            const IrSensor::Distance &distance)
 {
     // FIXME: violates SRP
-    // FIXME: Remove irSensor from the class
-    IrSensor::Range range = irSensor.getRange();
-    IrSensor::Distance distance = irSensor.getDistance();
     debug::send("Dans SetNextPosition\n");
     switch (range) {
         case IrSensor::Range::DIAGONAL :
             switch (distance) {
                 case IrSensor::Distance::CLOSE :
                     setPositionDiagonal(DIFFERENCE_WITH_NEW_POSITION_CLOSE,
-                                        quadrant);
+                                        quadrant_);
                     break;
                 case IrSensor::Distance::FAR :
                     setPositionDiagonal(DIFFERENCE_WITH_NEW_POSITION_FAR,
-                                        quadrant);
+                                        quadrant_);
                     break;
             }
             break;
@@ -47,11 +45,11 @@ void PositionManager::setNextPositionObject(uint8_t quadrant)
             switch (distance) {
                 case IrSensor::Distance::CLOSE :
                     setPositionStraight(DIFFERENCE_WITH_NEW_POSITION_CLOSE,
-                                        quadrant);
+                                        quadrant_);
                     break;
                 case IrSensor::Distance::FAR :
                     setPositionStraight(DIFFERENCE_WITH_NEW_POSITION_FAR,
-                                        quadrant);
+                                        quadrant_);
                     break;
             }
             break;
@@ -126,13 +124,6 @@ void PositionManager::setPositionStraight(uint8_t difference, uint8_t quadrant)
             lastPosition_.x -= difference;
             break;
     }
-}
-
-// TODO: remove
-void PositionManager::initialize() // à enlever???
-{
-    lastPosition_.x = 7;
-    lastPosition_.y = 2;
 }
 
 Point PositionManager::getNexPosition()
