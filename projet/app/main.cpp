@@ -70,7 +70,7 @@ int main()
     Led led = Led(&DDRB, &PORTB, PB0, PB1);
     Button white(&DDRC, &PINC, PC2, Button::ActiveMode::RELEASED);
     Button interrupt(&DDRD, &PIND, PD2);
-    IrSensor irSensor(PA0);
+    IrSensor irSensor(PA0, constants::CALIBRATION);
 
     bool whiteWasPressed = false;
     bool interruptWasPressed = false;

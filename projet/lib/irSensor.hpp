@@ -21,7 +21,6 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-#include <app/detect/constants.hpp>
 #include <lib/io.hpp>
 
 class IrSensor
@@ -39,12 +38,18 @@ public:
         CLOSE,
     };
 
-    IrSensor(io::Position pin);
+    struct Calibration {
+        const uint8_t tenCm;
+        const uint8_t fifteenCm;
+        const uint8_t eightyCm;
+        const uint8_t farThreshold;
+    };
+
+    IrSensor(io::Position pin, const Calibration &constants);
 
     uint16_t read();
 
-    bool isInFront(uint8_t distance1 = constants::TEN_CM,
-                   uint8_t distance2 = constants::EIGHTY_CM);
+    bool isInFront();
     bool isClose();
 
     void setDistance(uint8_t distance);
@@ -58,9 +63,13 @@ public:
 
 private:
     static constexpr uint8_t N_MEASURMENTS = 6;
+    static constexpr uint8_t DELAY_BETWEEN_READ_MS = 5;
+
+    bool isInRange(uint8_t distance1, uint8_t distance2);
 
     AnalogReader reader_;
     const io::Position pin_;
+    const Calibration calibration_;
 
     Range range_;
     Distance distance_;

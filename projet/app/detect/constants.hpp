@@ -16,6 +16,7 @@
 #include <avr/io.h>
 
 #include <lib/io.hpp>
+#include <lib/irSensor.hpp>
 
 namespace constants {
     // Constants for the project
@@ -53,13 +54,12 @@ namespace constants {
     static constexpr uint8_t SPEED_DIFFERENCE_BETWEEN_WHEELS = 5;
 
     // Constants for the IrSensor
-    static constexpr uint8_t EIGHTY_CM = 15;
-    static constexpr uint16_t TEN_CM = 120;
-    static constexpr uint8_t FIFTEEN_CM = 85;
-    static constexpr uint8_t EDGE_CLOSE_FAR = 45;
-    static constexpr uint8_t LIMIT_OBJECT_CLOSE = 30;
-    static constexpr uint8_t DELAY_READ_VALUE_SENSOR_MS = 5;
-
+    static constexpr IrSensor::Calibration CALIBRATION = {
+        .tenCm = 120,
+        .fifteenCm = 85,
+        .eightyCm = 15,
+        .farThreshold = 45,
+    };
 }; // namespace constants
 
 #endif
