@@ -34,14 +34,15 @@ void Detect::initialize()
     Wheels::initialize();
     Sound::initialize();
     InterruptButton::initialize(InterruptButton::Mode::ANY);
-    InterruptTimer::initialize(InterruptTimer::Mode::NORMAL,
+    InterruptTimer::initialize(InterruptTimer::Mode::CLEAR_ON_COMPARE,
                                constants::DELAY_TURN_90_MS);
 }
+
 void Detect::checkTimerValue()
 {
-    if (OCR1A < TCNT1)
-        Detect::timeOut_ = true;
+    Detect::timeOut_ = true;
 }
+
 void Detect::setStateISR()
 {
     Detect::state_ = Detect::States::FIND_OBJECT;
