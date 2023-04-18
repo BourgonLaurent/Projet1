@@ -47,7 +47,7 @@ public:
 
     IrSensor(io::Position pin, const Calibration &constants);
 
-    uint8_t read();
+    uint16_t read();
 
     bool isInFront();
     bool isClose();
@@ -62,7 +62,7 @@ public:
     Distance getDistance();
 
 private:
-    static constexpr uint8_t N_MEASURMENTS = 5;
+    static constexpr uint8_t N_MEASURMENTS = 6;
     static constexpr uint8_t DELAY_BETWEEN_READS_MS = 5;
 
     bool isInRange(uint8_t distance1, uint8_t distance2);

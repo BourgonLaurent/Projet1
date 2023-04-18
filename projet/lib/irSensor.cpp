@@ -26,12 +26,12 @@ IrSensor::IrSensor(const io::Position pin, const Calibration &calibration)
     io::setInput(&DDRA, IrSensor::pin_);
 };
 
-uint8_t IrSensor::read()
+uint16_t IrSensor::read()
 {
     uint16_t sum = 0;
     uint8_t maximum = 0;
 
-    for (uint8_t i = 0; i < N_MEASURMENTS + 1; i++) {
+    for (uint8_t i = 0; i < N_MEASURMENTS; i++) {
         const uint8_t distance = reader_.read(pin_);
 
         if (distance > maximum) {
@@ -43,11 +43,11 @@ uint8_t IrSensor::read()
         _delay_ms(DELAY_BETWEEN_READS_MS);
     }
 
-    const uint8_t average = (sum - maximum) / N_MEASURMENTS;
+    const uint16_t average = (sum - maximum) / (N_MEASURMENTS - 1);
 
-    debug::send(sum);
+    debug::send(average);
     debug::send("\n");
-    return sum;
+    return average;
 }
 
 bool IrSensor::isInFront()
@@ -103,14 +103,14 @@ IrSensor::Distance IrSensor::getDistance()
 
 bool IrSensor::isTooClose()
 {
-    uint8_t distance = read();
+    uint16_t distance = read();
 
     return distance >= calibration_.tenCm;
 }
 
 bool IrSensor::isInRange(uint8_t minimum, uint8_t maximum)
 {
-    uint8_t distance = read();
+    uint16_t distance = read();
 
     isObjectDetected_ = distance < minimum && distance > maximum;
 

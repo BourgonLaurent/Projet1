@@ -14,6 +14,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
+#include <app/detect/constants.hpp>
 #include <lib/communication.hpp>
 #include <lib/debug.hpp>
 #include <lib/interruptTimer.hpp>
@@ -26,9 +27,9 @@ constexpr io::Position SENSOR = PA0;
 
 int main()
 {
-    IrSensor irSensor = IrSensor(SENSOR);
+    IrSensor irSensor = IrSensor(SENSOR, constants::CALIBRATION);
     Communication::initialize();
-    uint8_t value = irSensor.read();
+    uint16_t value = irSensor.read();
     Communication::send(value);
     Communication::send("\n");
 }
