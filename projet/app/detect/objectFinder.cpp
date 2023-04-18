@@ -261,6 +261,7 @@ bool ObjectFinder::isObjectFound()
     return objectFound_;
 }
 
+// FIXME: to remove
 void ObjectFinder::sendLastPosition()
 {
     debug::send("\n");
