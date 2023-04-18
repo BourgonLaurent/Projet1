@@ -25,6 +25,8 @@ Point PositionManager::getLastPosition()
 
 void PositionManager::setNextPositionObject(uint8_t quadrant)
 {
+    // FIXME: violates SRP
+    // FIXME: Remove irSensor from the class
     IrSensor::Range range = irSensor.getRange();
     IrSensor::Distance distance = irSensor.getDistance();
     debug::send("Dans SetNextPosition\n");
@@ -68,11 +70,8 @@ void PositionManager::resetQuadrant()
 
 void PositionManager::updateQuadrant(const Wheels::Side &side)
 {
-    if (side == Wheels::Side::RIGHT)
-        quadrant_ = (quadrant_ == 3) ? 0 : quadrant_ + 1;
-
-    else
-        quadrant_ = (quadrant_ == 0) ? 3 : quadrant_ - 1;
+    quadrant_ += side == Wheels::Side::RIGHT ? 1 : -1;
+    quadrant_ %= 4;
 
     debug::send("le quadrant est maintenant : ");
     debug::send(quadrant_);
@@ -129,6 +128,7 @@ void PositionManager::setPositionStraight(uint8_t difference, uint8_t quadrant)
     }
 }
 
+// TODO: remove
 void PositionManager::initialize() // à enlever???
 {
     lastPosition_.x = 7;

@@ -22,28 +22,16 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-#include <app/detect/constants.hpp>
 #include <lib/io.hpp>
-
 #include <lib/led.hpp>
 #include <lib/wheels.hpp>
+
+#include <app/detect/cardinal.hpp>
+#include <app/detect/constants.hpp>
 
 class ObjectFinder
 {
 public:
-    enum class FinderType
-    {
-        TOP_BORDER,
-        MIDDLE,
-        BOTTOM_BORDER,
-        RIGHT_BORDER,
-        LEFT_BORDER,
-        TOP_CORNER_RIGHT,
-        TOP_CORNER_LEFT,
-        BOTTOM_CORNER_RIGHT,
-        BOTTOM_CORNER_LEFT
-    };
-
     ObjectFinder(Led &led, IrSensor &irSensor);
 
     void finder(volatile bool &timeOut);
@@ -69,12 +57,12 @@ public:
     Point getLastPosition();
 
 private:
-    Led led_;
+    Led led_; // FIXME: unused
     PositionManager positionManager_;
 
     bool objectFound_ = false;
 
-    FinderType determineFinderType();
+    Cardinal getCardinal();
 
     void turnFind(const Wheels::Side &side, volatile bool &timeOut);
     void findTurn(const Wheels::Side &side, volatile bool &timeOut);

@@ -163,13 +163,13 @@ void ObjectFinder::finder(volatile bool &timeOut)
     objectFound_ = false;
     positionManager_.irSensor.setObjectDetected(false);
 
-    FinderType finderWithPosition = determineFinderType();
+    auto finderWithPosition = getCardinal();
     positionManager_.resetQuadrant();
 
     positionManager_.irSensor.setRange(IrSensor::Range::STRAIGHT);
 
     switch (finderWithPosition) {
-        case FinderType::TOP_BORDER :
+        case Cardinal::NORTH :
             // debug::send("TOP_BORDER\n");
             Wheels::turn90(Wheels::Side::RIGHT);
             positionManager_.updateQuadrant(Wheels::Side::RIGHT);
@@ -177,7 +177,7 @@ void ObjectFinder::finder(volatile bool &timeOut)
                 findLoop(2, Wheels::Side::RIGHT, timeOut);
             break;
 
-        case FinderType::BOTTOM_BORDER :
+        case Cardinal::SOUTH :
             // debug::send("BOTTOM_BORDER\n");
             findTurn(Wheels::Side::RIGHT, timeOut);
             if (!positionManager_.irSensor.isObjectDetected()) {
@@ -185,38 +185,38 @@ void ObjectFinder::finder(volatile bool &timeOut)
             }
             break;
 
-        case FinderType::MIDDLE :
+        case Cardinal::MIDDLE :
             // debug::send("MIDDLE\n");
             findLoop(4, Wheels::Side::RIGHT, timeOut);
             break;
 
-        case FinderType::TOP_CORNER_LEFT :
+        case Cardinal::NORTH_WEST :
             // debug::send("TOP_CORNER_LEFT\n");
             turnFind(Wheels::Side::RIGHT, timeOut);
             break;
 
-        case FinderType::TOP_CORNER_RIGHT :
+        case Cardinal::NORTH_EAST :
             // debug::send("TOP_CORNER_RIGHT\n");
             turnFind(Wheels::Side::LEFT, timeOut);
             break;
 
-        case FinderType::BOTTOM_CORNER_RIGHT :
+        case Cardinal::SOUTH_EAST :
             // debug::send("BOTTOM_CORNER_RIGHT\n");
             if (!isObjectInFront(timeOut, Wheels::Side::RIGHT))
                 find(Wheels::Side::LEFT, timeOut);
             break;
 
-        case FinderType::BOTTOM_CORNER_LEFT :
+        case Cardinal::SOUTH_WEST :
             // debug::send("BOTTOM_CORNER_LEFT\n");
             find(Wheels::Side::RIGHT, timeOut);
             break;
 
-        case FinderType::RIGHT_BORDER :
+        case Cardinal::EAST :
             // debug::send("RIGHT_BORDER\n");
             findLoop(2, Wheels::Side::LEFT, timeOut);
             break;
 
-        case FinderType::LEFT_BORDER :
+        case Cardinal::WEST :
             // debug::send("LEFT_BORDER\n");
             findLoop(2, Wheels::Side::RIGHT, timeOut);
 
@@ -233,51 +233,37 @@ void ObjectFinder::finder(volatile bool &timeOut)
     }
 }
 
-ObjectFinder::FinderType ObjectFinder::determineFinderType()
+Cardinal ObjectFinder::getCardinal()
 {
-    if (positionManager_.getLastPosition().x == 7
-        && positionManager_.getLastPosition().y == 3) {
-        return FinderType::TOP_CORNER_RIGHT;
+    auto position = positionManager_.getLastPosition();
+    auto cardinal = Cardinal::MIDDLE;
+
+    switch (position.x) {
+        case 0 :
+            cardinal |= Cardinal::WEST;
+            break;
+        case 7 :
+            cardinal |= Cardinal::EAST;
+            break;
     }
-    if (positionManager_.getLastPosition().x == 7
-        && positionManager_.getLastPosition().y == 0) {
-        return FinderType::BOTTOM_CORNER_RIGHT;
+
+    switch (position.y) {
+        case 0 :
+            cardinal |= Cardinal::SOUTH;
+            break;
+        case 3 :
+            cardinal |= Cardinal::NORTH;
+            break;
     }
-    if (positionManager_.getLastPosition().x == 0
-        && positionManager_.getLastPosition().y == 3) {
-        return FinderType::TOP_CORNER_LEFT;
-    }
-    if (positionManager_.getLastPosition().x == 0
-        && positionManager_.getLastPosition().y == 0) {
-        return FinderType::BOTTOM_CORNER_LEFT;
-    }
-    if (positionManager_.getLastPosition().x > 0
-        && positionManager_.getLastPosition().x < 7
-        && positionManager_.getLastPosition().y == 3) {
-        return FinderType::TOP_BORDER;
-    }
-    if (positionManager_.getLastPosition().x > 0
-        && positionManager_.getLastPosition().x < 7
-        && positionManager_.getLastPosition().y == 0) {
-        return FinderType::BOTTOM_BORDER;
-    }
-    if (positionManager_.getLastPosition().x == 0
-        && positionManager_.getLastPosition().y > 0
-        && positionManager_.getLastPosition().y < 3) {
-        return FinderType::LEFT_BORDER;
-    }
-    if (positionManager_.getLastPosition().x == 7
-        && positionManager_.getLastPosition().y > 0
-        && positionManager_.getLastPosition().y < 3) {
-        return FinderType::RIGHT_BORDER;
-    }
-    return FinderType::MIDDLE;
+
+    return cardinal;
 }
 
 bool ObjectFinder::isObjectFound()
 {
     return objectFound_;
 }
+
 void ObjectFinder::sendLastPosition()
 {
     debug::send("\n");
