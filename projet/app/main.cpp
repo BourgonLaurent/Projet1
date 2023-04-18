@@ -1,29 +1,36 @@
 /**
  * Runs two programs chosen by pressing a button:
  *  - Detect   | Interrupt : Find poles and log them on a map.
- *  - Transmit | White)    : Find the convex hull formed by the poles
+ *  - Transmit | White     : Find the convex hull formed by the poles
  *                           and send a SVG through RS232.
  *
  * Hardware Identification:
  *  NOTE: The data direction registers are set automatically.
  *
  *  INPUT:
- *    - Interrupt Push Button: D2
- *    - White Push Button: C2
+ *    - IR Sensor: PA0
+ *    - Interrupt Push Button: PD2
+ *    - White Push Button: PC2
  *
  *  OUTPUT:
  *    - Bicolor LED connected plus to PB0 and minus to PB1.
+ *    - Wheels
+ *      - Left  | PD6 (enable) and PD4 (direction)
+ *      - Right | PD7 (enable) and PD5 (direction)
+ *    - Buzzer connected plus to PB3 and minus to PB2.
  *
  *  EEPROM:
- *    - SCL (C0)
- *    - SDA (C1)
+ *    - SCL (PC0)
+ *    - SDA (PC1)
  *
  *  USART:
- *    - RXD0 (D0)
- *    - TXD0 (D1)
+ *    - RXD0 (PD0)
+ *    - TXD0 (PD1)
  *
  *  TIMERS:
+ *    - Timer 0 | Sound
  *    - Timer 1 | Flasher
+ *    - Timer 2 | Wheels
  *
  * Team #4546
  *  \author Catalina Andrea Araya Figueroa

@@ -29,8 +29,7 @@
 void Communication::initialize()
 {
     // 2400 bauds
-    UBRR0H = 0;
-    UBRR0L = 0xCF;
+    UBRR0 = 0xCF;
 
     // Allow reception and transmission through USART0
     // (p.186-187) USART Control and Status Register 0 B
@@ -55,7 +54,7 @@ void Communication::initialize()
 uint8_t Communication::receive()
 {
     // Wait for data to be received
-    while (!(UCSR0A & _BV(RXC0))) {}
+    while (!io::get(&UCSR0A, RXC0)) {}
 
     // Get and return received data from buffer
     return UDR0;
@@ -89,7 +88,7 @@ void Communication::send(const Control control)
 
 void Communication::sendCharacter(const uint8_t data)
 {
-    while (!(UCSR0A & _BV(UDRE0))) {}
+    while (!io::get(&UCSR0A, UDRE0)) {}
 
     UDR0 = data;
 }
