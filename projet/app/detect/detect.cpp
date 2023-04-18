@@ -19,6 +19,7 @@
 #include <util/delay.h>
 
 #include <lib/debug.hpp>
+#include <lib/flasher.hpp>
 #include <lib/interruptTimer.hpp>
 #include <lib/interrupts.hpp>
 #include <lib/irSensor.hpp>
@@ -117,10 +118,14 @@ int Detect::run(Led &led, Button &whiteButton, Button &interruptButton,
                 break;
 
             case States::WAIT_NEXT_DETECTION :
-                interrupts::startCatching();
-
-                led.setAmberForMs(constants::DELAY_LED_AMBER_2HZ_MS);
-                _delay_ms(constants::DELAY_LED_AMBER_2HZ_MS);
+                Flasher::initializeAmber(led);
+                while (!interruptButton.isPressed()) {
+                    Flasher::startFlashing();
+                    _delay_ms(constants::DELAY_LED_AMBER_2HZ_MS);
+                    Flasher::stopFlashing();
+                    _delay_ms(constants::DELAY_LED_AMBER_2HZ_MS);
+                }
+                state_ = Detect::States::FIND_OBJECT;
                 break;
 
             case States::FOUND_NOTHING :
