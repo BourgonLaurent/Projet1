@@ -43,12 +43,13 @@ public:
 
     };
     static void checkTimerValue();
-    static void setStateISR();
+    static void buttonWasPressed();
     static int run(Led &led, Button &whiteButton, Button &interruptButton,
                    IrSensor &irSensor);
 
 private:
-    static volatile States state_;
+    static States state_;
+    static volatile bool buttonWasPressed_;
     static volatile bool timeOut_;
     static void initialize();
 }; // namespace detect

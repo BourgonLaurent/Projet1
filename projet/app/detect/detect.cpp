@@ -20,6 +20,7 @@
 
 #include <lib/debug.hpp>
 #include <lib/flasher.hpp>
+#include <lib/interruptButton.hpp>
 #include <lib/interruptTimer.hpp>
 #include <lib/interrupts.hpp>
 #include <lib/irSensor.hpp>
@@ -32,24 +33,27 @@
 #include <app/misc/map/mapManager.hpp>
 
 volatile bool Detect::timeOut_ = false;
-volatile Detect::States Detect::state_ = States::SET_DIRECTION;
+volatile bool Detect::buttonWasPressed_ = false;
+Detect::States Detect::state_ = Detect::States::SET_DIRECTION;
+
 void Detect::initialize()
 {
     Wheels::initialize();
     Sound::initialize();
-    InterruptButton::initialize(InterruptButton::Mode::ANY);
+    // InterruptButton::initialize(InterruptButton::Mode::ANY);
     InterruptTimer::initialize(InterruptTimer::Mode::CLEAR_ON_COMPARE,
                                constants::DELAY_TURN_90_MS);
+}
+
+void Detect::buttonWasPressed()
+{
+    Detect::buttonWasPressed_ = true;
+    interrupts::stopCatching();
 }
 
 void Detect::checkTimerValue()
 {
     Detect::timeOut_ = true;
-}
-
-void Detect::setStateISR()
-{
-    Detect::state_ = Detect::States::FIND_OBJECT;
 }
 
 int Detect::run(Led &led, Button &whiteButton, Button &interruptButton,
@@ -118,14 +122,17 @@ int Detect::run(Led &led, Button &whiteButton, Button &interruptButton,
                 break;
 
             case States::WAIT_NEXT_DETECTION :
-                Flasher::initializeAmber(led);
-                while (!interruptButton.isPressed()) {
-                    Flasher::startFlashing();
-                    _delay_ms(constants::DELAY_LED_AMBER_2HZ_MS);
-                    Flasher::stopFlashing();
-                    _delay_ms(constants::DELAY_LED_AMBER_2HZ_MS);
+                InterruptButton::initialize(InterruptButton::Mode::ANY);
+                interrupts::startCatching();
+
+                led.setAmberForMs(constants::DELAY_LED_AMBER_2HZ_MS);
+                _delay_ms(constants::DELAY_LED_AMBER_2HZ_MS);
+
+                if (buttonWasPressed_) {
+                    state_ = States::FIND_OBJECT;
+                    buttonWasPressed_ = false;
                 }
-                state_ = Detect::States::FIND_OBJECT;
+
                 break;
 
             case States::FOUND_NOTHING :

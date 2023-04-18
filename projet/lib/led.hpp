@@ -41,7 +41,7 @@ public:
     void setAmberForMs(const uint16_t durationMs);
 
 private:
-    constexpr static uint8_t AMBER_DELAY_MS = 50;
+    constexpr static uint16_t AMBER_DELAY_US = 500;
 
     io::Port port_;
     const io::Position plus_;

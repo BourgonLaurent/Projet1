@@ -40,6 +40,7 @@
 #include <lib/communication.hpp>
 #include <lib/debug.hpp>
 #include <lib/flasher.hpp>
+#include <lib/interruptButton.hpp>
 #include <lib/interruptTimer.hpp>
 #include <lib/irSensor.hpp>
 #include <lib/led.hpp>
@@ -52,6 +53,13 @@ ISR(InterruptTimer_vect)
 {
     Flasher::handleFlash();
     Detect::checkTimerValue();
+}
+
+ISR(InterruptButton_vect)
+{
+    InterruptButton::waitForDebounce();
+    Detect::buttonWasPressed();
+    InterruptButton::clear();
 }
 
 int main()
