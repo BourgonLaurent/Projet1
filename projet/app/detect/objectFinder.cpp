@@ -71,8 +71,8 @@ void ObjectFinder::run()
                                                 : Wheels::Side::LEFT);
             break;
 
-        case Border::BOTTOM_RIGHT :
         case Border::BOTTOM_LEFT :
+        case Border::BOTTOM_RIGHT :
             find(border == Border::BOTTOM_LEFT ? Wheels::Side::RIGHT
                                                : Wheels::Side::LEFT);
             break;
