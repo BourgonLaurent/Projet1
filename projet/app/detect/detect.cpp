@@ -138,13 +138,11 @@ int Detect::run(Led &led, Button &whiteButton, Button &interruptButton,
             case States::FOUND_NOTHING :
                 MapManager::save(map);
                 finder.alertFoundNothing();
-                while (true) {
-                    led.setColor(Led::Color::RED); // fonction pour flash ??
-                    _delay_ms(constants::DELAY_LED_AMBER_2HZ_MS);
-                    led.setColor(Led::Color::OFF);
-                    _delay_ms(constants::DELAY_LED_AMBER_2HZ_MS);
-                }
-                return 0;
+
+                // TODO: check if it doesn't cause a segfault
+                Flasher::initialize(led, 2, Led::Color::RED, Led::Color::OFF);
+                Flasher::startFlashing();
+                while (true) {}
                 break;
         }
     }
