@@ -42,7 +42,6 @@ private:
     static void initialize();
 
     static volatile bool interruptButtonWasPressed_;
-    static volatile bool timeOut_;
 };
 
 #endif

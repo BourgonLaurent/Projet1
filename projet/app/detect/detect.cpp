@@ -33,7 +33,6 @@
 #include <app/misc/map/map.hpp>
 #include <app/misc/map/mapManager.hpp>
 
-volatile bool Detect::timeOut_ = false;
 volatile bool Detect::interruptButtonWasPressed_ = false;
 
 void Detect::handleButtonPress()
@@ -62,19 +61,20 @@ void Detect::run(Led &led, Button &whiteButton, Button &interruptButton,
     Flasher::initializeAmber(led);
     Flasher::start();
 
-    bool pointUp = false;
-    bool pointRight = false;
+    bool pointingUp = false;
+    bool pointingRight = false;
 
-    while (pointUp = interruptButton.isPressed(),
-           pointRight = whiteButton.isPressed(), !pointUp && !pointRight) {}
+    while (pointingUp = interruptButton.isPressed(),
+           pointingRight = whiteButton.isPressed(),
+           !pointingUp && !pointingRight) {}
 
     Flasher::stop();
 
-    led.setColor(pointRight ? Led::Color::RED : Led::Color::GREEN);
+    led.setColor(pointingRight ? Led::Color::RED : Led::Color::GREEN);
     _delay_ms(INITIALIZATION_DELAY_MS);
     led.setColor(Led::Color::OFF);
 
-    if (pointRight) {
+    if (pointingRight) {
         Wheels::turn90(Wheels::Side::LEFT);
         finder.isObjectInFront(Wheels::Side::RIGHT);
     }

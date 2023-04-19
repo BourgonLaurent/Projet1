@@ -56,6 +56,7 @@
 
 #include <app/detect/constants.hpp>
 #include <app/detect/detect.hpp>
+#include <app/detect/objectFinder.hpp>
 #include <app/transmit/transmit.hpp>
 
 ISR(InterruptTimer_vect)
