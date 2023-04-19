@@ -42,8 +42,6 @@ public:
     void resetQuadrant();
     void updateQuadrant(const Wheels::Side &side);
 
-    Point getNextPosition();
-
 private:
     Point lastPosition_;
     uint8_t quadrant_;

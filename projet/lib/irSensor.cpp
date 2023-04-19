@@ -20,10 +20,12 @@
 
 #include <lib/interruptTimer.hpp>
 
+io::DataDirectionRegister IrSensor::dataDirection_ = &DDRA;
+
 IrSensor::IrSensor(const io::Position pin, const Calibration &calibration)
     : pin_(pin), calibration_(calibration)
 {
-    io::setInput(&DDRA, IrSensor::pin_);
+    io::setInput(dataDirection_, pin_);
 };
 
 uint16_t IrSensor::read()
@@ -66,12 +68,10 @@ void IrSensor::setDistance(uint8_t distance)
     debug::send(distance);
     if (distance >= calibration_.farThreshold
         && distance <= calibration_.tenCm) {
-
         distance_ = IrSensor::Distance::CLOSE;
     }
     else if (distance < calibration_.farThreshold
              && distance > calibration_.eightyCm) {
-
         distance_ = IrSensor::Distance::FAR;
     }
 }

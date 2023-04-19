@@ -66,7 +66,7 @@ int Detect::run(Led &led, Button &whiteButton, Button &interruptButton,
     while (true) {
         switch (state_) {
             case States::SET_DIRECTION :
-                led.setAmberForMs(constants::DELAY_LED_AMBER_MS);
+                led.setAmberForMs(AMBER_FLASH_PERIOD_MS);
 
                 if (whiteButton.isPressed())
                     state_ = States::RIGHT;

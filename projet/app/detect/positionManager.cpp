@@ -83,22 +83,31 @@ void PositionManager::setPositionDiagonal(uint8_t difference, uint8_t quadrant)
             lastPosition_.x += difference;
             lastPosition_.y += difference;
             break;
+
         case Quadrant::BOTTOM_RIGHT :
-            if (lastPosition_.y - difference == -1)
+            if (lastPosition_.y - difference == -1) {
                 difference = DIFFERENCE_WITH_NEW_POSITION_CLOSE;
+            }
+
             lastPosition_.x += difference;
             lastPosition_.y -= difference;
             break;
+
         case Quadrant::BOTTOM_LEFT :
             if (lastPosition_.y - difference == -1
-                || lastPosition_.x - difference == -1)
+                || lastPosition_.x - difference == -1) {
                 difference = DIFFERENCE_WITH_NEW_POSITION_CLOSE;
+            }
+
             lastPosition_.x -= difference;
             lastPosition_.y -= difference;
             break;
+
         case Quadrant::TOP_LEFT :
-            if (lastPosition_.x - difference == -1)
+            if (lastPosition_.x - difference == -1) {
                 difference = DIFFERENCE_WITH_NEW_POSITION_CLOSE;
+            }
+
             lastPosition_.x -= difference;
             lastPosition_.y += difference;
             break;
@@ -110,23 +119,25 @@ void PositionManager::setPositionStraight(uint8_t difference, uint8_t quadrant)
         case Quadrant::TOP_RIGHT :
             lastPosition_.y += difference;
             break;
+
         case Quadrant::BOTTOM_RIGHT :
             lastPosition_.x += difference;
             break;
+
         case Quadrant::BOTTOM_LEFT :
-            if (lastPosition_.y - difference == -1)
+            if (lastPosition_.y - difference == -1) {
                 difference = DIFFERENCE_WITH_NEW_POSITION_CLOSE;
+            }
+
             lastPosition_.y -= difference;
             break;
+
         case Quadrant::TOP_LEFT :
-            if (lastPosition_.y - difference == -1)
+            if (lastPosition_.y - difference == -1) {
                 difference = DIFFERENCE_WITH_NEW_POSITION_CLOSE;
+            }
+
             lastPosition_.x -= difference;
             break;
     }
-}
-
-Point PositionManager::getNextPosition()
-{
-    return lastPosition_;
 }
