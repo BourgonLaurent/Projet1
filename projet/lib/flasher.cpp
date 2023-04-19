@@ -20,13 +20,13 @@
  *
  *   // Flash the LED on and off at 2Hz.
  *   Flasher::initialize(led, 2, Led::Color::RED, Led::Color::OFF);
- *   Flasher::startFlashing();
- *   Flasher::stopFlashing();
+ *   Flasher::start();
+ *   Flasher::stop();
  *
  *   // Show the LED amber.
  *   Flasher::initializeAmber(led);
- *   Flasher::startFlashing();
- *   Flasher::stopFlashing();
+ *   Flasher::start();
+ *   Flasher::stop();
  *
  * Team #4546
  *  \author Catalina Andrea Araya Figueroa
@@ -64,7 +64,7 @@ void Flasher::initializeAmber(Led &led)
     initialize(led, AMBER_FREQUENCY_HZ, Led::Color::RED, Led::Color::GREEN);
 }
 
-void Flasher::startFlashing()
+void Flasher::start()
 {
     InterruptTimer::start();
     interrupts::startCatching();
@@ -72,7 +72,7 @@ void Flasher::startFlashing()
     isActive_ = true;
 }
 
-void Flasher::stopFlashing()
+void Flasher::stop()
 {
     InterruptTimer::stop();
     interrupts::stopCatching();

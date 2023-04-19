@@ -1,4 +1,4 @@
-#include "run.hpp"
+#include "transmit.hpp"
 
 #include <avr/io.h>
 #include <util/delay.h>
@@ -22,7 +22,7 @@ void Transmit::run(Led &led, const Mode &mode)
 
     Flasher::initialize(led, FLASH_FREQUENCY_HZ, Led::Color::GREEN,
                         Led::Color::OFF);
-    Flasher::startFlashing();
+    Flasher::start();
 
     Array<Point> points;
     switch (mode) {
@@ -50,5 +50,5 @@ void Transmit::run(Led &led, const Mode &mode)
     SvgBuilder svgBuilder(points, polygon);
     svgBuilder.generateAndSend();
 
-    Flasher::stopFlashing();
+    Flasher::stop();
 }

@@ -19,17 +19,17 @@ int main()
     // Flash the LED on and off at 2Hz.
     {
         Flasher::initialize(led, 2, Led::Color::RED, Led::Color::OFF);
-        Flasher::startFlashing();
+        Flasher::start();
         _delay_ms(2000);
-        Flasher::stopFlashing();
+        Flasher::stop();
     }
 
     // Show the LED amber.
     {
         Flasher::initializeAmber(led);
-        Flasher::startFlashing();
+        Flasher::start();
         _delay_ms(2000);
-        Flasher::stopFlashing();
+        Flasher::stop();
     }
 
     return 0;

@@ -73,6 +73,24 @@ void SvgBuilder::generateAndSend()
     Communication::send(Communication::Control::END_TRANSMISSION);
 }
 
+void SvgBuilder::epilog()
+{
+    send(tags::OPENING);
+    send(tags::STYLE);
+}
+
+void SvgBuilder::area()
+{
+    constexpr uint8_t sizeOfArea = 4;
+    constexpr uint8_t maximumResultSize =
+        sizeof(tags::templates::AREA) + sizeOfArea;
+
+    char result[maximumResultSize];
+    uint16_t area = polygon_->calculateArea();
+    sprintf(result, tags::templates::AREA, area);
+    send(result);
+}
+
 void SvgBuilder::polygon()
 {
     constexpr uint8_t maximumPoints = 8;
@@ -105,12 +123,6 @@ void SvgBuilder::dots()
     send(tags::dots::RED);
 }
 
-void SvgBuilder::epilog()
-{
-    send(tags::OPENING);
-    send(tags::STYLE);
-}
-
 void SvgBuilder::poles()
 {
     constexpr uint8_t sizeOfCoordinates = 2;
@@ -122,18 +134,6 @@ void SvgBuilder::poles()
         sprintf(result, tags::templates::POLE, (*poles_)[i].x, (*poles_)[i].y);
         send(result);
     }
-}
-
-void SvgBuilder::area()
-{
-    constexpr uint8_t sizeOfArea = 4;
-    constexpr uint8_t maximumResultSize =
-        sizeof(tags::templates::AREA) + sizeOfArea;
-
-    char result[maximumResultSize];
-    uint16_t area = polygon_->calculateArea();
-    sprintf(result, tags::templates::AREA, area);
-    send(result);
 }
 
 void SvgBuilder::prolog()

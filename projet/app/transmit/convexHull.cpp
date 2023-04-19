@@ -27,12 +27,16 @@ Point ConvexHull::pivot_ = {0, 0};
 
 Polygon ConvexHull::runGrahamScan()
 {
+    // Implementation of the Graham Scan algorithm
+    // https://en.wikipedia.org/wiki/Graham_scan#Pseudocode
+
+    // Find the point with the lowest coordinates
     findPivot();
 
     // Sort the points using their polar angles towards the pivot
     points_.sort(comparePointsWithPivot);
 
-    // Traverse the sorted points to construct the convex hull
+    // Traverse the sorted points to build the convex hull
     Array<Point> hullPoints;
     hullPoints.append(points_[0]);
     hullPoints.append(points_[1]);

@@ -52,10 +52,10 @@ public:
 
 private:
     void epilog();
+    void area();
     void polygon();
     void dots();
     void poles();
-    void area();
     void prolog();
 
     void sendChecksum();

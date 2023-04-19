@@ -68,13 +68,13 @@ void Detect::run(Led &led, Button &whiteButton, Button &interruptButton,
     bool interruptWasPressed = false;
 
     Flasher::initializeAmber(led);
-    Flasher::startFlashing();
+    Flasher::start();
 
     while (interruptWasPressed = interruptButton.isPressed(),
            whiteWasPressed = whiteButton.isPressed(),
            !interruptWasPressed && !whiteWasPressed) {}
 
-    Flasher::stopFlashing();
+    Flasher::stop();
 
     led.setColor(whiteWasPressed ? Led::Color::RED : Led::Color::GREEN);
     _delay_ms(INITIALIZATION_DELAY_MS);
@@ -126,7 +126,7 @@ void Detect::run(Led &led, Button &whiteButton, Button &interruptButton,
     // TODO: check if it doesn't cause a segfault
     Flasher::initialize(led, END_FLASH_FREQUENCY, Led::Color::RED,
                         Led::Color::OFF);
-    Flasher::startFlashing();
+    Flasher::start();
 
     while (true) {}
 }

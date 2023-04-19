@@ -1,6 +1,6 @@
 /**
  * Ensure communication integrity using a
- * 32-bit cyclic redundancy check (CRC)
+ * 32-bit cyclic redundancy check (CRC).
  *
  * USAGE:
  *  Integrity integrity;
