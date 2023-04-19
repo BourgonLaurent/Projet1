@@ -14,7 +14,9 @@ namespace alerts {
             Sound::playNote(NOTE);
             _delay_ms(PERIOD_MS);
             Sound::stop();
-            _delay_ms(PERIOD_MS);
+
+            if (N_SOUNDS > 1)
+                _delay_ms(PERIOD_MS);
         }
     }
 
