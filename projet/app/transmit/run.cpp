@@ -16,7 +16,7 @@
 #include <app/transmit/svgBuilder.hpp>
 
 namespace transmit {
-    void run(Led &led)
+    void run(Led &led, const Mode &mode)
     {
         led.setColor(Led::Color::GREEN);
         _delay_ms(INITIALIZATION_DELAY_MS);
@@ -25,9 +25,25 @@ namespace transmit {
                             Led::Color::OFF);
         Flasher::startFlashing();
 
-        Map map = MapManager::load();
-
-        Array<Point> points = MapManager::exportToPoints(map);
+        Array<Point> points;
+        switch (mode) {
+            case Mode::NORMAL : {
+                Map map = MapManager::load();
+                points = MapManager::exportToPoints(map);
+                break;
+            }
+            case Mode::DEMO : {
+                points.append({0, 2});
+                points.append({1, 1});
+                points.append({1, 2});
+                points.append({1, 3});
+                points.append({3, 1});
+                points.append({4, 2});
+                points.append({6, 2});
+                points.append({7, 3});
+                break;
+            }
+        }
 
         ConvexHull convexHull(points);
         Polygon polygon = convexHull.runGrahamScan();

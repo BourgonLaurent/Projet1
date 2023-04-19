@@ -3,6 +3,8 @@
  *  - Detect   | Interrupt : Find poles and log them on a map.
  *  - Transmit | White     : Find the convex hull formed by the poles
  *                           and send a SVG through RS232.
+ * - Demo      | Both      : Same as transmit but with
+ *                           a predefined set of points.
  *
  * Hardware Identification:
  *  NOTE: The data direction registers are set automatically.
@@ -72,12 +74,13 @@ int main()
            whiteWasPressed = white.isPressed(),
            !interruptWasPressed && !whiteWasPressed) {}
 
-    if (interruptWasPressed) {
+    if (whiteWasPressed) {
+        debug::send("Mode: transmit\n");
+        transmit::run(led, interrupt.isPressed() ? transmit::Mode::DEMO
+                                                 : transmit::Mode::NORMAL);
+    }
+    else if (interruptWasPressed) {
         debug::send("Mode: detect\n");
         // call detect main function
-    }
-    else if (whiteWasPressed) {
-        debug::send("Mode: transmit\n");
-        transmit::run(led);
     }
 }
