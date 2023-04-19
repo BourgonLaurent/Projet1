@@ -51,13 +51,14 @@ public:
 
     bool isInFront();
     bool isClose();
+    bool isTooClose();
 
-    void setDistance(uint8_t distance);
     bool isObjectDetected();
+    void setObjectDetected(bool objectDetected);
 
     void setRange(IrSensor::Range range);
-    void setObjectDetected(bool objectDetected);
-    bool isTooClose();
+    void setDistance(uint8_t distance);
+
     Range getRange();
     Distance getDistance();
 

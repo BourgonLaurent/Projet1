@@ -16,6 +16,8 @@
  * \date May 17, 2023
  */
 
+#include "detect.hpp"
+
 #include <util/delay.h>
 
 #include <lib/debug.hpp>
@@ -28,7 +30,6 @@
 #include <lib/wheels.hpp>
 
 #include <app/detect/alerts.hpp>
-#include <app/detect/detect.hpp>
 #include <app/detect/objectFinder.hpp>
 #include <app/misc/map/map.hpp>
 #include <app/misc/map/mapManager.hpp>
@@ -115,7 +116,6 @@ void Detect::run(Led &led, Button &whiteButton, Button &interruptButton,
     MapManager::save(map);
     alerts::notFound::play();
 
-    // TODO: check if it doesn't cause a segfault
     Flasher::initialize(led, END_FLASH_FREQUENCY, Led::Color::RED,
                         Led::Color::OFF);
     Flasher::start();

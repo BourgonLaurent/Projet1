@@ -24,8 +24,6 @@ Point PositionManager::getLastPosition()
 void PositionManager::setNextPositionObject(const IrSensor::Range &range,
                                             const IrSensor::Distance &distance)
 {
-    // FIXME: violates SRP
-    debug::send("Dans SetNextPosition\n");
     switch (range) {
         case IrSensor::Range::DIAGONAL :
             switch (distance) {
