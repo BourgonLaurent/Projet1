@@ -80,15 +80,13 @@ void Detect::run(Led &led, Button &whiteButton, Button &interruptButton,
     }
 
     while (true) {
-        // TODO: remove
-        debug::send("Find object from position: \n");
+        debug::send("Find object from position:\n");
         finder.sendLastPosition();
 
         led.setColor(Led::Color::OFF);
         finder.run();
 
-        // TODO: remove
-        debug::send("New position: \n");
+        debug::send("New position:\n");
         finder.sendLastPosition();
 
         if (!finder.isObjectFound()) {

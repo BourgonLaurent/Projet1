@@ -54,11 +54,8 @@ public:
     static void handleTimer();
 
 private:
-    static constexpr uint8_t N_PARK_SOUNDS = 3;
-    static constexpr uint8_t PARK_NOTE = 78;
-    static constexpr uint16_t PARK_SOUND_PERIOD_MS = 300;
-    static constexpr uint16_t END_NOTE = 45;
-    static constexpr uint16_t END_SOUND_PERIOD_MS = 2000;
+    static constexpr uint8_t N_FINDS_ON_BORDER = 2;
+    static constexpr uint8_t N_FINDS_IN_MIDDLE = 4;
 
     Border getBorder();
 
