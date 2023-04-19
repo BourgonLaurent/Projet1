@@ -73,6 +73,7 @@ void ObjectFinder::run()
 
         case Border::BOTTOM_LEFT :
         case Border::BOTTOM_RIGHT :
+            debug::send(static_cast<uint16_t>(border));
             find(border == Border::BOTTOM_LEFT ? Wheels::Side::RIGHT
                                                : Wheels::Side::LEFT);
             break;
@@ -94,10 +95,9 @@ void ObjectFinder::run()
     }
 }
 
-void ObjectFinder::find(const Wheels::Side &side, double timerLimit)
+void ObjectFinder::find(const Wheels::Side &side, const double timerLimit)
 {
     if (!irSensor_->isInFront()) {
-
         if (side == Wheels::Side::LEFT) {
             positionManager_.updateQuadrant(side);
         }
@@ -131,12 +131,19 @@ void ObjectFinder::find(const Wheels::Side &side, double timerLimit)
 void ObjectFinder::search(const Wheels::Side &side, const double timerLimit,
                           const uint8_t speed)
 {
-    timeOut_ = false;
-    InterruptTimer::setSeconds(timerLimit);
+    InterruptTimer::initialize(InterruptTimer::Mode::CLEAR_ON_COMPARE,
+                               timerLimit);
     InterruptTimer::start();
     interrupts::startCatching();
 
+    debug::send("Searching\n");
+
     Wheels::rotate(side, speed);
+
+    timeOut_ = false;
+    // while (true) {
+    //     debug::send(timeOut_);
+    // }
 
     while (!irSensor_->isInFront() && !timeOut_) {}
 

@@ -39,7 +39,7 @@ namespace constants {
     static constexpr uint8_t SPEED_VALUE_TO_PARK = 45;
 
     // vitesse du robot quand il tourne en charchant le poteau
-    static constexpr uint8_t SPEED_TURN = 55;
+    static constexpr uint8_t SPEED_TURN = 35;
 
     // vitesse du  robot quand il cherche le poteau après l'avoir perdu de vue
     static constexpr uint8_t SPEED_PARK = 40;
