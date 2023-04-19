@@ -48,10 +48,12 @@ public:
                    IrSensor &irSensor);
 
 private:
+    static constexpr uint8_t AMBER_FLASH_PERIOD_MS = 250;
+
     static States state_;
     static volatile bool buttonWasPressed_;
     static volatile bool timeOut_;
     static void initialize();
-}; // namespace detect
+};
 
 #endif

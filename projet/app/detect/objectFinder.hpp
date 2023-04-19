@@ -55,17 +55,23 @@ public:
     Point getLastPosition();
 
 private:
-    PositionManager positionManager_;
-    IrSensor* const irSensor_;
+    static constexpr uint8_t N_PARK_SOUNDS = 3;
+    static constexpr uint8_t PARK_NOTE = 78;
+    static constexpr uint16_t PARK_SOUND_PERIOD_MS = 300;
+    static constexpr uint16_t END_NOTE = 45;
+    static constexpr uint16_t END_SOUND_PERIOD_MS = 2000;
 
-    bool objectFound_ = false;
-
-    Border getCardinal();
+    Border getBorder();
 
     void turnFind(const Wheels::Side &side, volatile bool &timeOut);
     void findTurn(const Wheels::Side &side, volatile bool &timeOut);
     void findLoop(uint8_t max, const Wheels::Side &side,
                   volatile bool &timeOut);
+
+    PositionManager positionManager_;
+    IrSensor* const irSensor_;
+
+    bool objectFound_ = false;
 };
 
 #endif

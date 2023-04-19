@@ -104,19 +104,18 @@ void ObjectFinder::search(const Wheels::Side &side, volatile bool &timeOut,
 
 void ObjectFinder::alertParked()
 {
-
-    for (uint8_t i = 0; i < 3; i++) {
-        Sound::playNote(constants::HIGH_NOTE);
-        _delay_ms(constants::DELAY_ALERT_PARKED_MS);
+    for (uint8_t i = 0; i < N_PARK_SOUNDS; i++) {
+        Sound::playNote(PARK_NOTE);
+        _delay_ms(PARK_SOUND_PERIOD_MS);
         Sound::stop();
-        _delay_ms(constants::DELAY_ALERT_PARKED_MS);
+        _delay_ms(PARK_SOUND_PERIOD_MS);
     }
 }
 
 void ObjectFinder::alertFoundNothing()
 {
-    Sound::playNote(constants::LOW_NOTE);
-    _delay_ms(constants::DELAY_FOUND_NOTHING_MS);
+    Sound::playNote(END_NOTE);
+    _delay_ms(END_SOUND_PERIOD_MS);
     Sound::stop();
 }
 
@@ -157,7 +156,7 @@ void ObjectFinder::finder(volatile bool &timeOut)
     objectFound_ = false;
     irSensor_->setObjectDetected(false);
 
-    auto finderWithPosition = getCardinal();
+    auto finderWithPosition = getBorder();
     positionManager_.resetQuadrant();
 
     irSensor_->setRange(IrSensor::Range::STRAIGHT);
@@ -228,7 +227,7 @@ void ObjectFinder::finder(volatile bool &timeOut)
     }
 }
 
-Border ObjectFinder::getCardinal()
+Border ObjectFinder::getBorder()
 {
     auto position = positionManager_.getLastPosition();
     auto cardinal = Border::MIDDLE;

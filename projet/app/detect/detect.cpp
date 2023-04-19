@@ -125,8 +125,8 @@ int Detect::run(Led &led, Button &whiteButton, Button &interruptButton,
                 InterruptButton::initialize(InterruptButton::Mode::ANY);
                 interrupts::startCatching();
 
-                led.setAmberForMs(constants::DELAY_LED_AMBER_2HZ_MS);
-                _delay_ms(constants::DELAY_LED_AMBER_2HZ_MS);
+                led.setAmberForMs(AMBER_FLASH_PERIOD_MS);
+                _delay_ms(AMBER_FLASH_PERIOD_MS);
 
                 if (buttonWasPressed_) {
                     state_ = States::FIND_OBJECT;

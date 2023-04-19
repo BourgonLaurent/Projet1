@@ -19,17 +19,8 @@
 #include <lib/irSensor.hpp>
 
 namespace constants {
-    // Constants for the project
-    static constexpr uint8_t HIGH_NOTE = 78;
-    static constexpr uint8_t LOW_NOTE = 45;
-    static constexpr io::Position SENSOR = PA0;
-
     // Used by detect
-    static constexpr uint16_t DELAY_FOUND_NOTHING_MS = 2000;
-    static constexpr uint16_t DELAY_ALERT_PARKED_MS = 300;
-    static constexpr uint8_t DELAY_LED_AMBER_MS = 20;
     static constexpr double DELAY_TURN_90_MS = 2.0;
-    static constexpr uint8_t DELAY_LED_AMBER_2HZ_MS = 250;
 
     // Constants unique to the robot
     // Used by ObjectFinder
