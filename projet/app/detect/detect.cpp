@@ -140,7 +140,8 @@ int Detect::run(Led &led, Button &whiteButton, Button &interruptButton,
                 finder.alertFoundNothing();
 
                 // TODO: check if it doesn't cause a segfault
-                Flasher::initialize(led, 2, Led::Color::RED, Led::Color::OFF);
+                Flasher::initialize(led, END_FLASH_FREQUENCY, Led::Color::RED,
+                                    Led::Color::OFF);
                 Flasher::startFlashing();
                 while (true) {}
                 break;
