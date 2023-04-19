@@ -44,9 +44,8 @@ public:
 
     static void handleTimer();
     static void handleButtonPress();
-
-    static int run(Led &led, Button &whiteButton, Button &interruptButton,
-                   IrSensor &irSensor);
+    static void run(Led &led, Button &whiteButton, Button &interruptButton,
+                    IrSensor &irSensor);
 
 private:
     static constexpr uint8_t AMBER_FLASH_PERIOD_MS = 250;
@@ -54,6 +53,7 @@ private:
     static constexpr uint16_t INITIALIZATION_DELAY_MS = 2000;
 
     static void initialize();
+    static void waitToContinue();
 
     static States state_;
     static volatile bool buttonWasPressed_;
