@@ -27,6 +27,7 @@
 #include <lib/sound.hpp>
 #include <lib/wheels.hpp>
 
+#include <app/detect/alerts.hpp>
 #include <app/detect/detect.hpp>
 #include <app/detect/objectFinder.hpp>
 #include <app/misc/map/map.hpp>
@@ -115,7 +116,8 @@ int Detect::run(Led &led, Button &whiteButton, Button &interruptButton,
                 break;
 
             case States::FOUND_OBJECT :
-                finder.alertParked();
+                alerts::parked::play();
+
                 Point detectedPosition;
                 detectedPosition = finder.getLastPosition();
 
@@ -142,7 +144,8 @@ int Detect::run(Led &led, Button &whiteButton, Button &interruptButton,
 
             case States::FOUND_NOTHING :
                 MapManager::save(map);
-                finder.alertFoundNothing();
+
+                alerts::notFound::play();
 
                 // TODO: check if it doesn't cause a segfault
                 Flasher::initialize(led, END_FLASH_FREQUENCY, Led::Color::RED,

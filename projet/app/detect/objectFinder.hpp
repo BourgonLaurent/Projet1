@@ -40,8 +40,6 @@ public:
     void find(const Wheels::Side &side, volatile bool &timeOut,
               double timerLimit = constants::DELAY_FIND_MS);
 
-    void alertParked();
-    void alertFoundNothing();
     bool isObjectFound();
     void sendLastPosition();
 

@@ -39,6 +39,7 @@ void PositionManager::setNextPositionObject(const IrSensor::Range &range,
                     break;
             }
             break;
+
         case IrSensor::Range::STRAIGHT :
             switch (distance) {
                 case IrSensor::Distance::CLOSE :
