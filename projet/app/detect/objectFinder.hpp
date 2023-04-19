@@ -34,11 +34,11 @@ public:
 
     void run();
 
-    void search(const Wheels::Side &side, double timerLimit,
-                uint8_t speed = constants::SPEED_TURN);
+    void search(const Wheels::Side &side, const double timerLimit,
+                const uint8_t speed = constants::SPEED_TURN);
     void park(const Wheels::Side &side);
     void find(const Wheels::Side &side,
-              double timerLimit = constants::DELAY_FIND_MS);
+              const double timerLimit = constants::DELAY_FIND_MS);
 
     bool isObjectFound();
     void sendLastPosition();
@@ -64,7 +64,7 @@ private:
 
     void turnFind(const Wheels::Side &side);
     void findTurn(const Wheels::Side &side);
-    void findLoop(uint8_t max, const Wheels::Side &side);
+    void findLoop(const uint8_t max, const Wheels::Side &side);
 
     static bool timeOut_;
 

@@ -85,8 +85,8 @@ void ObjectFinder::find(const Wheels::Side &side, double timerLimit)
         park(side);
 }
 
-void ObjectFinder::search(const Wheels::Side &side, double timerLimit,
-                          uint8_t speed)
+void ObjectFinder::search(const Wheels::Side &side, const double timerLimit,
+                          const uint8_t speed)
 {
     InterruptTimer::setSeconds(timerLimit);
     timeOut_ = false;
@@ -121,10 +121,10 @@ void ObjectFinder::findTurn(const Wheels::Side &side)
     }
 }
 
-void ObjectFinder::findLoop(uint8_t max, const Wheels::Side &side)
+void ObjectFinder::findLoop(const uint8_t maximum, const Wheels::Side &side)
 {
     uint8_t loopCount = 0;
-    while (!irSensor_->isObjectDetected() && loopCount < max) {
+    while (!irSensor_->isObjectDetected() && loopCount < maximum) {
         loopCount++;
         find(side,
              constants::DELAY_FIND_MS
