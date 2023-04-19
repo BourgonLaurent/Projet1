@@ -1,3 +1,19 @@
+/**
+ * Emmit sound alerts using the piezoelectric buzzer
+ *
+ * USAGE:
+ *  alerts::parked::play();
+ *  // or
+ *  alerts::notFound::play();
+ *
+ * Team #4546
+ *  \author Catalina Andrea Araya Figueroa
+ *  \author Mehdi Benouhoud
+ *  \author Laurent Bourgon
+ *  \author Ihsane Majdoubi
+ *
+ * \date April 19th, 2023
+ */
 #ifndef ALERTS_H
 #define ALERTS_H
 

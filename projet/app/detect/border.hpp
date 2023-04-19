@@ -1,3 +1,23 @@
+/**
+ * Represents the position of the robot relative to the borders of the grid
+ *
+ * USAGE:
+ *  switch(variable: Border) {
+ *      case Border::TOP:
+ *      break;
+ *      case Border:BOTTOM_LEFT:
+ *      break;
+ *      default:
+ *  }
+ *
+ * Team #4546
+ *  \author Catalina Andrea Araya Figueroa
+ *  \author Mehdi Benouhoud
+ *  \author Laurent Bourgon
+ *  \author Ihsane Majdoubi
+ *
+ * \date April 19th, 2023
+ */
 #ifndef BORDER_H
 #define BORDER_H
 
