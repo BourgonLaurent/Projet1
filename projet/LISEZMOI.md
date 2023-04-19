@@ -25,9 +25,9 @@ Présenté, le jeudi 20 avril 2023, à
 Au lancement du programme, le programme attend la sélection du mode
 par les deux boutons.
 
-- Le bouton *interrupt* sur la carte mère lance le mode détection.
-
-- Le bouton blanc sur le *breadboard* lance le mode transmission.
+- Le bouton *interrupt* sur la carte mère lance le mode [détection](#détection).
+- Le bouton blanc sur le *breadboard* lance le mode [transmission](#transmission).
+- Les deux boutons lance le mode [transmission en démonstration](#mode-démonstration).
 
 ### Détection
 
@@ -85,6 +85,16 @@ voici le format de transmission:
 ║                0x04                ║
 ╚════════════════════════════════════╝
 ```
+
+#### Mode démonstration
+
+Ce mode est une variante du mode transmission.
+Cependant, au lieu de lire la mémoire, le programme
+va charger des points pré-configurés.
+Cela est utile si jamais la [détection](#détection) fonctionne incorrectement.
+
+Voici le résultat attendu du mode démonstration:
+![résultat démonstration](demo_4546.svg)
 
 ## Configuration électronique
 

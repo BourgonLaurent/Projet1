@@ -11,6 +11,7 @@
 # Rules:
 # 	`make all` (default): build the project
 # 	`make install`: build & flash the project
+#	`make debug`: build & flash the project with debug flags
 # 	`make clean`: remove compilation artifacts
 
 # Project name (in one word)

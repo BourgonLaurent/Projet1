@@ -10,6 +10,7 @@
 #
 # Rules:
 # 	make all (default): build the library
+# 	make debug: build the library with DEBUG flag
 # 	make clean: remove compilation artifacts
 
 
