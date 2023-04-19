@@ -43,12 +43,16 @@ public:
     bool isObjectFound();
     void sendLastPosition();
 
-    // FIXME: 5 parameters is too much
-    bool isObjectInFront(volatile bool &timeOut,
-                         Wheels::Side side = Wheels::Side::RIGHT,
-                         double delay1 = constants::FIRST_DELAY_IS_IN_FRONT_MS,
-                         double delay2 = constants::SECOND_DELAY_IS_IN_FRONT_MS,
-                         uint8_t speed = constants::SPEED_TURN);
+    struct Delay {
+        double first;
+        double second;
+    };
+
+    bool isObjectInFront(
+        volatile bool &timeOut, Wheels::Side side = Wheels::Side::RIGHT,
+        const Delay &delay = {constants::FIRST_DELAY_IS_IN_FRONT_MS,
+                              constants::SECOND_DELAY_IS_IN_FRONT_MS},
+        uint8_t speed = constants::SPEED_TURN);
 
     Point getLastPosition();
 

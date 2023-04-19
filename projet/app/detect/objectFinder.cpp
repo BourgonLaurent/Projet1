@@ -24,12 +24,12 @@ ObjectFinder::ObjectFinder(IrSensor &irSensor) : irSensor_(&irSensor){};
 
 void ObjectFinder::park(volatile bool &timeOut, const Wheels::Side &side)
 {
-    isObjectInFront(timeOut, !side, constants::FIRST_DELAY_IN_FRONT_PARK_MS,
-                    constants::SECOND_DELAY_IN_FRONT_PARK_MS,
+    isObjectInFront(timeOut, !side,
+                    {constants::FIRST_DELAY_IN_FRONT_PARK_MS,
+                     constants::SECOND_DELAY_IN_FRONT_PARK_MS},
                     constants::SPEED_PARK);
 
     while (!irSensor_->isClose()) {
-
         Wheels::setSpeed(constants::SPEED_VALUE_TO_PARK);
 
         while (irSensor_->isTooClose()) {
@@ -40,8 +40,8 @@ void ObjectFinder::park(volatile bool &timeOut, const Wheels::Side &side)
 
         if (!irSensor_->isInFront()) {
             isObjectInFront(timeOut, Wheels::Side::LEFT,
-                            constants::FIRST_DELAY_IN_FRONT_PARK_MS,
-                            constants::SECOND_DELAY_IN_FRONT_PARK_MS,
+                            {constants::FIRST_DELAY_IN_FRONT_PARK_MS,
+                             constants::SECOND_DELAY_IN_FRONT_PARK_MS},
                             constants::SPEED_PARK);
         }
     }
@@ -103,7 +103,7 @@ void ObjectFinder::turnFind(const Wheels::Side &side, volatile bool &timeOut)
     Wheels::turn90(side);
     positionManager_.updateQuadrant(side);
     if (!isObjectInFront(timeOut, side))
-        find(side, timeOut, 3.0); // pourquoi 3.0 secondes?????
+        find(side, timeOut);
     _delay_ms(constants::DELAY_AFTER_FIND_MS);
 }
 
@@ -248,15 +248,15 @@ void ObjectFinder::sendLastPosition()
 }
 
 bool ObjectFinder::isObjectInFront(volatile bool &timeOut, Wheels::Side side,
-                                   double delay1, double delay2, uint8_t speed)
+                                   const Delay &delay, uint8_t speed)
 {
     debug::send("Checking in front\n");
 
     if (!irSensor_->isInFront())
-        search(side, timeOut, delay1, speed);
+        search(side, timeOut, delay.first, speed);
 
     if (!irSensor_->isInFront())
-        search(!side, timeOut, delay2, speed);
+        search(!side, timeOut, delay.second, speed);
 
     return irSensor_->isObjectDetected();
 }
