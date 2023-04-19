@@ -250,7 +250,7 @@ void ObjectFinder::sendLastPosition()
 bool ObjectFinder::isObjectInFront(volatile bool &timeOut, Wheels::Side side,
                                    double delay1, double delay2, uint8_t speed)
 {
-    debug::send("Mini Find \n");
+    debug::send("Checking in front\n");
 
     if (!irSensor_->isInFront())
         search(side, timeOut, delay1, speed);

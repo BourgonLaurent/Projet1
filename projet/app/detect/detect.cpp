@@ -53,34 +53,33 @@ void Detect::initialize()
     InterruptButton::initialize(InterruptButton::Mode::RISING);
     InterruptTimer::initialize(InterruptTimer::Mode::CLEAR_ON_COMPARE,
                                constants::DELAY_TURN_90_MS);
+    interrupts::stopCatching();
 }
 
 void Detect::run(Led &led, Button &whiteButton, Button &interruptButton,
                  IrSensor &irSensor)
 {
     initialize();
-    interrupts::stopCatching();
 
     Map map;
     ObjectFinder finder(irSensor);
 
-    bool whiteWasPressed = false;
-    bool interruptWasPressed = false;
-
     Flasher::initializeAmber(led);
     Flasher::start();
 
-    while (interruptWasPressed = interruptButton.isPressed(),
-           whiteWasPressed = whiteButton.isPressed(),
-           !interruptWasPressed && !whiteWasPressed) {}
+    bool pointUp = false;
+    bool pointRight = false;
+
+    while (pointUp = interruptButton.isPressed(),
+           pointRight = whiteButton.isPressed(), !pointUp && !pointRight) {}
 
     Flasher::stop();
 
-    led.setColor(whiteWasPressed ? Led::Color::RED : Led::Color::GREEN);
+    led.setColor(pointRight ? Led::Color::RED : Led::Color::GREEN);
     _delay_ms(INITIALIZATION_DELAY_MS);
     led.setColor(Led::Color::OFF);
 
-    if (whiteWasPressed) {
+    if (pointRight) {
         Wheels::turn90(Wheels::Side::LEFT);
         finder.isObjectInFront(timeOut_, Wheels::Side::RIGHT);
     }
