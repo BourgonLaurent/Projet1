@@ -36,93 +36,98 @@ volatile bool Detect::timeOut_ = false;
 volatile bool Detect::buttonWasPressed_ = false;
 Detect::States Detect::state_ = Detect::States::SET_DIRECTION;
 
+void Detect::handleButtonPress()
+{
+    buttonWasPressed_ = true;
+    interrupts::stopCatching();
+}
+
+void Detect::handleTimer()
+{
+    timeOut_ = true;
+}
+
 void Detect::initialize()
 {
     Wheels::initialize();
     Sound::initialize();
-    // InterruptButton::initialize(InterruptButton::Mode::ANY);
+    InterruptButton::initialize(InterruptButton::Mode::RISING);
     InterruptTimer::initialize(InterruptTimer::Mode::CLEAR_ON_COMPARE,
                                constants::DELAY_TURN_90_MS);
-}
-
-void Detect::buttonWasPressed()
-{
-    Detect::buttonWasPressed_ = true;
-    interrupts::stopCatching();
-}
-
-void Detect::checkTimerValue()
-{
-    Detect::timeOut_ = true;
 }
 
 int Detect::run(Led &led, Button &whiteButton, Button &interruptButton,
                 IrSensor &irSensor)
 {
     initialize();
+
     Map map;
     ObjectFinder finder(irSensor);
+
     interrupts::stopCatching();
+
     while (true) {
         switch (state_) {
             case States::SET_DIRECTION :
                 led.setAmberForMs(AMBER_FLASH_PERIOD_MS);
 
-                if (whiteButton.isPressed())
+                if (whiteButton.isPressed()) {
                     state_ = States::RIGHT;
-                else if (interruptButton.isPressed())
+                }
+                else if (interruptButton.isPressed()) {
                     state_ = States::UP;
+                }
 
                 break;
 
             case States::RIGHT :
                 led.setColor(Led::Color::RED);
-                _delay_ms(2000);
+                _delay_ms(INITIALIZATION_DELAY_MS);
                 led.setColor(Led::Color::OFF);
-                state_ = States::FROM_RIGH_UP;
-                break;
 
-            case States::FROM_RIGH_UP :
                 Wheels::turn90(Wheels::Side::LEFT);
                 finder.isObjectInFront(timeOut_, Wheels::Side::RIGHT);
+
                 state_ = States::FIND_OBJECT;
                 break;
 
             case States::UP :
                 led.setColor(Led::Color::GREEN);
-                _delay_ms(2000);
+                _delay_ms(INITIALIZATION_DELAY_MS);
                 led.setColor(Led::Color::OFF);
+
                 state_ = States::FIND_OBJECT;
                 break;
 
             case States::FIND_OBJECT :
                 debug::send("Find object from position: \n"); // à enlever
                 finder.sendLastPosition();                    // à enlever
+
                 led.setColor(Led::Color::OFF);
                 InterruptButton::clear();
                 finder.finder(timeOut_);
+
                 debug::send("New position: \n"); // à enlever
                 finder.sendLastPosition();       // à enlever
 
-                if (finder.isObjectFound()) {
-                    state_ = States::FOUND_OBJECT;
-                }
-                else {
-                    state_ = States::FOUND_NOTHING;
-                }
+                state_ = finder.isObjectFound() ? States::FOUND_OBJECT
+                                                : States::FOUND_NOTHING;
                 break;
 
             case States::FOUND_OBJECT :
                 finder.alertParked();
                 Point detectedPosition;
                 detectedPosition = finder.getLastPosition();
-                if (detectedPosition.x <= 7 && detectedPosition.y <= 3)
+
+                if (detectedPosition.x <= Map::N_COLUMNS - 1
+                    && detectedPosition.y <= Column::N_SLOTS - 1) {
                     map[detectedPosition.x][detectedPosition.y].set();
+                }
+
                 state_ = States::WAIT_NEXT_DETECTION;
                 break;
 
             case States::WAIT_NEXT_DETECTION :
-                InterruptButton::initialize(InterruptButton::Mode::ANY);
                 interrupts::startCatching();
 
                 led.setAmberForMs(AMBER_FLASH_PERIOD_MS);
@@ -144,6 +149,7 @@ int Detect::run(Led &led, Button &whiteButton, Button &interruptButton,
                                     Led::Color::OFF);
                 Flasher::startFlashing();
                 while (true) {}
+
                 break;
         }
     }

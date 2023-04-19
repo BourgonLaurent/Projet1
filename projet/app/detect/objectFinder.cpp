@@ -35,12 +35,13 @@ void ObjectFinder::park(volatile bool &timeOut, const Wheels::Side &side)
 
     while (!irSensor_->isClose()) {
 
+        Wheels::setSpeed(constants::SPEED_VALUE_TO_PARK);
+
         while (irSensor_->isTooClose()) {
             Wheels::setDirection(Wheels::Direction::BACKWARD);
-            Wheels::setSpeed(constants::SPEED_VALUE_TO_PARK);
         }
+
         Wheels::setDirection(Wheels::Direction::FORWARD);
-        Wheels::setSpeed(constants::SPEED_VALUE_TO_PARK);
 
         if (!irSensor_->isInFront()) {
             isObjectInFront(timeOut, Wheels::Side::LEFT,

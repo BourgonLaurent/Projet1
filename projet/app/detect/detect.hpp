@@ -34,7 +34,6 @@ public:
     {
         SET_DIRECTION,
         RIGHT,
-        FROM_RIGH_UP,
         UP,
         FIND_OBJECT,
         FOUND_NOTHING,
@@ -42,19 +41,23 @@ public:
         WAIT_NEXT_DETECTION
 
     };
-    static void checkTimerValue();
-    static void buttonWasPressed();
+
+    static void handleTimer();
+    static void handleButtonPress();
+
     static int run(Led &led, Button &whiteButton, Button &interruptButton,
                    IrSensor &irSensor);
 
 private:
     static constexpr uint8_t AMBER_FLASH_PERIOD_MS = 250;
     static constexpr uint8_t END_FLASH_FREQUENCY = 2;
+    static constexpr uint16_t INITIALIZATION_DELAY_MS = 2000;
+
+    static void initialize();
 
     static States state_;
     static volatile bool buttonWasPressed_;
     static volatile bool timeOut_;
-    static void initialize();
 };
 
 #endif

@@ -59,13 +59,13 @@
 ISR(InterruptTimer_vect)
 {
     Flasher::handleFlash();
-    Detect::checkTimerValue();
+    Detect::handleTimer();
 }
 
 ISR(InterruptButton_vect)
 {
     InterruptButton::waitForDebounce();
-    Detect::buttonWasPressed();
+    Detect::handleButtonPress();
     InterruptButton::clear();
 }
 

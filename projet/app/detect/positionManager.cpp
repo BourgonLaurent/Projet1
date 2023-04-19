@@ -71,9 +71,7 @@ void PositionManager::updateQuadrant(const Wheels::Side &side)
     else
         quadrant_ = (quadrant_ == 0) ? 3 : quadrant_ - 1;
 
-    debug::send("le quadrant est maintenant : ");
-    debug::send(quadrant_);
-    debug::send("\n");
+    debug::send("Quadrant", quadrant_);
 }
 
 void PositionManager::setPositionDiagonal(uint8_t difference, uint8_t quadrant)
