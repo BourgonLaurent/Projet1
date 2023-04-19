@@ -197,9 +197,3 @@ void Wheels::stopRotating(const Side &side)
     _delay_ms(TURN_TIMEOUT_MS);
     invertDirection(side);
 }
-
-Wheels::Side operator!(const Wheels::Side &side)
-{
-    return side == Wheels::Side::LEFT ? Wheels::Side::RIGHT
-                                      : Wheels::Side::LEFT;
-}

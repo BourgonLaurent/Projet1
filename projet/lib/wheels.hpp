@@ -82,6 +82,10 @@ private:
     static io::Position rightDirection_;
 };
 
-Wheels::Side operator!(const Wheels::Side &side);
+constexpr Wheels::Side operator!(const Wheels::Side &side)
+{
+    return side == Wheels::Side::LEFT ? Wheels::Side::RIGHT
+                                      : Wheels::Side::LEFT;
+}
 
 #endif
