@@ -15,7 +15,6 @@
 
 #include "irSensor.hpp"
 
-#include <app/detect/constants.hpp>
 #include <lib/debug.hpp>
 
 #include <lib/interruptTimer.hpp>

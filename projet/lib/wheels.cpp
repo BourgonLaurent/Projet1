@@ -29,6 +29,7 @@
 
 #include <util/delay.h>
 
+// FIXME: library should not be aware of the application
 #include <app/detect/constants.hpp>
 #include <lib/debug.hpp>
 #include <lib/io.hpp>
