@@ -24,36 +24,31 @@ namespace constants {
 
     // Constants unique to the robot
     // Used by ObjectFinder
+    // le robot vérifie si le poteau est devant lui après avoir tourné
     static constexpr double FIRST_DELAY_IS_IN_FRONT_MS = 1.0;
-    static constexpr double SECOND_DELAY_IS_IN_FRONT_MS = 0.8;  // 1.75
-    //le robot vérifie si le poteau est devant lui après avoir tourné
+    static constexpr double SECOND_DELAY_IS_IN_FRONT_MS = 0.8; // 1.75
 
+    // le robot cherche le poteau après l'avoir perdu de vue
     static constexpr double FIRST_DELAY_IN_FRONT_PARK_MS = 1.5; // 1.5
     static constexpr double SECOND_DELAY_IN_FRONT_PARK_MS = 2.0;
-    //le robot cherche le poteau après l'avoir perdu de vue 
 
+    // le robot cherche en le poteau en tourant
     static constexpr double DELAY_FIND_MS = 2.00;
-    //le robot cherche en le poteau en tourant 
 
+    // vitesse du robot quand il se dirige vers le poteau
     static constexpr uint8_t SPEED_VALUE_TO_PARK = 45;
-    //vitesse du robot quand il se dirige vers le poteau
 
+    // vitesse du robot quand il tourne en charchant le poteau
     static constexpr uint8_t SPEED_TURN = 55;
-    //vitess du robot quand il tourne en charchant le poteau
-    
+
+    // vitesse du  robot quand il cherche le poteau après l'avoir perdu de vue
     static constexpr uint8_t SPEED_PARK = 40;
-    //vitesse du  robot quand il cherche le poteau après l'avoir perdu de vue 
 
     static constexpr uint8_t DELAY_TURN_MIDDLE_OBJECT_MS = 100;
     static constexpr uint16_t DELAY_TURNOFF_MS = 125;
     static constexpr double DELAY_INCREMENT_FIND_LOOP = 0.5;
     static constexpr uint16_t DELAY_BETWEEN_FINDS_MS = 1500;
     static constexpr uint16_t DELAY_AFTER_FIND_MS = 1000;
-    // Used by wheels
-    static constexpr uint16_t TURN_DURATION_MS = 2250;
-    static constexpr uint8_t TURN_TIMEOUT_MS = 125;
-    static constexpr uint8_t SPEED_TURN_90 = 48;
-    static constexpr uint8_t SPEED_DIFFERENCE_BETWEEN_WHEELS = 5;
 
     // Constants for the IrSensor
     static constexpr IrSensor::Calibration CALIBRATION = {

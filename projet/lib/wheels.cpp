@@ -29,8 +29,6 @@
 
 #include <util/delay.h>
 
-// FIXME: library should not be aware of the application
-#include <app/detect/constants.hpp>
 #include <lib/debug.hpp>
 #include <lib/io.hpp>
 
@@ -170,13 +168,13 @@ void Wheels::turn(const Side &side)
 
     turnOff();
     invertDirection(side);
-    _delay_ms(constants::TURN_TIMEOUT_MS);
+    _delay_ms(TURN_TIMEOUT_MS);
 
-    setSpeed(constants::SPEED_TURN_90);
-    _delay_ms(constants::TURN_DURATION_MS);
+    setSpeed(SPEED_TURN_90);
+    _delay_ms(TURN_DURATION_MS);
 
     turnOff();
-    _delay_ms(constants::TURN_TIMEOUT_MS);
+    _delay_ms(TURN_TIMEOUT_MS);
     invertDirection(side);
 
     OCR2B = savedLeftSpeed;
@@ -185,18 +183,18 @@ void Wheels::turn(const Side &side)
 
 void Wheels::rotate(const Side &side, const uint8_t speed)
 {
-
     turnOff();
     invertDirection(side);
-    _delay_ms(constants::TURN_TIMEOUT_MS);
+    _delay_ms(TURN_TIMEOUT_MS);
 
     setSpeed(speed, Side::LEFT);
-    setSpeed(speed + constants::SPEED_DIFFERENCE_BETWEEN_WHEELS, Side::RIGHT);
+    setSpeed(speed + SPEED_DIFFERENCE_BETWEEN_WHEELS, Side::RIGHT);
 }
+
 void Wheels::stopRotating(const Side &side)
 {
     turnOff();
-    _delay_ms(constants::TURN_TIMEOUT_MS);
+    _delay_ms(TURN_TIMEOUT_MS);
     invertDirection(side);
 }
 

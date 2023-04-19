@@ -69,6 +69,11 @@ private:
 
     static constexpr uint8_t TOP_VALUE = 0xFF; // (p. 153)
 
+    static constexpr uint16_t TURN_DURATION_MS = 2250;
+    static constexpr uint8_t TURN_TIMEOUT_MS = 125;
+    static constexpr uint8_t SPEED_TURN_90 = 48;
+    static constexpr uint8_t SPEED_DIFFERENCE_BETWEEN_WHEELS = 5;
+
     static io::DataDirectionRegister dataDirectionRegister_;
     static io::Port port_;
     static io::Position leftEnable_;
