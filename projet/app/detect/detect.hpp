@@ -48,15 +48,13 @@ public:
                     IrSensor &irSensor);
 
 private:
+    static constexpr uint16_t INITIALIZATION_DELAY_MS = 2000;
     static constexpr uint8_t AMBER_FLASH_PERIOD_MS = 250;
     static constexpr uint8_t END_FLASH_FREQUENCY = 2;
-    static constexpr uint16_t INITIALIZATION_DELAY_MS = 2000;
 
     static void initialize();
-    static void waitToContinue();
 
-    static States state_;
-    static volatile bool buttonWasPressed_;
+    static volatile bool interruptButtonWasPressed_;
     static volatile bool timeOut_;
 };
 

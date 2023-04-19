@@ -33,12 +33,11 @@
 #include <app/misc/map/mapManager.hpp>
 
 volatile bool Detect::timeOut_ = false;
-volatile bool Detect::buttonWasPressed_ = false;
-Detect::States Detect::state_ = Detect::States::SET_DIRECTION;
+volatile bool Detect::interruptButtonWasPressed_ = false;
 
 void Detect::handleButtonPress()
 {
-    buttonWasPressed_ = true;
+    interruptButtonWasPressed_ = true;
     interrupts::stopCatching();
 }
 
@@ -87,14 +86,16 @@ void Detect::run(Led &led, Button &whiteButton, Button &interruptButton,
     }
 
     while (true) {
-        debug::send("Find object from position: \n"); // à enlever
-        finder.sendLastPosition();                    // à enlever
+        // TODO: remove
+        debug::send("Find object from position: \n");
+        finder.sendLastPosition();
 
         led.setColor(Led::Color::OFF);
         finder.finder(timeOut_);
 
-        debug::send("New position: \n"); // à enlever
-        finder.sendLastPosition();       // à enlever
+        // TODO: remove
+        debug::send("New position: \n");
+        finder.sendLastPosition();
 
         if (!finder.isObjectFound()) {
             break;
@@ -108,7 +109,9 @@ void Detect::run(Led &led, Button &whiteButton, Button &interruptButton,
             map[detectedPosition.x][detectedPosition.y].set();
         }
 
-        waitToContinue();
+        interrupts::startCatching();
+        while (!interruptButtonWasPressed_) {}
+        interruptButtonWasPressed_ = false;
     }
 
     MapManager::save(map);
@@ -120,16 +123,4 @@ void Detect::run(Led &led, Button &whiteButton, Button &interruptButton,
     Flasher::startFlashing();
 
     while (true) {}
-}
-
-void Detect::waitToContinue()
-{
-    while (true) {
-        interrupts::startCatching();
-
-        if (buttonWasPressed_) {
-            buttonWasPressed_ = false;
-            return;
-        }
-    }
 }
