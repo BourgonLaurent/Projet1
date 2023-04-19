@@ -207,30 +207,30 @@ void ObjectFinder::sendLastPosition()
 
 Border ObjectFinder::getBorder()
 {
-    auto position = positionManager_.getLastPosition();
-    auto cardinal = Border::MIDDLE;
+    Point position = positionManager_.getLastPosition();
+    Border border = Border::MIDDLE;
 
     switch (position.x) {
         case 0 :
-            cardinal |= Border::LEFT;
+            border |= Border::LEFT;
             break;
 
         case Map::N_COLUMNS - 1 :
-            cardinal |= Border::RIGHT;
+            border |= Border::RIGHT;
             break;
     }
 
     switch (position.y) {
         case 0 :
-            cardinal |= Border::BOTTOM;
+            border |= Border::BOTTOM;
             break;
 
         case Column::N_SLOTS - 1 :
-            cardinal |= Border::TOP;
+            border |= Border::TOP;
             break;
     }
 
-    return cardinal;
+    return border;
 }
 
 void ObjectFinder::turnFind(const Wheels::Side &side)
