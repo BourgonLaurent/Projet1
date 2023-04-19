@@ -13,7 +13,7 @@
  *  Wheels::setSpeed(0.2, Wheels::Side::LEFT);
  *  Wheels::setSpeed(0.6, Wheels::Side::RIGHT);
  *  Wheels::invertDirection(Side::LEFT);
- *  Wheels::turn(Side::LEFT);
+ *  Wheels::rotate(Side::LEFT);
  *  turnOff(Side::RIGHT)
  *
  * Team #4546
@@ -52,15 +52,22 @@ public:
 
     static void setDirection(const Direction &direction,
                              const Side &side = Side::BOTH);
-    static void turn90(const Side &side);
-    static void turn(const Side &side, const uint8_t speed);
-    static void stopTurn(const Side &side);
     static void invertDirection(const Side &side);
+
+    static void turn(const Side &side);
+
+    static void rotate(const Side &side, const uint8_t speed);
+    static void stopRotating(const Side &side);
+
     static void setSpeed(const uint8_t speed, const Side &side = Side::BOTH);
     static void turnOff(const Side &side = Side::BOTH);
 
 private:
-    static constexpr uint8_t TOP_VALUE = 0xFF; // p. 153
+    static void setDirectionOfPin(const Direction &direction,
+                                  const io::Position pin);
+    static void configureOutputPins(const Side &side);
+
+    static constexpr uint8_t TOP_VALUE = 0xFF; // (p. 153)
 
     static io::DataDirectionRegister dataDirectionRegister_;
     static io::Port port_;
@@ -68,10 +75,6 @@ private:
     static io::Position leftDirection_;
     static io::Position rightEnable_;
     static io::Position rightDirection_;
-
-    static void setDirectionOfPin(const Direction &direction,
-                                  const io::Position pin);
-    static void configureOutputPins(const Side &side);
 };
 
 Wheels::Side operator!(const Wheels::Side &side);

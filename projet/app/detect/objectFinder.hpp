@@ -43,16 +43,11 @@ public:
     bool isObjectFound();
     void sendLastPosition();
 
-    struct Delay {
-        double first;
-        double second;
-    };
-
     bool isObjectInFront(
-        Wheels::Side side = Wheels::Side::RIGHT,
-        const Delay &delay = {constants::FIRST_DELAY_IS_IN_FRONT_MS,
-                              constants::SECOND_DELAY_IS_IN_FRONT_MS},
-        uint8_t speed = constants::SPEED_TURN);
+        const Wheels::Side &side = Wheels::Side::RIGHT,
+        const uint8_t firstDelay = constants::FIRST_DELAY_IS_IN_FRONT_MS,
+        const uint8_t secondDelay = constants::SECOND_DELAY_IS_IN_FRONT_MS,
+        const uint8_t speed = constants::SPEED_TURN);
 
     Point getLastPosition();
 

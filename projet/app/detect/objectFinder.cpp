@@ -31,9 +31,8 @@ ObjectFinder::ObjectFinder(IrSensor &irSensor) : irSensor_(&irSensor){};
 
 void ObjectFinder::park(const Wheels::Side &side)
 {
-    isObjectInFront(!side,
-                    {constants::FIRST_DELAY_IN_FRONT_PARK_MS,
-                     constants::SECOND_DELAY_IN_FRONT_PARK_MS},
+    isObjectInFront(!side, constants::FIRST_DELAY_IN_FRONT_PARK_MS,
+                    constants::SECOND_DELAY_IN_FRONT_PARK_MS,
                     constants::SPEED_PARK);
 
     while (!irSensor_->isClose()) {
@@ -47,8 +46,8 @@ void ObjectFinder::park(const Wheels::Side &side)
 
         if (!irSensor_->isInFront()) {
             isObjectInFront(Wheels::Side::LEFT,
-                            {constants::FIRST_DELAY_IN_FRONT_PARK_MS,
-                             constants::SECOND_DELAY_IN_FRONT_PARK_MS},
+                            constants::FIRST_DELAY_IN_FRONT_PARK_MS,
+                            constants::SECOND_DELAY_IN_FRONT_PARK_MS,
                             constants::SPEED_PARK);
         }
     }
@@ -94,19 +93,19 @@ void ObjectFinder::search(const Wheels::Side &side, double timerLimit,
     InterruptTimer::start();
     interrupts::startCatching();
 
-    Wheels::turn(side, speed);
+    Wheels::rotate(side, speed);
 
     while (!irSensor_->isInFront() && !timeOut_) {}
-    // _delay_ms(200);
+
     irSensor_->isInFront();
-    Wheels::stopTurn(side);
+    Wheels::stopRotating(side);
     InterruptTimer::stop();
     interrupts::stopCatching();
 }
 
 void ObjectFinder::turnFind(const Wheels::Side &side)
 {
-    Wheels::turn90(side);
+    Wheels::turn(side);
     positionManager_.updateQuadrant(side);
     if (!isObjectInFront(side))
         find(side);
@@ -117,7 +116,7 @@ void ObjectFinder::findTurn(const Wheels::Side &side)
 {
     find(side);
     if (!irSensor_->isObjectDetected()) {
-        Wheels::turn90(side);
+        Wheels::turn(side);
         positionManager_.updateQuadrant(side);
     }
 }
@@ -148,7 +147,7 @@ void ObjectFinder::run()
     switch (finderWithPosition) {
         case Border::TOP :
             debug::send("TOP_BORDER\n");
-            Wheels::turn90(Wheels::Side::RIGHT);
+            Wheels::turn(Wheels::Side::RIGHT);
             positionManager_.updateQuadrant(Wheels::Side::RIGHT);
             if (!isObjectInFront(Wheels::Side::RIGHT))
                 findLoop(2, Wheels::Side::RIGHT);
@@ -252,16 +251,18 @@ void ObjectFinder::sendLastPosition()
     debug::send("\n");
 }
 
-bool ObjectFinder::isObjectInFront(Wheels::Side side, const Delay &delay,
-                                   uint8_t speed)
+bool ObjectFinder::isObjectInFront(const Wheels::Side &side,
+                                   const uint8_t firstDelay,
+                                   const uint8_t secondDelay,
+                                   const uint8_t speed)
 {
     debug::send("Checking in front\n");
 
     if (!irSensor_->isInFront())
-        search(side, delay.first, speed);
+        search(side, firstDelay, speed);
 
     if (!irSensor_->isInFront())
-        search(!side, delay.second, speed);
+        search(!side, secondDelay, speed);
 
     return irSensor_->isObjectDetected();
 }

@@ -75,7 +75,7 @@ void Detect::run(Led &led, Button &whiteButton, Button &interruptButton,
     led.setColor(Led::Color::OFF);
 
     if (pointingRight) {
-        Wheels::turn90(Wheels::Side::LEFT);
+        Wheels::turn(Wheels::Side::LEFT);
         finder.isObjectInFront(Wheels::Side::RIGHT);
     }
 

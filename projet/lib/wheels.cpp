@@ -13,7 +13,7 @@
  *  Wheels::setSpeed(0.2, Wheels::Side::LEFT);
  *  Wheels::setSpeed(0.6, Wheels::Side::RIGHT);
  *  Wheels::invertDirection(Side::LEFT);
- *  Wheels::turn(Side::LEFT);
+ *  Wheels::rotate(Side::LEFT);
  *  turnOff(Side::RIGHT)
  *
  * Team #4546
@@ -163,7 +163,7 @@ void Wheels::invertDirection(const Side &side)
     }
 }
 
-void Wheels::turn90(const Side &side)
+void Wheels::turn(const Side &side)
 {
     uint16_t savedLeftSpeed = OCR2B;
     uint16_t savedRightSpeed = OCR2A;
@@ -183,7 +183,7 @@ void Wheels::turn90(const Side &side)
     OCR2A = savedRightSpeed;
 }
 
-void Wheels::turn(const Side &side, const uint8_t speed)
+void Wheels::rotate(const Side &side, const uint8_t speed)
 {
 
     turnOff();
@@ -193,7 +193,7 @@ void Wheels::turn(const Side &side, const uint8_t speed)
     setSpeed(speed, Side::LEFT);
     setSpeed(speed + constants::SPEED_DIFFERENCE_BETWEEN_WHEELS, Side::RIGHT);
 }
-void Wheels::stopTurn(const Side &side)
+void Wheels::stopRotating(const Side &side)
 {
     turnOff();
     _delay_ms(constants::TURN_TIMEOUT_MS);

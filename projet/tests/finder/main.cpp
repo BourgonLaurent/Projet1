@@ -36,7 +36,7 @@ ISR(InterruptTimer_vect)
     debug::send("timerIsr\n");
     // InterruptTimer::stop();
     // interrupts::stopCatching();
-    // Wheels::stopTurn(Wheels::Side::RIGHT);
+    // Wheels::stopRotating(Wheels::Side::RIGHT);
     ObjectFinder::timeOut = true;
     // ISR too long ?
     return;
@@ -92,8 +92,7 @@ int main()
                 break;
             case States::FROM_RIGH_UP :
                 debug::send("fromRightUp\n");
-                Wheels::turn90(
-                    Wheels::Side::LEFT); // replace turn90 with rotate?
+                Wheels::turn(Wheels::Side::LEFT); // replace turn with rotate?
                 state = States::FIND_OBJECT;
                 break;
 
