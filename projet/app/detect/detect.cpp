@@ -102,7 +102,6 @@ void Detect::run(Led &led, Button &whiteButton, Button &interruptButton,
         }
 
         alerts::parked::play();
-        debug::send("play sound\n");
 
         Point detectedPosition = finder.getLastPosition();
 
@@ -119,7 +118,6 @@ void Detect::run(Led &led, Button &whiteButton, Button &interruptButton,
             _delay_ms(AMBER_FLASH_PERIOD_MS);
         }
         interrupts::stopCatching();
-        interruptButtonWasPressed_ = false;
     }
 
     MapManager::save(map);
