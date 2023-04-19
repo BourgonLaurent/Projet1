@@ -67,14 +67,14 @@ void ObjectFinder::run()
 
         case Border::TOP_LEFT :
         case Border::TOP_RIGHT :
-            turnFind(border == Border::LEFT ? Wheels::Side::RIGHT
-                                            : Wheels::Side::LEFT);
+            turnFind(border == Border::TOP_LEFT ? Wheels::Side::RIGHT
+                                                : Wheels::Side::LEFT);
             break;
 
         case Border::BOTTOM_RIGHT :
         case Border::BOTTOM_LEFT :
-            find(border == Border::LEFT ? Wheels::Side::RIGHT
-                                        : Wheels::Side::LEFT);
+            find(border == Border::BOTTOM_LEFT ? Wheels::Side::RIGHT
+                                               : Wheels::Side::LEFT);
             break;
 
         case Border::MIDDLE :
