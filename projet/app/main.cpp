@@ -71,7 +71,7 @@ ISR(InterruptButton_vect)
     InterruptButton::clear();
 }
 
-constexpr uint8_t TIMEOUT_MS = 200;
+constexpr uint8_t WAIT_FOR_CLEAN_BUTTONS_MS = 200;
 
 int main()
 {
@@ -90,9 +90,6 @@ int main()
            whiteWasPressed = white.isPressed(),
            !interruptWasPressed && !whiteWasPressed) {}
 
-    // TODO: check if that delay is enough
-    _delay_ms(TIMEOUT_MS);
-
     if (whiteWasPressed) {
         debug::send("Mode: transmit\n");
         transmit::run(led, interrupt.isPressed() ? transmit::Mode::DEMO
@@ -100,6 +97,7 @@ int main()
     }
     else if (interruptWasPressed) {
         debug::send("Mode: detect\n");
+        _delay_ms(WAIT_FOR_CLEAN_BUTTONS_MS);
         Detect::run(led, white, interrupt, irSensor);
     }
 }
