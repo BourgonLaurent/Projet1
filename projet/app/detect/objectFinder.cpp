@@ -20,11 +20,15 @@
 #include <lib/debug.hpp>
 #include <lib/interruptTimer.hpp>
 
-bool ObjectFinder::timeOut_ = false;
+volatile bool ObjectFinder::timeOut_ = false;
+bool ObjectFinder::timerActive_ = false;
 
 void ObjectFinder::handleTimer()
 {
-    timeOut_ = true;
+    if (timerActive_) {
+        timeOut_ = true;
+        debug::send("handled");
+    }
 }
 
 ObjectFinder::ObjectFinder(IrSensor &irSensor) : irSensor_(&irSensor){};
@@ -131,21 +135,21 @@ void ObjectFinder::find(const Wheels::Side &side, const double timerLimit)
 void ObjectFinder::search(const Wheels::Side &side, const double timerLimit,
                           const uint8_t speed)
 {
-    InterruptTimer::initialize(InterruptTimer::Mode::CLEAR_ON_COMPARE,
-                               timerLimit);
+    InterruptTimer::setSeconds(timerLimit);
     InterruptTimer::start();
     interrupts::startCatching();
 
     debug::send("Searching\n");
+    debug::send("Timer", timerLimit);
 
     Wheels::rotate(side, speed);
 
     timeOut_ = false;
-    // while (true) {
-    //     debug::send(timeOut_);
-    // }
+    timerActive_ = true;
 
     while (!irSensor_->isInFront() && !timeOut_) {}
+
+    timerActive_ = false;
 
     irSensor_->isInFront();
 
@@ -186,11 +190,13 @@ bool ObjectFinder::isObjectFound()
 }
 
 bool ObjectFinder::isObjectInFront(const Wheels::Side &side,
-                                   const uint8_t firstDelay,
-                                   const uint8_t secondDelay,
+                                   const double firstDelay,
+                                   const double secondDelay,
                                    const uint8_t speed)
 {
     debug::send("Checking in front\n");
+    debug::send("first", firstDelay);
+    debug::send("second", secondDelay);
 
     if (!irSensor_->isInFront())
         search(side, firstDelay, speed);

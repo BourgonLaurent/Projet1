@@ -61,8 +61,8 @@
 
 ISR(InterruptTimer_vect)
 {
-    Flasher::handleFlash();
     ObjectFinder::handleTimer();
+    Flasher::handleFlash();
 }
 
 ISR(InterruptButton_vect)

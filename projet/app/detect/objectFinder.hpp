@@ -43,8 +43,8 @@ public:
     bool isObjectFound();
     bool isObjectInFront(
         const Wheels::Side &side = Wheels::Side::RIGHT,
-        const uint8_t firstDelay = constants::FIRST_DELAY_IS_IN_FRONT_MS,
-        const uint8_t secondDelay = constants::SECOND_DELAY_IS_IN_FRONT_MS,
+        const double firstDelay = constants::FIRST_DELAY_IS_IN_FRONT_MS,
+        const double secondDelay = constants::SECOND_DELAY_IS_IN_FRONT_MS,
         const uint8_t speed = constants::SPEED_TURN);
 
     Point getLastPosition();
@@ -56,7 +56,8 @@ private:
     static constexpr uint8_t N_FINDS_ON_BORDER = 2;
     static constexpr uint8_t N_FINDS_IN_MIDDLE = 4;
 
-    static bool timeOut_;
+    static volatile bool timeOut_;
+    static bool timerActive_;
 
     Border getBorder();
 
