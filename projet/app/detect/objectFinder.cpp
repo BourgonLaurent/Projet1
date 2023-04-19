@@ -15,6 +15,7 @@
 
 #include <app/detect/constants.hpp>
 #include <app/detect/objectFinder.hpp>
+#include <app/misc/map/map.hpp>
 
 #include <lib/debug.hpp>
 #include <lib/interruptTimer.hpp>
@@ -236,7 +237,7 @@ Border ObjectFinder::getCardinal()
         case 0 :
             cardinal |= Border::LEFT;
             break;
-        case 7 :
+        case Map::N_COLUMNS - 1 :
             cardinal |= Border::RIGHT;
             break;
     }
@@ -245,7 +246,7 @@ Border ObjectFinder::getCardinal()
         case 0 :
             cardinal |= Border::BOTTOM;
             break;
-        case 3 :
+        case Column::N_SLOTS - 1 :
             cardinal |= Border::TOP;
             break;
     }

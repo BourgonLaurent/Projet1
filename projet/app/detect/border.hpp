@@ -1,5 +1,5 @@
-#ifndef CARDINAL_H
-#define CARDINAL_H
+#ifndef BORDER_H
+#define BORDER_H
 
 #include <stdint.h>
 

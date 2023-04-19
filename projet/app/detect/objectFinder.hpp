@@ -16,18 +16,16 @@
 #ifndef OBJECT_FINDER_H
 #define OBJECT_FINDER_H
 
-#include "lib/analogReader.hpp"
-#include <app/detect/positionManager.hpp>
-
 #include <avr/io.h>
 #include <util/delay.h>
 
+#include <lib/analogReader.hpp>
 #include <lib/io.hpp>
-#include <lib/led.hpp>
 #include <lib/wheels.hpp>
 
-#include <app/detect/cardinal.hpp>
+#include <app/detect/border.hpp>
 #include <app/detect/constants.hpp>
+#include <app/detect/positionManager.hpp>
 
 class ObjectFinder
 {
@@ -47,6 +45,7 @@ public:
     bool isObjectFound();
     void sendLastPosition();
 
+    // FIXME: 5 parameters is too much
     bool isObjectInFront(volatile bool &timeOut,
                          Wheels::Side side = Wheels::Side::RIGHT,
                          double delay1 = constants::FIRST_DELAY_IS_IN_FRONT_MS,
