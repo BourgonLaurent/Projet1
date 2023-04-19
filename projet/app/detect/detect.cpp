@@ -120,7 +120,7 @@ void Detect::run(Led &led, Button &whiteButton, Button &interruptButton,
     }
 
     MapManager::save(map);
-    alerts::parked::play();
+    alerts::notFound::play();
 
     // TODO: check if it doesn't cause a segfault
     Flasher::initialize(led, END_FLASH_FREQUENCY, Led::Color::RED,
