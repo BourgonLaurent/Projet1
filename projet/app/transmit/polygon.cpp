@@ -18,6 +18,8 @@
 
 #include "polygon.hpp"
 
+#include <math.h>
+
 Polygon::Polygon(const Array<Point> &vertices) : vertices_(vertices) {}
 
 const Array<Point> &Polygon::getVertices() const
@@ -43,5 +45,5 @@ uint16_t Polygon::calculateArea() const
 
     double area = abs(positiveSum - negativeSum) / 2.0;
 
-    return area * AREA_UNITS_TO_INCHES;
+    return ceil(area * AREA_UNITS_TO_INCHES);
 }
