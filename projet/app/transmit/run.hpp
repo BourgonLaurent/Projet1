@@ -4,12 +4,16 @@
 #include <lib/led.hpp>
 
 namespace transmit {
-    namespace {
-        constexpr uint16_t INITIALIZATION_DELAY_MS = 2000;
-        constexpr uint8_t FLASH_FREQUENCY_HZ = 10;
-    } // namespace
+    enum class Mode
+    {
+        NORMAL,
+        DEMO,
+    };
 
-    void run(Led &led);
+    void run(Led &led, const Mode &mode = Mode::NORMAL);
+
+    constexpr uint16_t INITIALIZATION_DELAY_MS = 2000;
+    constexpr uint8_t FLASH_FREQUENCY_HZ = 10;
 }; // namespace transmit
 
 #endif
