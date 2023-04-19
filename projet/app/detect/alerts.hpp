@@ -4,12 +4,14 @@
 #include <stdint.h>
 #include <util/delay.h>
 
+#include <lib/debug.hpp>
 #include <lib/sound.hpp>
 
 namespace alerts {
     template <uint8_t NOTE, uint16_t PERIOD_MS, uint8_t N_SOUNDS = 1>
     void alert()
     {
+        debug::send("alert\n");
         for (uint8_t i = 0; i < N_SOUNDS; i++) {
             Sound::playNote(NOTE);
             _delay_ms(PERIOD_MS);

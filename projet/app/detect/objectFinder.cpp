@@ -24,8 +24,7 @@ ObjectFinder::ObjectFinder(IrSensor &irSensor) : irSensor_(&irSensor){};
 
 void ObjectFinder::park(volatile bool &timeOut, const Wheels::Side &side)
 {
-    isObjectInFront(timeOut, Wheels::getOtherSide(side),
-                    constants::FIRST_DELAY_IN_FRONT_PARK_MS,
+    isObjectInFront(timeOut, !side, constants::FIRST_DELAY_IN_FRONT_PARK_MS,
                     constants::SECOND_DELAY_IN_FRONT_PARK_MS,
                     constants::SPEED_PARK);
 
@@ -257,7 +256,7 @@ bool ObjectFinder::isObjectInFront(volatile bool &timeOut, Wheels::Side side,
         search(side, timeOut, delay1, speed);
 
     if (!irSensor_->isInFront())
-        search(Wheels::getOtherSide(side), timeOut, delay2, speed);
+        search(!side, timeOut, delay2, speed);
 
     return irSensor_->isObjectDetected();
 }

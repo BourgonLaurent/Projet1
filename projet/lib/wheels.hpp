@@ -41,6 +41,7 @@ public:
         RIGHT,
         BOTH
     };
+
     enum class Direction
     {
         FORWARD,
@@ -58,8 +59,6 @@ public:
     static void setSpeed(const uint8_t speed, const Side &side = Side::BOTH);
     static void turnOff(const Side &side = Side::BOTH);
 
-    static Side getOtherSide(const Side &side);
-
 private:
     static constexpr uint8_t TOP_VALUE = 0xFF; // p. 153
 
@@ -74,5 +73,7 @@ private:
                                   const io::Position pin);
     static void configureOutputPins(const Side &side);
 };
+
+Wheels::Side operator!(const Wheels::Side &side);
 
 #endif

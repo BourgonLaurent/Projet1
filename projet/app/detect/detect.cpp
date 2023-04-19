@@ -39,7 +39,6 @@ volatile bool Detect::interruptButtonWasPressed_ = false;
 void Detect::handleButtonPress()
 {
     interruptButtonWasPressed_ = true;
-    interrupts::stopCatching();
 }
 
 void Detect::handleTimer()
@@ -103,6 +102,7 @@ void Detect::run(Led &led, Button &whiteButton, Button &interruptButton,
         }
 
         alerts::parked::play();
+        debug::send("play sound\n");
 
         Point detectedPosition = finder.getLastPosition();
 
@@ -111,11 +111,14 @@ void Detect::run(Led &led, Button &whiteButton, Button &interruptButton,
             map[detectedPosition.x][detectedPosition.y].set();
         }
 
+        interruptButtonWasPressed_ = false;
+        InterruptButton::clear();
         interrupts::startCatching();
         while (!interruptButtonWasPressed_) {
             led.setAmberForMs(AMBER_FLASH_PERIOD_MS);
             _delay_ms(AMBER_FLASH_PERIOD_MS);
         }
+        interrupts::stopCatching();
         interruptButtonWasPressed_ = false;
     }
 

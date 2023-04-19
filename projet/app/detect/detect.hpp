@@ -30,18 +30,6 @@
 class Detect
 {
 public:
-    enum class States
-    {
-        SET_DIRECTION,
-        RIGHT,
-        UP,
-        FIND_OBJECT,
-        FOUND_NOTHING,
-        FOUND_OBJECT,
-        WAIT_NEXT_DETECTION
-
-    };
-
     static void handleTimer();
     static void handleButtonPress();
     static void run(Led &led, Button &whiteButton, Button &interruptButton,

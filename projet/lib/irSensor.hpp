@@ -73,8 +73,8 @@ private:
     const io::Position pin_;
     const Calibration calibration_;
 
-    Range range_;
-    Distance distance_;
+    Range range_ = Range::STRAIGHT;
+    Distance distance_ = Distance::FAR;
 
     bool isObjectDetected_ = false;
 };

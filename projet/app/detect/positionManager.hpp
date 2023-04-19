@@ -43,13 +43,14 @@ public:
     void updateQuadrant(const Wheels::Side &side);
 
 private:
-    Point lastPosition_;
-    uint8_t quadrant_;
     static constexpr uint8_t DIFFERENCE_WITH_NEW_POSITION_FAR = 2;
     static constexpr uint8_t DIFFERENCE_WITH_NEW_POSITION_CLOSE = 1;
 
     void setPositionDiagonal(uint8_t difference, uint8_t quadrant);
     void setPositionStraight(uint8_t difference, uint8_t quadrant);
+
+    Point lastPosition_ = {0, 0};
+    uint8_t quadrant_ = 0;
 };
 
 #endif

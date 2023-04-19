@@ -200,9 +200,8 @@ void Wheels::stopTurn(const Side &side)
     invertDirection(side);
 }
 
-Wheels::Side Wheels::getOtherSide(const Wheels::Side &side)
+Wheels::Side operator!(const Wheels::Side &side)
 {
-    if (side == Wheels::Side::LEFT)
-        return Wheels::Side::RIGHT;
-    return Wheels::Side::LEFT;
+    return side == Wheels::Side::LEFT ? Wheels::Side::RIGHT
+                                      : Wheels::Side::LEFT;
 }
