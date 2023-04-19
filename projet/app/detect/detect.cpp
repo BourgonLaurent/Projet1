@@ -112,7 +112,10 @@ void Detect::run(Led &led, Button &whiteButton, Button &interruptButton,
         }
 
         interrupts::startCatching();
-        while (!interruptButtonWasPressed_) {}
+        while (!interruptButtonWasPressed_) {
+            led.setAmberForMs(AMBER_FLASH_PERIOD_MS);
+            _delay_ms(AMBER_FLASH_PERIOD_MS);
+        }
         interruptButtonWasPressed_ = false;
     }
 
