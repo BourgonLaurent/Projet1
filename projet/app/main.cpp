@@ -56,7 +56,7 @@
 
 #include <app/detect/constants.hpp>
 #include <app/detect/detect.hpp>
-#include <app/transmit/run.hpp>
+#include <app/transmit/transmit.hpp>
 
 ISR(InterruptTimer_vect)
 {
@@ -92,8 +92,8 @@ int main()
 
     if (whiteWasPressed) {
         debug::send("Mode: transmit\n");
-        transmit::run(led, interrupt.isPressed() ? transmit::Mode::DEMO
-                                                 : transmit::Mode::NORMAL);
+        Transmit::run(led, interrupt.isPressed() ? Transmit::Mode::DEMO
+                                                 : Transmit::Mode::NORMAL);
     }
     else if (interruptWasPressed) {
         debug::send("Mode: detect\n");
