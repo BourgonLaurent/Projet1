@@ -30,7 +30,6 @@
 class Detect
 {
 public:
-    static void handleTimer();
     static void handleButtonPress();
     static void run(Led &led, Button &whiteButton, Button &interruptButton,
                     IrSensor &irSensor);

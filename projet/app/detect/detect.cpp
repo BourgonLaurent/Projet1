@@ -41,11 +41,6 @@ void Detect::handleButtonPress()
     interruptButtonWasPressed_ = true;
 }
 
-void Detect::handleTimer()
-{
-    timeOut_ = true;
-}
-
 void Detect::initialize()
 {
     Wheels::initialize();
@@ -81,7 +76,7 @@ void Detect::run(Led &led, Button &whiteButton, Button &interruptButton,
 
     if (pointRight) {
         Wheels::turn90(Wheels::Side::LEFT);
-        finder.isObjectInFront(timeOut_, Wheels::Side::RIGHT);
+        finder.isObjectInFront(Wheels::Side::RIGHT);
     }
 
     while (true) {
@@ -90,7 +85,7 @@ void Detect::run(Led &led, Button &whiteButton, Button &interruptButton,
         finder.sendLastPosition();
 
         led.setColor(Led::Color::OFF);
-        finder.finder(timeOut_);
+        finder.run();
 
         // TODO: remove
         debug::send("New position: \n");

@@ -32,12 +32,12 @@ class ObjectFinder
 public:
     ObjectFinder(IrSensor &irSensor);
 
-    void finder(volatile bool &timeOut);
+    void run();
 
-    void search(const Wheels::Side &side, volatile bool &timeOut,
-                double timerLimit, uint8_t speed = constants::SPEED_TURN);
-    void park(volatile bool &timeOut, const Wheels::Side &side);
-    void find(const Wheels::Side &side, volatile bool &timeOut,
+    void search(const Wheels::Side &side, double timerLimit,
+                uint8_t speed = constants::SPEED_TURN);
+    void park(const Wheels::Side &side);
+    void find(const Wheels::Side &side,
               double timerLimit = constants::DELAY_FIND_MS);
 
     bool isObjectFound();
@@ -49,12 +49,14 @@ public:
     };
 
     bool isObjectInFront(
-        volatile bool &timeOut, Wheels::Side side = Wheels::Side::RIGHT,
+        Wheels::Side side = Wheels::Side::RIGHT,
         const Delay &delay = {constants::FIRST_DELAY_IS_IN_FRONT_MS,
                               constants::SECOND_DELAY_IS_IN_FRONT_MS},
         uint8_t speed = constants::SPEED_TURN);
 
     Point getLastPosition();
+
+    static void handleTimer();
 
 private:
     static constexpr uint8_t N_PARK_SOUNDS = 3;
@@ -65,10 +67,11 @@ private:
 
     Border getBorder();
 
-    void turnFind(const Wheels::Side &side, volatile bool &timeOut);
-    void findTurn(const Wheels::Side &side, volatile bool &timeOut);
-    void findLoop(uint8_t max, const Wheels::Side &side,
-                  volatile bool &timeOut);
+    void turnFind(const Wheels::Side &side);
+    void findTurn(const Wheels::Side &side);
+    void findLoop(uint8_t max, const Wheels::Side &side);
+
+    static bool timeOut_;
 
     PositionManager positionManager_;
     IrSensor* const irSensor_;
