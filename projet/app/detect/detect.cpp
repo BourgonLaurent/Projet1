@@ -73,7 +73,7 @@ void Detect::initialize()
     Sound::initialize();
     InterruptButton::initialize(InterruptButton::Mode::RISING);
     InterruptTimer::initialize(InterruptTimer::Mode::CLEAR_ON_COMPARE,
-                               constants::DELAY_TURN_90_MS);
+                               constants::REPOSITION_DELAY_MS);
     interrupts::stopCatching();
 }
 

@@ -46,8 +46,6 @@ uint16_t IrSensor::read()
 
     const uint16_t average = (sum - maximum) / (N_MEASURMENTS - 1);
 
-    debug::send(average);
-    debug::send("\n");
     return average;
 }
 
