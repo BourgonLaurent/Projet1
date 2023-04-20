@@ -27,7 +27,7 @@ void ObjectFinder::handleTimer()
 {
     if (timerActive_) {
         timeOut_ = true;
-        debug::send("handled");
+        // debug::send("handled");
     }
 }
 
@@ -77,7 +77,6 @@ void ObjectFinder::run()
 
         case Border::BOTTOM_LEFT :
         case Border::BOTTOM_RIGHT :
-            debug::send(static_cast<uint16_t>(border));
             find(border == Border::BOTTOM_LEFT ? Wheels::Side::RIGHT
                                                : Wheels::Side::LEFT);
             break;
@@ -99,7 +98,7 @@ void ObjectFinder::run()
     }
 }
 
-void ObjectFinder::find(const Wheels::Side &side, const double timerLimit)
+void ObjectFinder::find(const Wheels::Side &side, const uint16_t timerLimit)
 {
     if (!irSensor_->isInFront()) {
         if (side == Wheels::Side::LEFT) {
@@ -132,10 +131,10 @@ void ObjectFinder::find(const Wheels::Side &side, const double timerLimit)
     }
 }
 
-void ObjectFinder::search(const Wheels::Side &side, const double timerLimit,
+void ObjectFinder::search(const Wheels::Side &side, const uint16_t timerLimit,
                           const uint8_t speed)
 {
-    InterruptTimer::setSeconds(timerLimit);
+    InterruptTimer::setMilliseconds(timerLimit);
     InterruptTimer::start();
     interrupts::startCatching();
 
@@ -190,8 +189,8 @@ bool ObjectFinder::isObjectFound()
 }
 
 bool ObjectFinder::isObjectInFront(const Wheels::Side &side,
-                                   const double firstDelay,
-                                   const double secondDelay,
+                                   const uint16_t firstDelay,
+                                   const uint16_t secondDelay,
                                    const uint8_t speed)
 {
     debug::send("Checking in front\n");
@@ -277,7 +276,7 @@ void ObjectFinder::findLoop(const uint8_t nTurns, const Wheels::Side &side)
 
         // TODO: à tester
         find(side, constants::DELAY_FIND_MS
-                       + (i * constants::DELAY_INCREMENT_FIND_LOOP));
+                       + (i * constants::DELAY_INCREMENT_FIND_LOOP_MS));
         _delay_ms(constants::DELAY_BETWEEN_FINDS_MS);
     }
 }

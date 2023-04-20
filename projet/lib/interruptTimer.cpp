@@ -61,8 +61,14 @@ void InterruptTimer::stop()
 
 void InterruptTimer::setSeconds(const double delayS)
 {
+    debug::send(delayS * 10);
     setBestPrescaleMode(delayS);
     OCR1A = delayS * getCyclesPerSeconds();    
+}
+
+void InterruptTimer::setMilliseconds(const uint16_t delayMs)
+{
+    setSeconds(delayMs / double(MS_TO_S)); 
 }
 
 void InterruptTimer::setBestPrescaleMode(const double delayS)

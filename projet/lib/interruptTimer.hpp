@@ -39,6 +39,7 @@ public:
     };
     static void setMode(const Mode &mode);
     static void setSeconds(const double delayS);
+    static void setMilliseconds(const uint16_t delayMs);
 
     static void initialize(const Mode &mode, const double delayS);
 
@@ -47,6 +48,8 @@ public:
     static void stop();
 
 private:
+    static constexpr uint16_t MS_TO_S = 1000;
+
     enum class PrescaleMode
     {
         OFF = 0,

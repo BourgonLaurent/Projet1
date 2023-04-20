@@ -35,16 +35,16 @@ public:
     void run();
 
     void find(const Wheels::Side &side,
-              const double timerLimit = constants::DELAY_FIND_MS);
-    void search(const Wheels::Side &side, const double timerLimit,
+              const uint16_t timerLimit = constants::DELAY_FIND_MS);
+    void search(const Wheels::Side &side, const uint16_t timerLimit,
                 const uint8_t speed = constants::SPEED_TURN);
     void park(const Wheels::Side &side);
 
     bool isObjectFound();
     bool isObjectInFront(
         const Wheels::Side &side = Wheels::Side::RIGHT,
-        const double firstDelay = constants::FIRST_DELAY_IS_IN_FRONT_MS,
-        const double secondDelay = constants::SECOND_DELAY_IS_IN_FRONT_MS,
+        const uint16_t firstDelay = constants::FIRST_DELAY_IS_IN_FRONT_MS,
+        const uint16_t secondDelay = constants::SECOND_DELAY_IS_IN_FRONT_MS,
         const uint8_t speed = constants::SPEED_TURN);
 
     Point getLastPosition();
@@ -63,7 +63,7 @@ private:
 
     void turnFind(const Wheels::Side &side);
     void findTurn(const Wheels::Side &side);
-    void findLoop(const uint8_t maximum, const Wheels::Side &side);
+    void findLoop(const uint8_t nTurns, const Wheels::Side &side);
 
     PositionManager positionManager_;
     IrSensor* const irSensor_;
