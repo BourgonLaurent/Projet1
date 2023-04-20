@@ -283,7 +283,6 @@ void ObjectFinder::findLoop(const uint8_t nTurns, const Wheels::Side &side)
             break;
         }
 
-        // TODO: à tester
         find(side, constants::DELAY_FIND_MS
                        + (i * constants::DELAY_INCREMENT_FIND_LOOP_MS));
         _delay_ms(constants::DELAY_BETWEEN_FINDS_MS);
