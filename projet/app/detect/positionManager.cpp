@@ -19,17 +19,16 @@ Point PositionManager::getLastPosition()
     return lastPosition_;
 }
 
-void PositionManager::setNextPositionObject(const IrSensor::Range &range,
-                                            const IrSensor::Distance &distance)
+void PositionManager::setNextPositionObject(const IrSensor::Range &range)
 {
     switch (range) {
         case IrSensor::Range::DIAGONAL :
-            switch (distance) {
-                case IrSensor::Distance::CLOSE :
+            switch (distance_) {
+                case Distance::CLOSE :
                     setPositionDiagonal(DIFFERENCE_WITH_NEW_POSITION_CLOSE,
                                         quadrant_);
                     break;
-                case IrSensor::Distance::FAR :
+                case Distance::FAR :
                     setPositionDiagonal(DIFFERENCE_WITH_NEW_POSITION_FAR,
                                         quadrant_);
                     break;
@@ -37,18 +36,23 @@ void PositionManager::setNextPositionObject(const IrSensor::Range &range,
             break;
 
         case IrSensor::Range::STRAIGHT :
-            switch (distance) {
-                case IrSensor::Distance::CLOSE :
+            switch (distance_) {
+                case Distance::CLOSE :
                     setPositionStraight(DIFFERENCE_WITH_NEW_POSITION_CLOSE,
                                         quadrant_);
                     break;
-                case IrSensor::Distance::FAR :
+                case Distance::FAR :
                     setPositionStraight(DIFFERENCE_WITH_NEW_POSITION_FAR,
                                         quadrant_);
                     break;
             }
             break;
     }
+}
+
+void PositionManager::setDistance(const Distance &distance)
+{
+    distance_ = distance;
 }
 
 uint8_t PositionManager::getQuadrant()

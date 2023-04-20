@@ -32,10 +32,16 @@ public:
 
     Point getLastPosition();
 
-    void setNextPositionObject(const IrSensor::Range &range,
-                               const IrSensor::Distance &distance);
-    uint8_t getQuadrant();
+    void setNextPositionObject(const IrSensor::Range &range);
 
+    enum class Distance
+    {
+        FAR,
+        CLOSE,
+    };
+    void setDistance(const Distance &distance);
+
+    uint8_t getQuadrant();
     void resetQuadrant();
     void updateQuadrant(const Wheels::Side &side);
 
@@ -48,6 +54,7 @@ private:
 
     Point lastPosition_ = {0, 0};
     uint8_t quadrant_ = 0;
+    Distance distance_ = Distance::CLOSE;
 };
 
 #endif

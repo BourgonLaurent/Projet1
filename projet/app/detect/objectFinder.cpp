@@ -101,9 +101,8 @@ void ObjectFinder::run()
 
     if (objectFound_) {
         IrSensor::Range range = irSensor_->getRange();
-        IrSensor::Distance distance = irSensor_->getDistance();
 
-        positionManager_.setNextPositionObject(range, distance);
+        positionManager_.setNextPositionObject(range);
     }
 }
 
@@ -155,7 +154,7 @@ void ObjectFinder::search(const Wheels::Side &side, const uint16_t timerLimit,
     timeOut_ = false;
     timerActive_ = true;
 
-    while (!irSensor_->isInFront() && !timeOut_) {}
+    while (!timeOut_ && !irSensor_->isInFront()) {}
 
     timerActive_ = false;
 
@@ -172,7 +171,16 @@ void ObjectFinder::park(const Wheels::Side &side)
                     constants::SECOND_DELAY_IN_FRONT_PARK_MS,
                     constants::SPEED_PARK);
 
+    uint8_t counter = 0;
+    positionManager_.setDistance(PositionManager::Distance::CLOSE);
     while (!irSensor_->isClose()) {
+        counter++;
+        if (counter == constants::CLOSE_FAR_THRESHOLD) {
+            positionManager_.setDistance(PositionManager::Distance::FAR);
+        }
+
+        debug::send("Counter", counter);
+
         Wheels::setSpeed(constants::SPEED_VALUE_TO_PARK);
 
         while (irSensor_->isTooClose()) {

@@ -32,17 +32,10 @@ public:
         STRAIGHT,
     };
 
-    enum Distance
-    {
-        FAR,
-        CLOSE,
-    };
-
     struct Calibration {
         const uint8_t tenCm;
         const uint8_t fifteenCm;
         const uint8_t eightyCm;
-        const uint8_t farThreshold;
     };
 
     IrSensor(io::Position pin, const Calibration &constants);
@@ -57,10 +50,8 @@ public:
     void setObjectDetected(bool objectDetected);
 
     void setRange(IrSensor::Range range);
-    void setDistance(uint8_t distance);
 
     Range getRange();
-    Distance getDistance();
 
 private:
     static constexpr uint8_t N_MEASURMENTS = 6;
@@ -75,7 +66,6 @@ private:
     const Calibration calibration_;
 
     Range range_ = Range::STRAIGHT;
-    Distance distance_ = Distance::FAR;
 
     bool isObjectDetected_ = false;
 };

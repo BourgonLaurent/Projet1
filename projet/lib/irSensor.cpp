@@ -61,20 +61,6 @@ bool IrSensor::isClose()
     return isInRange(calibration_.tenCm, calibration_.fifteenCm);
 }
 
-void IrSensor::setDistance(uint8_t distance)
-{
-    debug::send("setDistance:\n");
-    debug::send(distance);
-    if (distance >= calibration_.farThreshold
-        && distance <= calibration_.tenCm) {
-        distance_ = IrSensor::Distance::CLOSE;
-    }
-    else if (distance < calibration_.farThreshold
-             && distance > calibration_.eightyCm) {
-        distance_ = IrSensor::Distance::FAR;
-    }
-}
-
 bool IrSensor::isObjectDetected()
 {
     return isObjectDetected_;
@@ -95,11 +81,6 @@ IrSensor::Range IrSensor::getRange()
     return range_;
 }
 
-IrSensor::Distance IrSensor::getDistance()
-{
-    return distance_;
-}
-
 bool IrSensor::isTooClose()
 {
     uint16_t distance = read();
@@ -112,10 +93,6 @@ bool IrSensor::isInRange(uint8_t minimum, uint8_t maximum)
     uint16_t distance = read();
 
     isObjectDetected_ = distance < minimum && distance > maximum;
-
-    if (isObjectDetected_) {
-        setDistance(distance);
-    }
 
     return isObjectDetected_;
 }

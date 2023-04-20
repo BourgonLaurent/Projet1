@@ -38,6 +38,7 @@ namespace constants {
 
     // vitesse du robot quand il se dirige vers le poteau
     static constexpr uint8_t SPEED_VALUE_TO_PARK = 45;
+    static constexpr uint8_t CLOSE_FAR_THRESHOLD = 45;
 
     // vitesse du robot quand il tourne en charchant le poteau
     static constexpr uint8_t SPEED_TURN = 50;
@@ -55,8 +56,7 @@ namespace constants {
     static constexpr IrSensor::Calibration CALIBRATION = {
         .tenCm = 120,
         .fifteenCm = 90,
-        .eightyCm = 20,
-        .farThreshold = 45,
+        .eightyCm = 17,
     };
 }; // namespace constants
 
