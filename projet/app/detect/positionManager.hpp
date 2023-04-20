@@ -1,9 +1,6 @@
 /**
  * Management of current position and next position.
  *
- * HARDWARE:
- * IR sensor to PA0
- *
  * Team #4546
  *  \author Catalina Andrea Araya Figueroa
  *  \author Mehdi Benouhoud
@@ -16,11 +13,11 @@
 #ifndef POSITION_MANAGER_H
 #define POSITION_MANAGER_H
 
-#include <app/misc/map/map.hpp>
-#include <app/misc/point.hpp>
+#include <lib/irSensor.hpp>
 #include <lib/wheels.hpp>
 
-#include <lib/irSensor.hpp>
+#include <app/misc/map/map.hpp>
+#include <app/misc/point.hpp>
 
 class PositionManager
 {

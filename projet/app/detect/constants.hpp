@@ -1,5 +1,6 @@
 /**
- * Constants for the project
+ * Constants used for the detection.
+ * They change with the robot.
  *
  * Team #4546
  *  \author Catalina Andrea Araya Figueroa
@@ -7,7 +8,7 @@
  *  \author Laurent Bourgon
  *  \author Ihsane Majdoubi
  *
- * \date April 17, 2023
+ * \date April 15, 2023
  */
 
 #ifndef CONSTANTS_H

@@ -1,3 +1,18 @@
+/**
+ * Constants used to generate the SVG file.
+ *
+ * USAGE:
+ *  send(tags::OPENING);
+ *
+ * Team #4546
+ *  \author Catalina Andrea Araya Figueroa
+ *  \author Mehdi Benouhoud
+ *  \author Laurent Bourgon
+ *  \author Ihsane Majdoubi
+ *
+ * \date April 19th, 2023
+ */
+
 #ifndef TAGS_H
 #define TAGS_H
 

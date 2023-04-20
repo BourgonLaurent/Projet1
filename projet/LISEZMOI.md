@@ -32,21 +32,32 @@ par les deux boutons.
 ### Détection
 
 Au lancement du programme, la DEL sur la carte mère est ambrée.
-Appuyer sur l'un des deux boutons choisi l'orientation de départ:
+Appuyer sur l'un des deux boutons sélectionne l'orientation de départ:
 
 - Le bouton *interrupt* lorsque le robot pointe vers le haut
 - Le bouton blanc lorsque le robot pointe vers la droite
 
 Ensuite, le robot cherche le poteau.
-<!-- TODO comment il cherche le poteau -->
 
-Lorsque le robot trouve le poteau, il s'arrête proche de celui-ci
+La recherche de poteau se fait en tournant sur place
+dans le sens horaire.
+Une minuterie est utilisée pour connaître en tout
+temps le quadrant vers lequel il pointe.
+
+De plus, les positions inaccessibles sont éliminées.
+Par exemple, s'il est au coin gauche de la table,
+le robot ne vérifie que de nord à est.
+
+Lorsque le robot trouve le poteau, il avance vers celui-ci.
+Dès qu'il le perd, le robot se remet à chercher le poteau.
+Une fois qu'il arrive à environ 15 cm du poteau, il s'arrête
 et émet trois sons aigus et trois pauses de 300 ms.
+S'il est trop proche du poteau, le robot recule.
 
 Puis, le robot clignote ambré à 2 Hz et attend un appui sur
 le bouton *interrupt*.
 
-S'il n'y a aucun poteau détecté, le robot arrête de bouger,
+Si aucun poteau n'est détecté, le robot arrête de bouger,
 émet un son grave pendant 2 secondes et clignote sa DEL rouge à 2 Hz.
 
 ### Transmission

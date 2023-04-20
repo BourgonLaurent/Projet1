@@ -3,7 +3,10 @@
  *
  * Hardware Identification
  *  WARNING: Data Direction Registers will be set automatically.
- *  Memory: C0 + C1
+ *
+ *  EEPROM:
+ *    - SCL (PC0)
+ *    - SDA (PC1)
  *
  * USAGE:
  *  Map map;

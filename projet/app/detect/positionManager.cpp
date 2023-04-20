@@ -1,9 +1,6 @@
 /**
  * Management of current position and next position.
  *
- * HARDWARE:
- * IR sensor to PA0
- *
  * Team #4546
  *  \author Catalina Andrea Araya Figueroa
  *  \author Mehdi Benouhoud
@@ -13,7 +10,8 @@
  * \date April 5, 2023
  */
 
-#include <app/detect/positionManager.hpp>
+#include "positionManager.hpp"
+
 #include <lib/debug.hpp>
 
 Point PositionManager::getLastPosition()

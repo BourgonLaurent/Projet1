@@ -1,8 +1,16 @@
 /**
  * Finds object.
  *
- * HARDWARE:
- * IR sensor to PA0
+ * Hardware Identification:
+ *  NOTE: The data direction registers are set automatically.
+ *
+ *  INPUT:
+ *    - IR Sensor
+ *
+ *  OUTPUT:
+ *    - Wheels
+ *      - Left  | PD6 (enable) and PD4 (direction)
+ *      - Right | PD7 (enable) and PD5 (direction)
  *
  * Team #4546
  *  \author Catalina Andrea Araya Figueroa

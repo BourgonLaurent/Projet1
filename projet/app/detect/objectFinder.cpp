@@ -1,8 +1,16 @@
 /**
  * Finds object.
  *
- * HARDWARE:
- * IR sensor to PA0
+ * Hardware Identification:
+ *  NOTE: The data direction registers are set automatically.
+ *
+ *  INPUT:
+ *    - IR Sensor
+ *
+ *  OUTPUT:
+ *    - Wheels
+ *      - Left  | PD6 (enable) and PD4 (direction)
+ *      - Right | PD7 (enable) and PD5 (direction)
  *
  * Team #4546
  *  \author Catalina Andrea Araya Figueroa
@@ -13,8 +21,9 @@
  * \date March 28, 2023
  */
 
+#include "objectFinder.hpp"
+
 #include <app/detect/constants.hpp>
-#include <app/detect/objectFinder.hpp>
 #include <app/misc/map/map.hpp>
 
 #include <lib/debug.hpp>

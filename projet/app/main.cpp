@@ -31,7 +31,7 @@
  *
  *  TIMERS:
  *    - Timer 0 | Sound
- *    - Timer 1 | Flasher
+ *    - Timer 1 | InterruptTimer & Flasher
  *    - Timer 2 | Wheels
  *
  * Team #4546

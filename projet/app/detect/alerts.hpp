@@ -1,9 +1,18 @@
 /**
- * Emmit sound alerts using the piezoelectric buzzer
+ * Emmit predefined sound alerts with the buzzer.
+ *
+ * Hardware Identification
+ * WARNING: Sound must be initialized before use.
+ *
+ * OUTPUT:
+ *  - Buzzer connected plus to PB3 and minus to PB2.
+ *
+ * TIMERS:
+ *  - Timer 0 | Sound
  *
  * USAGE:
+ *  Sound::initialize();
  *  alerts::parked::play();
- *  // or
  *  alerts::notFound::play();
  *
  * Team #4546
@@ -12,8 +21,9 @@
  *  \author Laurent Bourgon
  *  \author Ihsane Majdoubi
  *
- * \date April 19th, 2023
+ * \date April 18, 2023
  */
+
 #ifndef ALERTS_H
 #define ALERTS_H
 

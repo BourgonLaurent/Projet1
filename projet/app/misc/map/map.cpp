@@ -17,8 +17,6 @@
 
 #include "map.hpp"
 
-#include <lib/memory.hpp>
-
 Column &Map::operator[](const uint8_t columnIndex)
 {
     return columns_[columnIndex];

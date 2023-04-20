@@ -1,11 +1,37 @@
 /**
- * Detect program of the project
+ * Main program for the detect module.
+ *  Find poles and save them in memory.
  *
- * HARDWARE:
- * IR sensor to PA0
- * Led to PB0(+) and PB1(-) // à vérifier
- * InterruptButton to PD2
- * White Button to PC2
+ * Hardware Identification:
+ *  NOTE: The data direction registers are set automatically.
+ *
+ *  INPUT:
+ *    - IR Sensor
+ *    - Interrupt Push Button
+ *    - White Push Button
+ *
+ *  OUTPUT:
+ *    - Bicolor LED
+ *    - Wheels
+ *      - Left
+ *      - Right
+ *    - Buzzer
+ *
+ *  EEPROM:
+ *    - SCL (PC0)
+ *    - SDA (PC1)
+ *
+ *  USART:
+ *    - RXD0 (PD0)
+ *    - TXD0 (PD1)
+ *
+ *  TIMERS:
+ *    - Timer 0 | Sound
+ *    - Timer 1 | InterruptTimer & Flasher
+ *    - Timer 2 | Wheels
+ *
+ * USAGE:
+ *  Detect::run(led, white, interrupt, irSensor);
  *
  * Team #4546
  *  \author Catalina Andrea Araya Figueroa
@@ -13,7 +39,7 @@
  *  \author Laurent Bourgon
  *  \author Ihsane Majdoubi
  *
- * \date May 17, 2023
+ * \date May 15, 2023
  */
 
 #include "detect.hpp"

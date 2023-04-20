@@ -1,14 +1,5 @@
 /**
- * Represents the position of the robot relative to the borders of the grid
- *
- * USAGE:
- *  switch(variable: Border) {
- *      case Border::TOP:
- *      break;
- *      case Border:BOTTOM_LEFT:
- *      break;
- *      default:
- *  }
+ * Position of the robot relative to the borders of the grid.
  *
  * Team #4546
  *  \author Catalina Andrea Araya Figueroa
@@ -16,8 +7,9 @@
  *  \author Laurent Bourgon
  *  \author Ihsane Majdoubi
  *
- * \date April 19th, 2023
+ * \date April 17, 2023
  */
+
 #ifndef BORDER_H
 #define BORDER_H
 
