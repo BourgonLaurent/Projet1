@@ -143,11 +143,11 @@ void SvgBuilder::prolog()
 
 void SvgBuilder::sendChecksum()
 {
-    constexpr uint8_t base = 16;
     constexpr uint8_t maximumResultSize = 9;
 
     char checksum[maximumResultSize];
-    ultoa(integrity_.get(), checksum, base);
+    sprintf(checksum, tags::templates::CHECKSUM, integrity_.get());
+
     Communication::send(checksum);
 }
 

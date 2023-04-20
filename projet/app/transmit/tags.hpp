@@ -76,6 +76,8 @@ namespace tags {
 
         static constexpr const char POLE[] =
             "<circle cx=\"%u\" cy=\"%u\" r=\"0.15\" />";
+
+        static constexpr const char CHECKSUM[] = "%08lx";
     } // namespace templates
 
 } // namespace tags
