@@ -14,6 +14,21 @@
             "cppStandard": "c++14",
             "intelliSenseMode": "gcc-x64",
             "configurationProvider": "ms-vscode.makefile-tools"
+        },
+        {
+            "name": "Mac",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/usr/local/opt/avr-gcc@11/avr/include/**"
+            ],
+            "defines": [
+                "__AVR_ATmega324PA__"
+            ],
+            "compilerPath": "/usr/local/opt/avr-gcc@11/bin/avr-gcc",
+            "cStandard": "c11",
+            "cppStandard": "c++14",
+            "intelliSenseMode": "gcc-x64",
+            "configurationProvider": "ms-vscode.makefile-tools"
         }
     ],
     "version": 4
